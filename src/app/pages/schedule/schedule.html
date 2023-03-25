@@ -55,7 +55,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase"
+      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.track | lowercase"
         [hidden]="session.hide">
         <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
           <ion-label>

@@ -28,7 +28,8 @@ export class ConferenceData {
     // build up the data by linking speakers to sessions
     this.data = {
       "schedule": [],
-      "speakers": []
+      "speakers": [],
+      "tracks": []
     };
 
     data.schedule.forEach((slot: any) => {
@@ -68,6 +69,13 @@ export class ConferenceData {
           "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
           "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
           "id": slot.conf_key
+      }
+
+      const track = this.data.tracks.find(
+        (t: any) => t.name === slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)
+      )
+      if (!(track)) {
+        this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": "mic-outline"})
       }
 
       if (slot.speakers) {
