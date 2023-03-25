@@ -18,7 +18,7 @@ export class ConferenceData {
       return of(this.data);
     } else {
       return this.http
-        .get('assets/data/data.json')
+        .get('https://us.pycon.org/2023/schedule/conference.json')
         .pipe(map(this.processData, this));
     }
   }
@@ -26,31 +26,85 @@ export class ConferenceData {
   processData(data: any) {
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
-    this.data = data;
+    this.data = {
+      "schedule": [],
+      "speakers": []
+    };
 
-    // loop through each day in the schedule
-    this.data.schedule.forEach((day: any) => {
-      // loop through each timeline group in the day
-      day.groups.forEach((group: any) => {
-        // loop through each session in the timeline group
-        group.sessions.forEach((session: any) => {
-          session.speakers = [];
-          if (session.speakerNames) {
-            session.speakerNames.forEach((speakerName: any) => {
-              const speaker = this.data.speakers.find(
-                (s: any) => s.name === speakerName
-              );
-              if (speaker) {
-                session.speakers.push(speaker);
-                speaker.sessions = speaker.sessions || [];
-                speaker.sessions.push(session);
-              }
+    data.schedule.forEach((slot: any) => {
+      if (["break", "blank"].includes(slot.kind)) {
+        return;
+      }
+      if (slot.kind == "plenary") {
+        slot.room = "Main Stage"
+      }
+
+      if (slot.speakers) {
+        slot.speakers.forEach((speaker: any) => {
+          const speakerExists = this.data.speakers.find(
+            (s: any) => s.id === speaker.id
+          )
+          if (!(speakerExists)){
+            this.data.speakers.push({
+              "id": speaker.id,
+              "name": speaker.name,
+              "profilePic": speaker.photo,
+              "about": speaker.bio,
             });
           }
         });
-      });
+      }
+
+      var start = new Date(slot.start);
+      var end = new Date(slot.end);
+      var session = {
+          "name": slot.name,
+          "location": slot.room,
+          "description": slot.description,
+          "speakers": [],
+          "speakerNames": slot.authors,
+          "timeStart": start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeEnd": end.toLocaleString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
+          "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
+          "id": slot.conf_key
+      }
+
+      if (slot.speakers) {
+        session.speakerNames.forEach((speakerName: any) => {
+          const speaker = this.data.speakers.find(
+            (s: any) => s.name === speakerName
+          );
+          if (speaker) {
+            session.speakers.push(speaker);
+            speaker.sessions = speaker.sessions || [];
+            speaker.sessions.push(session);
+          }
+        });
+      }
+
+      var day = start.toISOString().split('T')[0];
+      var group = start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase();
+
+      const scheduleDay = this.data.schedule.find(
+        (d: any) => d.date === day
+      );
+      if (scheduleDay) {
+        const scheduleDayGroup = scheduleDay.groups.find(
+          (g: any) => g.time === group
+        );
+        if (scheduleDayGroup) {
+            scheduleDayGroup.sessions.push(session)
+	} else {
+            scheduleDay.groups.push({"time": group, "sessions": [session]})
+        }
+      } else {
+        this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session]}]})
+      }
+
     });
 
+    console.log(this.data);
     return this.data;
   }
 
