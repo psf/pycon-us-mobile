@@ -21,7 +21,7 @@
       <ion-col *ngFor="let session of speaker?.sessions">
       <ion-card class="presentation-card">
         <ion-card-header>
-          <ion-item detail="false" lines="none" class="speaker-item" routerLink="">
+          <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/schedule/session/{{session.id}}">
             <ion-label>
               <h2>{{ session.track }}: {{session.name}}</h2>
             </ion-label>

@@ -29,7 +29,8 @@ export class ConferenceData {
     this.data = {
       "schedule": [],
       "speakers": [],
-      "tracks": []
+      "tracks": [],
+      "sessions": []
     };
 
     data.schedule.forEach((slot: any) => {
@@ -38,6 +39,9 @@ export class ConferenceData {
       }
       if (slot.kind == "plenary") {
         slot.room = "Main Stage"
+      }
+      if (slot.kind == "sponsor-workshop") {
+        slot.kind = "Sponsor Presentation"
       }
 
       if (slot.speakers) {
@@ -64,11 +68,12 @@ export class ConferenceData {
           "description": slot.description,
           "speakers": [],
           "speakerNames": slot.authors,
-          "timeStart": start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-          "timeEnd": end.toLocaleString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeStart": start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeEnd": end.toLocaleString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
           "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
           "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
-          "id": slot.conf_key
+          "id": slot.conf_key,
+          "day": start.toLocaleDateString('en-us', {weekday: 'short'})
       }
 
       const track = this.data.tracks.find(
@@ -90,6 +95,8 @@ export class ConferenceData {
           }
         });
       }
+
+      this.data.sessions.push(session);
 
       var day = start.toISOString().split('T')[0];
       var group = start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase();
@@ -124,8 +131,8 @@ export class ConferenceData {
         const days = []
         var index = 0;
         data.schedule.sort(function(a, b){var x = a.date; var y = b.date; return ((x < y) ? -1 : ((x > y) ? 1 : 0));}).forEach((day: any) => {
-          var dateObj = new Date(day.date);
-          days.push({"index": index.toString(), "date": day.date, "day": dateObj.toLocaleDateString('en-us', {weekday: 'short'})});
+          var dateObj = new Date(day.date+"T00:00:00.000-12:00");
+          days.push({"index": index.toString(), "date": day.date, "day": dateObj.toLocaleDateString('en-us', {timeZone: "MST7MDT", weekday: 'short'})});
           index += 1;
         })
         return days;
