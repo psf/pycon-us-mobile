@@ -25,6 +25,13 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar *ngIf="ios">
+    <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
+      <ion-segment-button *ngFor="let day of days" value="{{day.index}}">
+        {{day.day}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
   <ion-toolbar *ngIf="!ios">
     <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
       <ion-segment-button value="all">
@@ -32,6 +39,13 @@
       </ion-segment-button>
       <ion-segment-button value="favorites">
         Favorites
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="!ios">
+    <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
+      <ion-segment-button *ngFor="let day of days" value="{{day.index}}">
+        {{day.day}}
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -51,7 +65,7 @@
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
       <ion-item-divider sticky>
         <ion-label>
-          {{group.time}}
+          {{days[dayIndex].day}} - {{group.time}}
         </ion-label>
       </ion-item-divider>
 
@@ -59,7 +73,7 @@
         [hidden]="session.hide">
         <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
           <ion-label>
-            <h3>{{session.name}}</h3>
+            <h3>{{session.track}}: {{session.name}}</h3>
             <p>
               {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
             </p>

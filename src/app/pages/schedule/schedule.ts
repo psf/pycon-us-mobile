@@ -16,11 +16,12 @@ export class SchedulePage implements OnInit {
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
   ios: boolean;
-  dayIndex = 0;
+  dayIndex = "0";
   queryText = '';
   segment = 'all';
   excludeTracks: any = [];
   shownSessions: any = [];
+  days: any = [];
   groups: any = [];
   confDate: string;
   showSearchbar: boolean;
@@ -48,6 +49,10 @@ export class SchedulePage implements OnInit {
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
+
+    this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
+      this.days = data;
+    });
 
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;

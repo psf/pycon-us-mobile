@@ -112,19 +112,36 @@ export class ConferenceData {
 
     });
 
-    console.log(this.data);
     return this.data;
   }
 
+  getDays(
+    excludeTracks: any[] = [],
+    segment = 'all'
+  ) {
+    return this.load().pipe(
+      map((data: any) => {
+        const days = []
+        var index = 0;
+        data.schedule.sort(function(a, b){var x = a.date; var y = b.date; return ((x < y) ? -1 : ((x > y) ? 1 : 0));}).forEach((day: any) => {
+          var dateObj = new Date(day.date);
+          days.push({"index": index.toString(), "date": day.date, "day": dateObj.toLocaleDateString('en-us', {weekday: 'short'})});
+          index += 1;
+        })
+        return days;
+      })
+    );
+  }
+
   getTimeline(
-    dayIndex: number,
+    dayIndex: string,
     queryText = '',
     excludeTracks: any[] = [],
     segment = 'all'
   ) {
     return this.load().pipe(
       map((data: any) => {
-        const day = data.schedule[dayIndex];
+        const day = data.schedule.sort(function(a, b){var x = a.date; var y = b.date; return ((x < y) ? -1 : ((x > y) ? 1 : 0));})[dayIndex];
         day.shownSessions = 0;
 
         queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
