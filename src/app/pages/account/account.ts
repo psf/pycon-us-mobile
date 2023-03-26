@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AlertController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
 
@@ -13,15 +13,18 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   email: string;
+  nickname: string;
 
   constructor(
     public alertCtrl: AlertController,
+    public nav: NavController,
     public router: Router,
     public userData: UserData
   ) { }
 
   ngAfterViewInit() {
     this.getEmail();
+    this.getNickname();
   }
 
   getEmail() {
@@ -30,8 +33,17 @@ export class AccountPage implements AfterViewInit {
     });
   }
 
+  getNickname() {
+    this.userData.getNickname().then((nickname) => {
+      if (nickname === null) {
+        this.router.navigate(['/login'], { replaceUrl: true });
+      }
+      this.nickname = nickname;
+    });
+  }
+
   logout() {
     this.userData.logout();
-    this.router.navigateByUrl('/login');
+    this.nav.navigateRoot('/');
   }
 }

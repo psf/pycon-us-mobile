@@ -8,9 +8,10 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="email" class="ion-padding-top ion-text-center">
+  <div *ngIf="nickname" class="ion-padding-top ion-text-center">
     <img src="https://www.gravatar.com/avatar?d=mp&s=140" alt="avatar">
-    <h2>Signed in as {{email}}</h2>
+    <h2>Signed in as {{nickname}}</h2>
+    <p><code>{{email}}</code></p>
 
     <ion-button (click)="logout()">Logout</ion-button>
 

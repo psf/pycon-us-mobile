@@ -30,9 +30,13 @@ export class UserData {
     }
   }
 
-  login(email: string): Promise<any> {
+  login(data: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setEmail(email);
+      this.setNickname(data.nickname);
+      this.setEmail(data.email);
+      this.setAuthKey(data.key);
+      this.setSecret(data.secret);
+    }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
   }
@@ -46,7 +50,10 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      return this.storage.remove('email');
+      this.storage.remove('email');
+      this.storage.remove('nickname');
+      this.storage.remove('key');
+      this.storage.remove('secret');
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -58,6 +65,36 @@ export class UserData {
 
   getEmail(): Promise<string> {
     return this.storage.get('email').then((value) => {
+      return value;
+    });
+  }
+
+  setNickname(nickname: string): Promise<any> {
+    return this.storage.set('nickname', nickname);
+  }
+
+  getNickname(): Promise<string> {
+    return this.storage.get('nickname').then((value) => {
+      return value;
+    });
+  }
+
+  setAuthKey(key: string): Promise<any> {
+    return this.storage.set('key', key);
+  }
+
+  getAuthKey(): Promise<string> {
+    return this.storage.get('key').then((value) => {
+      return value;
+    });
+  }
+
+  setSecret(secret: string): Promise<any> {
+    return this.storage.set('secret', secret);
+  }
+
+  getSecret(): Promise<string> {
+    return this.storage.get('secret').then((value) => {
       return value;
     });
   }
