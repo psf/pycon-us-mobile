@@ -83,23 +83,18 @@ export class AppComponent implements OnInit {
   }
 
   checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
+    this.userData.isLoggedIn().then(loggedIn => {
       this.updateLoggedInStatus(loggedIn);
-      this.userData.checkHasLeadRetrieval().then(hasLeadRetrieval => {
-        if (hasLeadRetrieval) {
-          this.hasApps = true;
-          this.hasLeadRetrieval = true;
-        } else {
-          this.hasApps = false;
-          this.hasLeadRetrieval = false;
-        }
-      })
     });
   }
 
   updateLoggedInStatus(loggedIn: boolean) {
     setTimeout(() => {
       this.loggedIn = loggedIn;
+      this.userData.checkHasLeadRetrieval().then(hasLeadRetrieval => {
+        this.hasApps = hasLeadRetrieval;
+        this.hasLeadRetrieval = hasLeadRetrieval;
+      });
     }, 300);
   }
 
