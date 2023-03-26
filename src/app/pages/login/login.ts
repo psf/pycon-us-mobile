@@ -62,12 +62,11 @@ export class LoginPage {
         next: data => {
           form.reset();
           this.userData.login(data);
-          console.log('success', data);
           this.router.navigateByUrl('/app/tabs/schedule');
           this.presentSuccess(data);
         },
         error: error => {
-          console.log('fail', error.error?.message);
+          console.log(error);
           if (error.error?.message) {
             this.presentError(error.error.message);
           }
