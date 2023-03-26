@@ -19,11 +19,14 @@ export class TabsPage implements OnInit {
 
   checkHasLeadRetrieval() {
     return this.userData.checkHasLeadRetrieval().then(hasLeadRetrieval => {
-      console.log(hasLeadRetrieval);
-      if (hasLeadRetrieval) {
-        this.hasLeadRetrieval = true;
-      }
+      return this.updateHasLeadRetrieval(hasLeadRetrieval);
     });
+  }
+
+  updateHasLeadRetrieval(hasLeadRetrieval: boolean) {
+    setTimeout(() => {
+      this.hasLeadRetrieval = hasLeadRetrieval;
+    }, 200)
   }
 
   listenForLoginEvents() {
