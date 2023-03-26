@@ -27,7 +27,6 @@
     "@angular/service-worker": "^13.3.0",
     "@awesome-cordova-plugins/core": "6.3.0",
     "@awesome-cordova-plugins/in-app-browser": "6.3.0",
-    "@capacitor-community/barcode-scanner": "^3.0.3",
     "@capacitor/android": "4.6.3",
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "4.6.3",

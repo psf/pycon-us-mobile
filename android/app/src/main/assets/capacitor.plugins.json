@@ -1,9 +1,5 @@
 [
 	{
-		"pkg": "@capacitor-community/barcode-scanner",
-		"classpath": "com.getcapacitor.community.barcodescanner.BarcodeScanner"
-	},
-	{
 		"pkg": "@capacitor/app",
 		"classpath": "com.capacitorjs.plugins.app.AppPlugin"
 	},
@@ -26,5 +22,9 @@
 	{
 		"pkg": "@capacitor/status-bar",
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
+	},
+	{
+		"pkg": "@capacitor-community/barcode-scanner",
+		"classpath": "com.getcapacitor.community.barcodescanner.BarcodeScanner"
 	}
 ]
