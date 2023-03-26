@@ -9,22 +9,23 @@
 </ion-header>
 
 <ion-content>
+
   <div class="login-logo">
-    <img src="assets/img/appicon.svg" alt="Ionic logo">
+    <img src="assets/img/appicon.svg" alt="PyCon US 2023 Logo">
   </div>
 
   <form #loginForm="ngForm" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label position="stacked" color="primary">Username</ion-label>
-        <ion-input [(ngModel)]="login.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off"
+        <ion-label position="stacked" color="primary">Email address</ion-label>
+        <ion-input [(ngModel)]="login.email" name="email" type="text" #email="ngModel" spellcheck="false" autocapitalize="off"
           required>
         </ion-input>
       </ion-item>
 
       <ion-text color="danger">
-        <p [hidden]="username.valid || submitted === false" class="ion-padding-start">
-          Username is required
+        <p [hidden]="email.valid || submitted === false" class="ion-padding-start">
+          Email address is required
         </p>
       </ion-text>
 
@@ -45,10 +46,13 @@
       <ion-col>
         <ion-button (click)="onLogin(loginForm)" type="submit" expand="block">Login</ion-button>
       </ion-col>
-      <ion-col>
-        <ion-button (click)="onSignup()" color="light" expand="block">Signup</ion-button>
-      </ion-col>
     </ion-row>
   </form>
+
+  <ion-card>
+    <ion-card-content>
+      Log in using the email address and password for your us.pycon.org/2023 account.
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
