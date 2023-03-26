@@ -38,9 +38,9 @@ export class LoginPage {
     toast.present();
   }
 
-  async presentSuccess(nickname) {
+  async presentSuccess(data) {
     const toast = await this.toastController.create({
-      message: 'Success! Welcome, ' + nickname + '.',
+      message: 'Success! Welcome, ' + data.nickname + '.',
       duration: 1000,
       position: 'top',
       icon: 'check'
@@ -64,7 +64,7 @@ export class LoginPage {
           this.userData.login(data);
           console.log('success', data);
           this.router.navigateByUrl('/app/tabs/schedule');
-          this.presentSuccess('Attendee');
+          this.presentSuccess(data);
         },
         error: error => {
           console.log('fail', error.error?.message);

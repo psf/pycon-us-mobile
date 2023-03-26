@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
       icon: 'people'
     }
   ];
+  nickname = null;
   loggedIn = false;
   dark = false;
 
@@ -94,6 +95,9 @@ export class AppComponent implements OnInit {
       this.userData.checkHasLeadRetrieval().then(hasLeadRetrieval => {
         this.hasApps = hasLeadRetrieval;
         this.hasLeadRetrieval = hasLeadRetrieval;
+      });
+      this.userData.getNickname().then(nickname => {
+        this.nickname = nickname;
       });
     }, 300);
   }

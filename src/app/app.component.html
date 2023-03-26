@@ -8,6 +8,10 @@
             PyCon US 2023
           </ion-list-header>
 
+          <ion-item *ngIf="loggedIn">
+            <ion-label>Hello, {{nickname}}</ion-label>
+          </ion-item>
+
           <ion-list-header>
             Information
           </ion-list-header>

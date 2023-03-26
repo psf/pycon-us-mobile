@@ -36,6 +36,7 @@ export class UserData {
       this.setEmail(data.email);
       this.setAuthKey(data.key);
       this.setSecret(data.secret);
+    }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
   }
@@ -49,7 +50,10 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      return this.storage.remove('email');
+      this.storage.remove('email');
+      this.storage.remove('nickname');
+      this.storage.remove('key');
+      this.storage.remove('secret');
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
