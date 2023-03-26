@@ -13,6 +13,7 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage implements AfterViewInit {
   email: string;
+  nickname: string;
 
   constructor(
     public alertCtrl: AlertController,
@@ -22,11 +23,18 @@ export class AccountPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getEmail();
+    this.getNickname();
   }
 
   getEmail() {
     this.userData.getEmail().then((email) => {
       this.email = email;
+    });
+  }
+
+  getNickname() {
+    this.userData.getNickname().then((nickname) => {
+      this.nickname = nickname;
     });
   }
 
