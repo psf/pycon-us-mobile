@@ -28,15 +28,13 @@ export class AppComponent implements OnInit {
       title: 'Speakers',
       url: '/app/tabs/speakers',
       icon: 'people'
-    },
-    {
-      title: 'Lead Scanner',
-      url: '/app/tabs/lead-retrieval',
-      icon: 'qr-code'
     }
   ];
   loggedIn = false;
   dark = false;
+
+  hasApps = false;
+  hasLeadRetrieval = false;
 
   constructor(
     private menu: MenuController,
@@ -86,7 +84,16 @@ export class AppComponent implements OnInit {
 
   checkLoginStatus() {
     return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
+      this.updateLoggedInStatus(loggedIn);
+      this.userData.checkHasLeadRetrieval().then(hasLeadRetrieval => {
+        if (hasLeadRetrieval) {
+          this.hasApps = true;
+          this.hasLeadRetrieval = true;
+        } else {
+          this.hasApps = false;
+          this.hasLeadRetrieval = false;
+        }
+      })
     });
   }
 
@@ -112,6 +119,8 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.userData.logout().then(() => {
+      this.hasApps = false;
+      this.hasLeadRetrieval = false;
       return this.router.navigateByUrl('/app/tabs/schedule');
     });
   }

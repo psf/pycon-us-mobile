@@ -7,6 +7,10 @@
           <ion-list-header>
             PyCon US 2023
           </ion-list-header>
+
+          <ion-list-header>
+            Information
+          </ion-list-header>
           <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
               <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
@@ -16,6 +20,22 @@
             </ion-item>
 
           </ion-menu-toggle>
+        </ion-list>
+
+        <ion-list *ngIf="hasApps" lines="none">
+          <ion-list-header>
+            Apps
+          </ion-list-header>
+
+          <ion-menu-toggle *ngIf="hasLeadRetrieval" autoHide="false">
+            <ion-item routerLink="/app/tabs/lead-retrieval" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="qr-code"></ion-icon>
+              <ion-label>
+                Lead Scanner
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
         </ion-list>
 
         <ion-list *ngIf="loggedIn" lines="none">
@@ -32,14 +52,6 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-item>
-            <ion-icon slot="start" name="moon-outline"></ion-icon>
-            <ion-label>
-              Dark Mode
-            </ion-label>
-            <ion-toggle [(ngModel)]="dark"></ion-toggle>
-          </ion-item>
-
           <ion-menu-toggle autoHide="false">
             <ion-item button (click)="logout()" detail="false">
               <ion-icon slot="start" name="log-out"></ion-icon>
@@ -53,7 +65,7 @@
 
         <ion-list *ngIf="!loggedIn" lines="none">
           <ion-list-header>
-            Settings
+            Account
           </ion-list-header>
 
           <ion-menu-toggle autoHide="false">
@@ -64,6 +76,13 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+
+        </ion-list>
+
+        <ion-list lines="none">
+          <ion-list-header>
+            Settings
+          </ion-list-header>
 
           <ion-item>
             <ion-icon slot="start" name="moon-outline"></ion-icon>

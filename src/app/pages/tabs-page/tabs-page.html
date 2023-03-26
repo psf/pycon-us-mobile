@@ -11,7 +11,7 @@
       <ion-label>Speakers</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="lead-retrieval">
+    <ion-tab-button *ngIf="hasLeadRetrieval" tab="lead-retrieval">
       <ion-icon name="qr-code"></ion-icon>
       <ion-label>Scanner</ion-label>
     </ion-tab-button>

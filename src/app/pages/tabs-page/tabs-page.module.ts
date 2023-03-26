@@ -28,4 +28,4 @@ import { SpeakerListModule } from '../speaker-list/speaker-list.module';
     TabsPage,
   ]
 })
-export class TabsModule { }
+export class TabsModule {}

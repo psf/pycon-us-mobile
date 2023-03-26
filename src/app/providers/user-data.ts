@@ -9,6 +9,7 @@ export class UserData {
   favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
+  HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
 
   constructor(
     public storage: Storage
@@ -70,6 +71,12 @@ export class UserData {
   checkHasSeenTutorial(): Promise<string> {
     return this.storage.get(this.HAS_SEEN_TUTORIAL).then((value) => {
       return value;
+    });
+  }
+
+  checkHasLeadRetrieval(): Promise<boolean> {
+    return this.storage.get(this.HAS_LEAD_RETRIEVAL).then((value) => {
+      return this.isLoggedIn();
     });
   }
 }
