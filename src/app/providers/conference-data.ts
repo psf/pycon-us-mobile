@@ -236,12 +236,4 @@ export class ConferenceData {
       })
     );
   }
-
-  getMap() {
-    return this.load().pipe(
-      map((data: any) => {
-        return data.map;
-      })
-    );
-  }
 }
