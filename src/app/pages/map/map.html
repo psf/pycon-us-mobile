@@ -13,10 +13,10 @@
   </div>
 </ion-content>
 
-<ion-footer [translucent]="true" [style.visibility]="footer_visibility">
+<ion-footer>
   <ion-toolbar>
     <div class="footer">
-      <ion-button (click)="stopScan()">Stop Scanner</ion-button>
+      <ion-button (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">Stop Scanner</ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

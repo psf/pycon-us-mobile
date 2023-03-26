@@ -13,7 +13,7 @@ import { ToastController } from '@ionic/angular';
 export class MapPage implements OnDestroy {
 
   content_visibility = 'show';
-  footer_visibility = 'hidden';
+  scan_stop_button_visibility = 'hidden';
 
   constructor(
     public confData: ConferenceData,
@@ -53,7 +53,7 @@ export class MapPage implements OnDestroy {
     }
     BarcodeScanner.hideBackground();
     this.content_visibility = 'hidden';
-    this.footer_visibility = '';
+    this.scan_stop_button_visibility = '';
     BarcodeScanner.startScanning({
       targetedFormats: [SupportedFormat.QR_CODE],
       cameraDirection: 'back'
@@ -62,7 +62,7 @@ export class MapPage implements OnDestroy {
 
   stopScan = async () => {
     await BarcodeScanner.stopScan()
-    this.footer_visibility = 'hidden';
+    this.scan_stop_button_visibility = 'hidden';
     this.content_visibility = '';
   }
 
