@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 
 
 import { UserData } from '../../providers/user-data';
@@ -17,7 +17,7 @@ import { UserOptions } from '../../interfaces/user-options';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
-  authUrl = 'https://2126d91c1b21.ngrok.app/2023/api/authenticate/';
+  authUrl = 'https://d0972703210e.ngrok.app/2023/api/authenticate/';
   login: UserOptions = { email: '', password: '' };
   submitted = false;
 
@@ -25,7 +25,8 @@ export class LoginPage {
     public userData: UserData,
     public router: Router,
     private http: HttpClient,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private nav: NavController
   ) { }
 
   async presentError(message) {
@@ -62,7 +63,7 @@ export class LoginPage {
         next: data => {
           form.reset();
           this.userData.login(data);
-          this.router.navigateByUrl('/app/tabs/schedule');
+          this.nav.navigateRoot('/');
           this.presentSuccess(data);
         },
         error: error => {
