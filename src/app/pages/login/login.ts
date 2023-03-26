@@ -17,7 +17,7 @@ import { UserOptions } from '../../interfaces/user-options';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
-  authUrl = 'https://d0972703210e.ngrok.app/2023/api/authenticate/';
+  authUrl = 'https://us.pycon.org/2023/api/authenticate/';
   login: UserOptions = { email: '', password: '' };
   submitted = false;
 
