@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'ionic.conference.app',
-  appName: 'ionic-conference-app',
+  appId: 'org.pycon.us.2023',
+  appName: 'pycon-us-2023-onsite-app',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {

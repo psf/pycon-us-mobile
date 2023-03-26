@@ -22,23 +22,16 @@ export class SessionDetailPage {
 
   ionViewWillEnter() {
     this.dataProvider.load().subscribe((data: any) => {
-      if (data && data.schedule && data.schedule[0] && data.schedule[0].groups) {
+      if (data.sessions) {
         const sessionId = this.route.snapshot.paramMap.get('sessionId');
-        for (const group of data.schedule[0].groups) {
-          if (group && group.sessions) {
-            for (const session of group.sessions) {
-              if (session && session.id === sessionId) {
-                this.session = session;
+        const foundSession = data.sessions.find(
+          (s: any) => String(s.id) === String(sessionId)
+        )
+        this.session = foundSession
 
-                this.isFavorite = this.userProvider.hasFavorite(
-                  this.session.name
-                );
-
-                break;
-              }
-            }
-          }
-        }
+        this.isFavorite = this.userProvider.hasFavorite(
+          String(this.session.id)
+        );
       }
     });
   }
@@ -52,11 +45,11 @@ export class SessionDetailPage {
   }
 
   toggleFavorite() {
-    if (this.userProvider.hasFavorite(this.session.name)) {
-      this.userProvider.removeFavorite(this.session.name);
+    if (this.userProvider.hasFavorite(String(this.session.id))) {
+      this.userProvider.removeFavorite(String(this.session.id));
       this.isFavorite = false;
     } else {
-      this.userProvider.addFavorite(this.session.name);
+      this.userProvider.addFavorite(String(this.session.id));
       this.isFavorite = true;
     }
   }
