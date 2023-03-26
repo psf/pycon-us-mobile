@@ -9,13 +9,16 @@
 
   <div class="speaker-background">
     <img [src]="speaker?.profilePic" [alt]="speaker?.name">
-    <h2>{{speaker?.name}}</h2>
   </div>
 
-  <div class="ion-padding speaker-detail" [innerHtml]="speaker?.about">
+  <div class="ion-padding-horizontal speaker-name">
+    <h1>{{speaker?.name}}</h1>
   </div>
 
-  <div class="ion-padding speaker-presentations">
+  <div class="ion-padding-horizontal speaker-detail" [innerHtml]="speaker?.about">
+  </div>
+
+  <div class="ion-padding-horizontal speaker-presentations">
     <h2>Presentations</h2>
     <ion-row>
       <ion-col *ngFor="let session of speaker?.sessions">
