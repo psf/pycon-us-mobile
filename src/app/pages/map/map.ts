@@ -48,6 +48,15 @@ export class MapPage implements OnInit, OnDestroy {
     this.scan_presentation = allScans;
   }
 
+  syncAllPending = async () => {
+    this.storage.forEach((value, key, index) => {
+      if (key.startsWith("pending-scan-")) {
+        this.pycon.syncScan(value.scanData.split(':')[0]).then((resp) => {console.log(resp)});
+      }
+    });
+    setTimeout(this.syncAllPending, 60000);
+  }
+
   handleRefresh = (event) => {
     this.storage.forEach((value, key, index) => {
       if (key.startsWith("pending-scan-")) {
@@ -74,9 +83,10 @@ export class MapPage implements OnInit, OnDestroy {
 
   handleScan = async (result: ScanResult) => {
     if (result.hasContent) {
-      this.pycon.storeScan(result.content.split(':')[0], result.content);
-      console.log(result.content); // log the raw scanned content
-      setTimeout(BarcodeScanner.resumeScanning, 1500);
+      this.pycon.storeScan(result.content.split(':')[0], result.content).then(() => {
+        console.log(result.content); // log the raw scanned content
+        setTimeout(BarcodeScanner.resumeScanning, 1500);
+      });
     }
   }
 
@@ -109,6 +119,7 @@ export class MapPage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.refresh_presentation();
+    setTimeout(this.syncAllPending, 60000);
   }
 
   ngOnDestroy(): void {

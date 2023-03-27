@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { createHash } from 'sha1-uint8array';
+import { of } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
 
 import { UserData } from './user-data';
 
@@ -71,6 +73,10 @@ export class PyConAPI {
     this.http.get(
       this.base + '/2023/api/lead-retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
       {headers: headers}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to capture lead, ' + error)
+        throw error;
+      })
     ).subscribe({
       next: data => {
         console.log(data['data']);
