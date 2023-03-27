@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, timeout, catchError } from 'rxjs/operators';
+import { Storage } from '@ionic/storage';
+import { ToastController } from '@ionic/angular';
 
 import { UserData } from './user-data';
 
@@ -11,7 +13,22 @@ import { UserData } from './user-data';
 export class ConferenceData {
   data: any;
 
-  constructor(public http: HttpClient, public user: UserData) {}
+  constructor(
+    public http: HttpClient,
+    public user: UserData,
+    public storage: Storage,
+    private toastController: ToastController,
+  ) {}
+
+  async presentMessage(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      icon: 'exclamation'
+    });
+    toast.present();
+  }
 
   load(): any {
     if (this.data) {
@@ -19,11 +36,24 @@ export class ConferenceData {
     } else {
       return this.http
         .get('https://us.pycon.org/2023/schedule/conference.json')
+        .pipe(timeout(10000), catchError(error => {
+          console.log('Unable to load latest from remote, ' + error)
+          return this.storage.get('schedule-cache').then((data) => {
+            if (data !== null) {
+              return of(data);
+            }
+            throw new Error('No offline cache available!');
+          }).catch((error) => {
+            this.presentMessage('Unable to load schedule, no offline cache available');
+          });
+        }))
         .pipe(map(this.processData, this));
     }
   }
 
   processData(data: any) {
+    this.storage.set('schedule-cache', this.data);
+
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
     this.data = {
