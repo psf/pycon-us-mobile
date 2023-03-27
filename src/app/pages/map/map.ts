@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { BarcodeScanner, SupportedFormat, CameraDirection, ScanResult } from '@capacitor-community/barcode-scanner';
 import { ToastController } from '@ionic/angular';
 
+import { PyConAPI } from '../../providers/pycon-api';
+
 
 @Component({
   selector: 'page-map',
@@ -18,6 +20,7 @@ export class MapPage implements OnDestroy {
   constructor(
     public confData: ConferenceData,
     public platform: Platform,
+    private pycon: PyConAPI,
     private toastController: ToastController) {}
 
   checkPermission = async () => {
@@ -41,6 +44,7 @@ export class MapPage implements OnDestroy {
         icon: 'checkmark-circle-outline'
       });
       toast.present();
+      this.pycon.storeScan(result.content.split(':')[0], result.content);
       console.log(result.content); // log the raw scanned content
       setTimeout(BarcodeScanner.resumeScanning, 1000);
     }

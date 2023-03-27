@@ -2,6 +2,5 @@
 	"appId": "org.pycon.us",
 	"appName": "PyCon US 2023",
 	"webDir": "www",
-	"bundledWebRuntime": false,
-	"android": {}
+	"bundledWebRuntime": false
 }
