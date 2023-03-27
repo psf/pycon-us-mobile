@@ -61,7 +61,6 @@ export class LoginPage {
           }
       ).subscribe({
         next: data => {
-          form.reset();
           this.userData.login(data);
           this.nav.navigateRoot('/');
           this.presentSuccess(data);
