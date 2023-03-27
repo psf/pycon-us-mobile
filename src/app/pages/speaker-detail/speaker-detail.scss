@@ -32,15 +32,30 @@ ion-toolbar ion-menu-button {
   flex-direction: column;
 
   height: calc(250px + var(--ion-safe-area-top));
-
-  background: center / cover url(/assets/img/speaker-background.png) no-repeat;
+  background: radial-gradient(circle at center,#5A9377,#0D392A);
+  z-index: -3;
 }
 
-.speaker-background img {
-  width: 30%;
-  max-width: 15em;
+img.rounded {
+  object-fit: cover;
   border-radius: 50%;
-  margin-top: calc(-1 * var(--ion-safe-area-top));
+  aspect-ratio: 1;
+}
+
+.speaker-image {
+  position: absolute;
+  width: 45%;
+  max-width: 12.5em;
+  margin-top: calc(-.5 * var(--ion-safe-area-top));
+  z-index: -1;
+}
+
+.speaker-backbackground {
+  position: absolute;
+  width: 57%;
+  max-width: 15em;
+  margin-top: calc(-.5 * var(--ion-safe-area-top));
+  z-index: -2;
 }
 
 .speaker-background h2 {

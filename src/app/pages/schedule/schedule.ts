@@ -39,9 +39,17 @@ export class SchedulePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.updateSchedule();
+    this.reloadSchedule();
 
     this.ios = this.config.get('mode') === 'ios';
+  }
+
+  async handleRefresh(event) {
+    this.reloadSchedule().then(() => {
+      setTimeout(() => {
+        event.target.complete();
+      }, 250);
+    });
   }
 
   updateSchedule() {
@@ -57,6 +65,31 @@ export class SchedulePage implements OnInit {
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
+    });
+  }
+
+  async reloadSchedule() {
+    console.log('fetching schedule');
+    this.loadingCtrl.create({
+      message: 'Fetching latest schedule...',
+    }).then((loader) => {
+      loader.present();
+      // Close any open sliding items when the schedule updates
+      if (this.scheduleList) {
+        this.scheduleList.closeSlidingItems();
+      }
+
+      this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
+        this.days = data;
+      });
+
+      this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+        this.shownSessions = data.shownSessions;
+        this.groups = data.groups;
+      });
+      return loader
+    }).then((loader) => {
+      setTimeout(() => {loader.dismiss()}, 300);
     });
   }
 
