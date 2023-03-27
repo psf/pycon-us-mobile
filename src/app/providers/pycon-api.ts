@@ -47,6 +47,10 @@ export class PyConAPI {
       console.log('Unable to sync missing ' + accessCode);
     }
 
+    const scanData = pending.scanData.split(":");
+    const _accessCode = scanData[0];
+    const _validator = scanData[scanData.length - 1];
+
     const apiKey = await this.userData.getAuthKey().then((value) => {return value});
     const secret = await this.userData.getSecret().then((value) => {return value});
 
@@ -55,7 +59,7 @@ export class PyConAPI {
       secret,
       timestamp,
       'GET',
-      '/2023/api/lead-retrieval/capture/?' + 'attendee_access_code=' + accessCode,
+      '/2023/api/lead-retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
       '',
     ].join("")
 
@@ -66,7 +70,7 @@ export class PyConAPI {
     }
 
     this.http.get(
-      this.base + '/2023/api/lead-retrieval/capture/?attendee_access_code=' + accessCode,
+      this.base + '/2023/api/lead-retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
       {headers: headers}
     ).subscribe({
       next: data => {
@@ -97,9 +101,10 @@ export class PyConAPI {
       this.syncScan(accessCode);
       return;
     } else {
+      const scanDate = new Date();
       return this.storage.set(
         'pending-scan-' + accessCode,
-        {scanData: scanData, scannedAt: Date()}
+        {scanData: scanData, scannedAt: scanDate.toISOString()}
       ).then(() => {
         console.log('Scanned ' + accessCode);
         this.syncScan(accessCode);
