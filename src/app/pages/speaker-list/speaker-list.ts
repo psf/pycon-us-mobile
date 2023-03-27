@@ -8,12 +8,25 @@ import { ConferenceData } from '../../providers/conference-data';
 })
 export class SpeakerListPage {
   speakers: any[] = [];
+  speakerQueryText = '';
 
   constructor(public confData: ConferenceData) {}
 
-  ionViewDidEnter() {
-    this.confData.getSpeakers().subscribe((speakers: any[]) => {
+  updateSpeakers() {
+    console.log(this.speakerQueryText);
+    this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
       this.speakers = speakers;
     });
+  }
+
+  handleRefresh(event) {
+    this.updateSpeakers();
+    setTimeout(() => {
+      event.target.complete();
+    }, 250);
+  }
+
+  ionViewDidEnter() {
+    this.updateSpeakers();
   }
 }

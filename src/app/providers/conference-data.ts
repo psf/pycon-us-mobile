@@ -247,9 +247,17 @@ export class ConferenceData {
     session.hide = !(matchesQueryText && matchesTracks && matchesSegment);
   }
 
-  getSpeakers() {
+  getSpeakers(queryText: string) {
+    queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+    const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
     return this.load().pipe(
       map((data: any) => {
+        data.speakers.forEach((speaker: any) => {
+          this.filterSpeaker(speaker, queryWords);
+          if (!speaker.hide) {
+            console.log(speaker);
+          }
+        });
         return data.speakers.sort((a: any, b: any) => {
           const aName = a.name.split(' ').pop();
           const bName = b.name.split(' ').pop();
@@ -257,6 +265,27 @@ export class ConferenceData {
         });
       })
     );
+  }
+
+  filterSpeaker(
+    speaker: any,
+    queryWords: string[],
+  ) {
+    let matchesQueryText = false;
+    if (queryWords.length) {
+      // of any query word is in the speaker name than it passes the query test
+      queryWords.forEach((queryWord: string) => {
+        if (speaker.name.toLowerCase().indexOf(queryWord) > -1) {
+          matchesQueryText = true;
+        }
+      });
+    } else {
+      // if there are no query words then this session passes the query test
+      matchesQueryText = true;
+    }
+
+    // all tests must be true if it should not be hidden
+    speaker.hide = !(matchesQueryText)
   }
 
   getTracks() {
