@@ -6,10 +6,32 @@
   height: 100%;
 }
 
-.footer {
+.footer-buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   height: 100%;
+}
+
+.footer-button {
+  position: absolute;
+}
+.footer-toolbar {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+#chips {
+  position: absolute;
+  left: .5em;
+  bottom: 4em;
+  z-index: 10;
+}
+
+#chips ion-chip {
+  //--background: rgba(255, 255, 255, 0.75);
+  display: block;
+  margin: .5em;
+  padding: .7em;
 }

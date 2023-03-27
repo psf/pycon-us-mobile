@@ -15,6 +15,7 @@ import { PyConAPI } from '../../providers/pycon-api';
 export class MapPage implements OnDestroy {
 
   content_visibility = 'show';
+  scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
 
   constructor(
@@ -37,13 +38,6 @@ export class MapPage implements OnDestroy {
 
   handleScan = async (result: ScanResult) => {
     if (result.hasContent) {
-      const toast = await this.toastController.create({
-        message: 'Scan Successful for ' + result.content,
-        duration: 900,
-        position: 'top',
-        icon: 'checkmark-circle-outline'
-      });
-      toast.present();
       this.pycon.storeScan(result.content.split(':')[0], result.content);
       console.log(result.content); // log the raw scanned content
       setTimeout(BarcodeScanner.resumeScanning, 1000);
@@ -57,6 +51,7 @@ export class MapPage implements OnDestroy {
     }
     BarcodeScanner.hideBackground();
     this.content_visibility = 'hidden';
+    this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
     BarcodeScanner.startScanning({
       targetedFormats: [SupportedFormat.QR_CODE],
@@ -67,6 +62,7 @@ export class MapPage implements OnDestroy {
   stopScan = async () => {
     await BarcodeScanner.stopScan()
     this.scan_stop_button_visibility = 'hidden';
+    this.scan_start_button_visibility = '';
     this.content_visibility = '';
   }
 

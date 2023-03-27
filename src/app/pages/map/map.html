@@ -9,14 +9,18 @@
 
 <ion-content [style.visibility]="content_visibility">
   <div class="container">
-    <ion-button (click)="startScan()">Start Scanner!</ion-button>
   </div>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <div class="footer">
-      <ion-button (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">Stop Scanner</ion-button>
-    </div>
+  <ion-toolbar class="footer-toolbar">
+    <ion-buttons class="footer-buttons">
+      <ion-button fill="solid" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
+        Start Scanner!
+      </ion-button>
+      <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">
+        Stop Scanner
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-footer>

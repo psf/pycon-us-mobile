@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { createHash } from 'sha1-uint8array';
-//import { timeout } from 'rxjs/operators';
 
 import { UserData } from './user-data';
 
@@ -35,6 +34,14 @@ export class PyConAPI {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
     });
+    const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
+      return value
+    });
+    console.log(synced);
+
+    if (synced !== null) {
+      this.presentSuccess(synced);
+    }
 
     if (pending === null) {
       console.log('Unable to sync missing ' + accessCode);
@@ -52,7 +59,6 @@ export class PyConAPI {
       '',
     ].join("")
 
-    console.log(baseString);
     const headers = {
       'X-API-Key': apiKey,
       'X-API-Signature': createHash().update(baseString).digest("hex"),
@@ -64,9 +70,9 @@ export class PyConAPI {
       {headers: headers}
     ).subscribe({
       next: data => {
-        console.log(data);
-        this.storage.set('synced-scan-' + accessCode, pending).then((value) => {
-          this.presentSuccess(data);
+        console.log(data['data']);
+        this.storage.set('synced-scan-' + accessCode, {...data, ...pending}).then((value) => {
+          this.presentSuccess(data['data']);
           this.storage.remove('pending-scan-' + accessCode).then((value) => {});
         });
       },
@@ -82,9 +88,9 @@ export class PyConAPI {
     const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
       return value
     });
-    console.log(pending, synced);
     if (synced != null) {
       console.log('Already captured ' + accessCode)
+      this.presentSuccess(synced.data);
       return;
     } else if (pending != null) {
       console.log('Already scanned ' + accessCode)
