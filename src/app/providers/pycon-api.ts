@@ -20,9 +20,9 @@ export class PyConAPI {
     private storage: Storage
   ) { }
 
-  async presentSuccess(data) {
+  async presentSuccess(message) {
     const toast = await this.toastController.create({
-      message: 'Captured lead for ' + data.first_name+ '.',
+      message: message,
       duration: 1000,
       position: 'top',
       icon: 'check'
@@ -37,10 +37,9 @@ export class PyConAPI {
     const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
       return value
     });
-    console.log(synced);
 
     if (synced !== null) {
-      this.presentSuccess(synced);
+      this.presentSuccess('Lead already captured for ' + synced.data.first_name);
     }
 
     if (pending === null) {
@@ -76,7 +75,7 @@ export class PyConAPI {
       next: data => {
         console.log(data['data']);
         this.storage.set('synced-scan-' + accessCode, {...data, ...pending}).then((value) => {
-          this.presentSuccess(data['data']);
+          this.presentSuccess('Successfully captured lead for ' + data['data'].first_name);
           this.storage.remove('pending-scan-' + accessCode).then((value) => {});
         });
       },
@@ -94,10 +93,10 @@ export class PyConAPI {
     });
     if (synced != null) {
       console.log('Already captured ' + accessCode)
-      this.presentSuccess(synced.data);
+      this.presentSuccess('Already have captured lead for ' + synced.data.first_name);
       return;
     } else if (pending != null) {
-      console.log('Already scanned ' + accessCode)
+      this.presentSuccess('Already have scan awaiting capture for ' + accessCode)
       this.syncScan(accessCode);
       return;
     } else {
@@ -106,6 +105,7 @@ export class PyConAPI {
         'pending-scan-' + accessCode,
         {scanData: scanData, scannedAt: scanDate.toISOString()}
       ).then(() => {
+        this.presentSuccess('Successfully stored scan for ' + accessCode);
         console.log('Scanned ' + accessCode);
         this.syncScan(accessCode);
       }).catch((error) => {

@@ -8,8 +8,32 @@
 </ion-header>
 
 <ion-content [style.visibility]="content_visibility">
-  <div class="container">
-  </div>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Recent Scans</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-text color="medium" class="header-info">
+        This list displays the recent scans on this device only.<br>
+        View all your scans and the captured data on your dashboard at us.pycon.org.<br>
+      </ion-text>
+    </ion-item>
+    <ion-item *ngFor="let scan of sortScans()">
+      <ion-label *ngIf="scan.status == 'captured'">
+        <h1><ion-icon color="success" name="id-card-outline"></ion-icon> {{scan.first_name}}</h1>
+        <p>Scanned {{scan.scanned_at|dateAgo}}</p>
+        <p>Captured {{scan.scanned_at|dateAgo}}</p>
+      </ion-label>
+      <ion-label *ngIf="scan.status == 'pending'">
+        <h1><ion-icon name="qr-code"></ion-icon> {{scan.access_code}}</h1>
+        <p>Scanned {{scan.scanned_at|dateAgo}}</p>
+        <p>Pending capture when online...</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
 
 <ion-footer>
