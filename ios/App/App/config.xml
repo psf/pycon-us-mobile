@@ -7,5 +7,9 @@
     <param name="onload" value="true"/>
   </feature>
 
+  <feature name="IonicCordovaCommon">
+    <param name="ios-package" value="IonicCordovaCommon" onload="true"/>
+  </feature>
+
   
 </widget>
