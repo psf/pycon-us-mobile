@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
+import { timeout, catchError } from 'rxjs/operators';
 
 
 import { UserData } from '../../providers/user-data';
@@ -59,9 +60,12 @@ export class LoginPage {
             email: this.login.email,
             password: this.login.password
           }
+      ).pipe(timeout(3000), catchError(error => {
+          console.log('Login Failed, ' + error)
+          throw error;
+        })
       ).subscribe({
         next: data => {
-          form.reset();
           this.userData.login(data);
           this.nav.navigateRoot('/');
           this.presentSuccess(data);
