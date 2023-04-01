@@ -87,10 +87,12 @@
 
           <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/app/tabs/about" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+              <ion-icon slot="start" name="information-circle-outline">
+              </ion-icon>
               <ion-label>
                 About
               </ion-label>
+              <ion-badge *ngIf="updateAvailable?.available">Live Update Available</ion-badge>
             </ion-item>
           </ion-menu-toggle>
 

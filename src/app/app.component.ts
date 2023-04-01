@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
-
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
+
+import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
 import { Storage } from '@ionic/storage';
 
@@ -34,6 +34,9 @@ export class AppComponent implements OnInit {
   loggedIn = false;
   dark = false;
 
+  deploy: Deploy;
+  updateAvailable: any = null;
+
   hasApps = false;
   hasLeadRetrieval = false;
 
@@ -43,7 +46,6 @@ export class AppComponent implements OnInit {
     private router: Router,
     private storage: Storage,
     private userData: UserData,
-    private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
   ) {
     this.initializeApp();
@@ -52,25 +54,10 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.checkLoginStatus();
     this.listenForLoginEvents();
-
-    this.swUpdate.available.subscribe(async res => {
-      const toast = await this.toastCtrl.create({
-        message: 'Update available!',
-        position: 'bottom',
-        buttons: [
-          {
-            role: 'cancel',
-            text: 'Reload'
-          }
-        ]
-      });
-
-      await toast.present();
-
-      toast
-        .onDidDismiss()
-        .then(() => this.swUpdate.activateUpdate())
-        .then(() => window.location.reload());
+    this.deploy = new Deploy();
+    this.deploy.configure({});
+    this.deploy.checkForUpdate().then((response) => {
+      this.updateAvailable = response;
     });
   }
 
