@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
+import { Config } from '@ionic/angular';
 
 @Component({
   selector: 'page-speaker-list',
@@ -9,8 +10,13 @@ import { ConferenceData } from '../../providers/conference-data';
 export class SpeakerListPage {
   speakers: any[] = [];
   speakerQueryText = '';
+  ios: boolean;
+  showSearchbar: boolean;
 
-  constructor(public confData: ConferenceData) {}
+  constructor(
+    public confData: ConferenceData,
+    public config: Config,
+  ) {}
 
   updateSpeakers() {
     console.log(this.speakerQueryText);
@@ -27,6 +33,7 @@ export class SpeakerListPage {
   }
 
   ionViewDidEnter() {
+    this.ios = this.config.get('mode') === 'ios';
     this.updateSpeakers();
   }
 }

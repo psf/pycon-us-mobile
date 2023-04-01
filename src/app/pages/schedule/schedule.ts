@@ -16,6 +16,7 @@ export class SchedulePage implements OnInit {
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
 
   ios: boolean;
+  hasData: boolean = false;
   dayIndex = "0";
   queryText = '';
   segment = 'all';
@@ -72,6 +73,7 @@ export class SchedulePage implements OnInit {
     console.log('fetching schedule');
     this.loadingCtrl.create({
       message: 'Fetching latest schedule...',
+      duration: 10000,
     }).then((loader) => {
       loader.present();
       // Close any open sliding items when the schedule updates
@@ -86,10 +88,9 @@ export class SchedulePage implements OnInit {
       this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
         this.shownSessions = data.shownSessions;
         this.groups = data.groups;
+        this.hasData = true;
+        loader.dismiss();
       });
-      return loader
-    }).then((loader) => {
-      setTimeout(() => {loader.dismiss()}, 300);
     });
   }
 

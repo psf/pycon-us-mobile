@@ -1,9 +1,29 @@
-<ion-header>
+<ion-header translucent="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="!showSearchbar" slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Speakers</ion-title>
+    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updateSpeakers()">
+      <ion-segment-button value="all">
+        All
+      </ion-segment-button>
+      <ion-segment-button value="favorites">
+        Favorites
+      </ion-segment-button>
+    </ion-segment>
+    <ion-title *ngIf="!ios && !showSearchbar">Speakers</ion-title>
+    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="speakerQueryText" (ionChange)="updateSpeakers()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
+        <span *ngIf="ios">Filter</span>
+        <span *ngIf="!ios">
+          <ion-icon slot="icon-only" name="options"></ion-icon>
+        </span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -23,9 +43,9 @@
 
   </ion-header>
 
-  <ion-grid fixed>
+  <ion-grid>
     <ion-row>
-      <ion-col size="12" size-md="6" *ngFor="let speaker of speakers" [hidden]="speaker.hide">
+      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let speaker of speakers" [hidden]="speaker.hide">
         <ion-card class="speaker-card">
           <ion-card-header>
             <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
