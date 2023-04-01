@@ -254,9 +254,6 @@ export class ConferenceData {
       map((data: any) => {
         data.speakers.forEach((speaker: any) => {
           this.filterSpeaker(speaker, queryWords);
-          if (!speaker.hide) {
-            console.log(speaker);
-          }
         });
         return data.speakers.sort((a: any, b: any) => {
           const aName = a.name.split(' ').pop();

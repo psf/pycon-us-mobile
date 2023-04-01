@@ -45,7 +45,7 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let speaker of speakers" [hidden]="speaker.hide">
+      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let speaker of displaySpeakers" [hidden]="speaker.hide">
         <ion-card class="speaker-card">
           <ion-card-header>
             <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
