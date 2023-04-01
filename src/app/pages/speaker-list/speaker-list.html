@@ -12,7 +12,7 @@
       </ion-segment-button>
     </ion-segment>
     <ion-title *ngIf="!ios && !showSearchbar">Speakers</ion-title>
-    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="speakerQueryText" (ionChange)="updateSpeakers()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="speakerQueryText" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
         <ion-icon slot="icon-only" name="search"></ion-icon>
@@ -38,7 +38,7 @@
     </ion-toolbar>
 
     <ion-toolbar>
-      <ion-searchbar [(ngModel)]="speakerQueryText" [debounce]="250" (ionChange)="updateSpeakers()" placeholder="Search"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="speakerQueryText" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" placeholder="Search"></ion-searchbar>
     </ion-toolbar>
 
   </ion-header>
@@ -71,6 +71,9 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-row>
   </ion-grid>
 </ion-content>
