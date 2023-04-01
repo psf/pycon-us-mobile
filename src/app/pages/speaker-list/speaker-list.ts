@@ -14,6 +14,7 @@ export class SpeakerListPage implements OnInit {
   ios: boolean;
   showSearchbar: boolean;
   page: number = 0;
+  scrolling: boolean = false;
 
   constructor(
     public confData: ConferenceData,
@@ -31,6 +32,7 @@ export class SpeakerListPage implements OnInit {
   }
 
   searchSpeakers() {
+    this.scrolling = false;
     this.displaySpeakers = [];
     this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
       this.displaySpeakers = speakers;
@@ -39,9 +41,9 @@ export class SpeakerListPage implements OnInit {
 
   resetSpeakers() {
     this.page = 0;
+    this.speakers = [];
     this.displaySpeakers = [];
-    this.changeDetection.detectChanges();
-    this.updateSpeakers();
+    this.reloadSpeakers();
   }
 
   async generateSpeakers() {
@@ -50,19 +52,23 @@ export class SpeakerListPage implements OnInit {
       console.log(this.speakers.length, this.displaySpeakers.length)
       if (this.speakers.length == this.displaySpeakers.length) {
         this.page = -1
+        this.scrolling = false;
       } else {
         this.page += 1;
+        this.scrolling = true;
         this.changeDetection.detectChanges();
       }
     }
   }
 
   onIonInfinite(ev) {
-    this.generateSpeakers();
-    (ev as InfiniteScrollCustomEvent).target.complete();
+    this.generateSpeakers().then(() => {
+      setTimeout(() => {(ev as InfiniteScrollCustomEvent).target.complete()}, 200);
+    });
   }
 
   reloadSpeakers() {
+    this.scrolling = false;
     console.log('fetching speakers');
     this.loadingCtrl.create({
       message: 'Fetching latest speakers...',
@@ -71,7 +77,8 @@ export class SpeakerListPage implements OnInit {
       loader.present();
       this.displaySpeakers = [];
       this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
-        this.updateSpeakers();
+        this.speakers = speakers;
+        this.generateSpeakers();
         setTimeout(() => {loader.dismiss()}, 100);
       });
     });
