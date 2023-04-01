@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { Config, InfiniteScrollCustomEvent } from '@ionic/angular';
+import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'page-speaker-list',
@@ -19,6 +19,8 @@ export class SpeakerListPage implements OnInit {
     public confData: ConferenceData,
     public config: Config,
     private changeDetection: ChangeDetectorRef,
+    private loadingCtrl: LoadingController,
+
   ) {}
 
   updateSpeakers() {
@@ -59,6 +61,20 @@ export class SpeakerListPage implements OnInit {
     (ev as InfiniteScrollCustomEvent).target.complete();
   }
 
+  async reloadSpeakers() {
+    console.log('fetching speakers');
+    this.loadingCtrl.create({
+      message: 'Fetching latest speakers...',
+      duration: 10000,
+    }).then((loader) => {
+      loader.present();
+      this.displaySpeakers = [];
+
+      this.updateSpeakers();
+      loader.dismiss();
+    });
+  }
+
   handleRefresh(event) {
     this.updateSpeakers();
     setTimeout(() => {
@@ -68,9 +84,9 @@ export class SpeakerListPage implements OnInit {
 
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';
+    this.reloadSpeakers();
   }
 
   ionViewDidEnter() {
-    this.updateSpeakers();
   }
 }
