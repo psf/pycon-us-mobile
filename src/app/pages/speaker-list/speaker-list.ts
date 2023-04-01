@@ -41,6 +41,7 @@ export class SpeakerListPage implements OnInit {
 
   resetSpeakers() {
     this.page = 0;
+    this.speakerQueryText = "";
     this.speakers = [];
     this.displaySpeakers = [];
     this.reloadSpeakers();
