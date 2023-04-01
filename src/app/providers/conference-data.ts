@@ -85,7 +85,7 @@ export class ConferenceData {
               "name": speaker.name,
               // only display the speaker photo if it's not null in the response.
               // otherwise, show a default fallback photo
-              "profilePic": speaker.photo ? speaker.photo : 'assets/img/speaker-background.png',
+              "profilePic": speaker.photo ? speaker.photo : 'assets/img/person-circle-outline.png',
               "about": speaker.bio,
             });
           }
