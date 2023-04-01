@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
+import markdownToTxt from 'markdown-to-txt';
 
 import { UserData } from './user-data';
 
@@ -91,6 +92,9 @@ export class ConferenceData {
           }
         });
       }
+
+      // transform any markdown slot names to regular text
+      slot.name = markdownToTxt(slot.name);
 
       var start = new Date(slot.start);
       var end = new Date(slot.end);
