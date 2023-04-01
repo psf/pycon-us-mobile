@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 
@@ -8,6 +8,8 @@ import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/ang
   styleUrls: ['./speaker-list.scss'],
 })
 export class SpeakerListPage implements OnInit {
+  // Get a reference to the search bar
+  @ViewChild('search') search : any;
   speakers: any[] = [];
   displaySpeakers: any[] = [];
   speakerQueryText = '';
@@ -84,6 +86,12 @@ export class SpeakerListPage implements OnInit {
       });
     });
   }
+
+  async focusButton() {
+     setTimeout(() => {
+       this.search.setFocus();
+     }, 500); // ms delay
+   }
 
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';

@@ -14,6 +14,8 @@ import { UserData } from '../../providers/user-data';
 export class SchedulePage implements OnInit {
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
+  // Get a reference to the search bar
+  @ViewChild('search') search : any;
 
   ios: boolean;
   hasData: boolean = false;
@@ -92,6 +94,12 @@ export class SchedulePage implements OnInit {
         loader.dismiss();
       });
     });
+  }
+
+  async focusButton() {
+    setTimeout(() => {
+      this.search.setFocus();
+    }, 500); // ms delay
   }
 
   async presentFilter() {
