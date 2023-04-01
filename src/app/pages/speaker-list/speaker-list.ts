@@ -31,11 +31,9 @@ export class SpeakerListPage implements OnInit {
   }
 
   searchSpeakers() {
-    this.showSearchSpinner = true;
     this.displaySpeakers = [];
     this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
       this.displaySpeakers = speakers;
-      this.showSearchSpinner = false;
     });
   }
 
