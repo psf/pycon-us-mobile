@@ -50,7 +50,7 @@
           <ion-card-header>
             <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
               <ion-avatar slot="start">
-                <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
+                <ion-img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'"></ion-img>
               </ion-avatar>
               <ion-label>
                 <h2>{{speaker.name}}</h2>
