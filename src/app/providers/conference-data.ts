@@ -83,7 +83,9 @@ export class ConferenceData {
             this.data.speakers.push({
               "id": speaker.id,
               "name": speaker.name,
-              "profilePic": speaker.photo,
+              // only display the speaker photo if it's not null in the response.
+              // otherwise, show a default fallback photo
+              "profilePic": speaker.photo ? speaker.photo : 'assets/img/person-circle-outline.png',
               "about": speaker.bio,
             });
           }
