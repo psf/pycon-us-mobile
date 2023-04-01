@@ -31,13 +31,16 @@ export class SpeakerListPage implements OnInit {
   }
 
   searchSpeakers() {
+    this.showSearchSpinner = true;
     this.displaySpeakers = [];
     this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
       this.displaySpeakers = speakers;
+      this.showSearchSpinner = false;
     });
   }
 
   resetSpeakers() {
+    this.page = 0;
     this.displaySpeakers = [];
     this.changeDetection.detectChanges();
     this.updateSpeakers();
@@ -61,7 +64,7 @@ export class SpeakerListPage implements OnInit {
     (ev as InfiniteScrollCustomEvent).target.complete();
   }
 
-  async reloadSpeakers() {
+  reloadSpeakers() {
     console.log('fetching speakers');
     this.loadingCtrl.create({
       message: 'Fetching latest speakers...',
@@ -69,17 +72,11 @@ export class SpeakerListPage implements OnInit {
     }).then((loader) => {
       loader.present();
       this.displaySpeakers = [];
-
-      this.updateSpeakers();
-      loader.dismiss();
+      this.confData.getSpeakers(this.speakerQueryText).subscribe((speakers: any[]) => {
+        this.updateSpeakers();
+        setTimeout(() => {loader.dismiss()}, 100);
+      });
     });
-  }
-
-  handleRefresh(event) {
-    this.updateSpeakers();
-    setTimeout(() => {
-      event.target.complete();
-    }, 250);
   }
 
   ngOnInit() {
