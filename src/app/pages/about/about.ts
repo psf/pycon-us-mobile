@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
@@ -15,22 +16,36 @@ export class AboutPage implements OnInit {
   deploy: Deploy;
 
   constructor(
+    private loadingCtrl: LoadingController,
   ) {}
 
   async performAutomaticUpdate() {
-   try {
-     const currentVersion = await this.deploy.getCurrentVersion();
-     const resp = await this.deploy.sync({updateMethod: 'auto'}, percentDone => {
-       console.log(`Update is ${percentDone}% done!`);
-     });
-     if (!currentVersion || currentVersion.versionId !== resp.versionId){
-       // We found an update, and are in process of redirecting you since you put auto!
-     }else{
-       // No update available
+   this.loadingCtrl.create({
+    message: 'Installing the latest build...',
+    duration: 60000,
+   }).then((loader) => {
+     loader.present();
+     try {
+       this.deploy.getCurrentVersion().then((currentVersion) => {
+         console.log(currentVersion);
+         this.deploy.sync({updateMethod: 'auto'}).then((resp) => {
+           setTimeout(() => {loader.dismiss()}, 1000);
+           if (!currentVersion || currentVersion.versionId !== resp.versionId){
+             // We found an update, and are in process of redirecting you since you put auto!
+           }else{
+             // No update available
+           }
+           return resp;
+         });
+       }).catch((err) => {
+         console.log(err)
+       })
+     } catch (err) {
+       console.log(err)
      }
-   } catch (err) {
-     // We encountered an error.
-   }
+   }).catch((err) => {
+     console.log(err);
+   });
   }
 
   async ngOnInit() {
