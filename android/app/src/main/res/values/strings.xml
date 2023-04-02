@@ -6,8 +6,13 @@
   <string name="custom_url_scheme">org.pycon.us</string>
   <string name="ionic_app_id">e8e09c7a</string>
   <string name="ionic_channel_name">Production</string>
-  <string name="ionic_update_method">background</string>
+  <string name="ionic_update_method">none</string>
   <string name="ionic_max_versions">2</string>
   <string name="ionic_min_background_duration">30</string>
   <string name="ionic_update_api">https://api.ionicjs.com</string>
+  <string name="asset_statements" translatable="false">
+  [{
+    \"include\": \"https://us.pycon.org/.well-known/assetlinks.json\"
+  }]
+  </string>
 </resources>
