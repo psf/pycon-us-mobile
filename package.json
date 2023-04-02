@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build; ionic deploy manifest",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "npx webdriver-manager update --standalone false --gecko false --versions.chrome=109.0.5414.120 && ng e2e --no-webdriver-update"
