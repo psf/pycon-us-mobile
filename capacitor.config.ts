@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
 
   server: {
-    hostname: 'us.pycon.org',
+    hostname: 'mobile.us.pycon.org',
     androidScheme: 'https',
   }
 };
