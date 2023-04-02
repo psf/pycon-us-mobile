@@ -12,7 +12,7 @@ import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 })
 export class AboutPage implements OnInit {
   current: any = null;
-  availableUpdate: any = null;
+  updateAvailable: any = null;
   deploy: Deploy;
 
   constructor(
@@ -51,7 +51,6 @@ export class AboutPage implements OnInit {
   async ngOnInit() {
     this.deploy = new Deploy();
     this.deploy.configure({});
-    this.availableUpdate = await this.deploy.checkForUpdate()
-    console.log(this.availableUpdate);
+    this.updateAvailable = await this.deploy.checkForUpdate()
   }
 }
