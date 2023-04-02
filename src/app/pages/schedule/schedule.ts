@@ -5,6 +5,7 @@ import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalCont
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-schedule',
@@ -38,7 +39,8 @@ export class SchedulePage implements OnInit {
     public routerOutlet: IonRouterOutlet,
     public toastCtrl: ToastController,
     public user: UserData,
-    public config: Config
+    public config: Config,
+    public liveUpdateService: LiveUpdateService,
   ) { }
 
   ngOnInit() {

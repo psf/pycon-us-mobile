@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActionSheetController } from '@ionic/angular';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-speaker-detail',
@@ -18,6 +19,7 @@ export class SpeakerDetailPage {
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
     public inAppBrowser: InAppBrowser,
+    public liveUpdateService: LiveUpdateService,
   ) {}
 
   ionViewWillEnter() {

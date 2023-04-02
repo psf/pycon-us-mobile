@@ -42,13 +42,6 @@ export class UserData {
     });
   }
 
-  signup(email: string): Promise<any> {
-    return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
-      this.setEmail(email);
-      return window.dispatchEvent(new CustomEvent('user:signup'));
-    });
-  }
-
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
       this.storage.remove('email');

@@ -1,22 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
-
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html',
   styleUrls: ['./about.scss'],
 })
-export class AboutPage implements OnInit {
+export class AboutPage {
   current: any = null;
-  availableUpdate: any = null;
-  deploy: Deploy;
 
   constructor(
     private loadingCtrl: LoadingController,
+    public liveUpdateService: LiveUpdateService,
   ) {}
 
   async performAutomaticUpdate() {
@@ -26,9 +25,9 @@ export class AboutPage implements OnInit {
    }).then((loader) => {
      loader.present();
      try {
-       this.deploy.getCurrentVersion().then((currentVersion) => {
+       this.liveUpdateService.deploy.getCurrentVersion().then((currentVersion) => {
          console.log(currentVersion);
-         this.deploy.sync({updateMethod: 'auto'}).then((resp) => {
+         this.liveUpdateService.deploy.sync({updateMethod: 'auto'}).then((resp) => {
            setTimeout(() => {loader.dismiss()}, 1000);
            if (!currentVersion || currentVersion.versionId !== resp.versionId){
              // We found an update, and are in process of redirecting you since you put auto!
@@ -46,12 +45,5 @@ export class AboutPage implements OnInit {
    }).catch((err) => {
      console.log(err);
    });
-  }
-
-  async ngOnInit() {
-    this.deploy = new Deploy();
-    this.deploy.configure({});
-    this.availableUpdate = await this.deploy.checkForUpdate()
-    console.log(this.availableUpdate);
   }
 }

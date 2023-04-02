@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Config, ModalController, NavParams } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class ScheduleFilterPage {
     public confData: ConferenceData,
     private config: Config,
     public modalCtrl: ModalController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public liveUpdateService: LiveUpdateService,
   ) { }
 
   ionViewWillEnter() {
