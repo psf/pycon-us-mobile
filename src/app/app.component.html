@@ -8,10 +8,6 @@
             PyCon US 2023
           </ion-list-header>
 
-          <ion-item *ngIf="liveUpdateService.updateAvailable?.available">
-            <ion-text color="primary">Live update available</ion-text>
-          </ion-item>
-
           <ion-item *ngIf="loggedIn">
             <ion-label>Hello, {{nickname}}</ion-label>
           </ion-item>
