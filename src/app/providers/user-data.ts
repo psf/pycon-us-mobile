@@ -36,6 +36,7 @@ export class UserData {
       this.setEmail(data.email);
       this.setAuthKey(data.key);
       this.setSecret(data.secret);
+      this.setHasLeadRetrieval(data.features?.lead_retrieval);
     }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
@@ -54,6 +55,7 @@ export class UserData {
       this.storage.remove('nickname');
       this.storage.remove('key');
       this.storage.remove('secret');
+      this.storage.remove(this.HAS_LEAD_RETRIEVAL);
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -111,9 +113,13 @@ export class UserData {
     });
   }
 
+  setHasLeadRetrieval(value: boolean): Promise<any> {
+    return this.storage.set(this.HAS_LEAD_RETRIEVAL, value);
+  }
+
   checkHasLeadRetrieval(): Promise<boolean> {
     return this.storage.get(this.HAS_LEAD_RETRIEVAL).then((value) => {
-      return this.isLoggedIn();
+      return value;
     });
   }
 }
