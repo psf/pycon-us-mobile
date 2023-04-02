@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-session-detail',
@@ -17,7 +18,8 @@ export class SessionDetailPage {
   constructor(
     private dataProvider: ConferenceData,
     private userProvider: UserData,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public liveUpdateService: LiveUpdateService,
   ) { }
 
   ionViewWillEnter() {

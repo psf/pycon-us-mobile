@@ -10,7 +10,9 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
+
 import { AutofillDirective } from './autofill.directive';
+import { LiveUpdateService } from './providers/live-update.service';
 
 @NgModule({
   imports: [
@@ -25,7 +27,7 @@ import { AutofillDirective } from './autofill.directive';
     })
   ],
   declarations: [AppComponent, AutofillDirective],
-  providers: [InAppBrowser],
+  providers: [InAppBrowser, LiveUpdateService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

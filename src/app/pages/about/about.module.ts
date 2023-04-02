@@ -11,7 +11,7 @@ import { AboutPageRoutingModule } from './about-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    AboutPageRoutingModule
+    AboutPageRoutingModule,
   ],
   declarations: [AboutPage],
   entryComponents: [],

@@ -3,7 +3,7 @@ import { LoadingController } from '@ionic/angular';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
-
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-about',
@@ -12,11 +12,10 @@ import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 })
 export class AboutPage implements OnInit {
   current: any = null;
-  updateAvailable: any = null;
-  deploy: Deploy;
 
   constructor(
     private loadingCtrl: LoadingController,
+    public liveUpdateService: LiveUpdateService,
   ) {}
 
   async performAutomaticUpdate() {
@@ -26,9 +25,9 @@ export class AboutPage implements OnInit {
    }).then((loader) => {
      loader.present();
      try {
-       this.deploy.getCurrentVersion().then((currentVersion) => {
+       this.liveUpdateService.deploy.getCurrentVersion().then((currentVersion) => {
          console.log(currentVersion);
-         this.deploy.sync({updateMethod: 'auto'}).then((resp) => {
+         this.liveUpdateService.deploy.sync({updateMethod: 'auto'}).then((resp) => {
            setTimeout(() => {loader.dismiss()}, 1000);
            if (!currentVersion || currentVersion.versionId !== resp.versionId){
              // We found an update, and are in process of redirecting you since you put auto!
@@ -49,8 +48,5 @@ export class AboutPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.deploy = new Deploy();
-    this.deploy.configure({});
-    this.updateAvailable = await this.deploy.checkForUpdate()
   }
 }

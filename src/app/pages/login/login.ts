@@ -7,8 +7,8 @@ import { timeout, catchError } from 'rxjs/operators';
 
 
 import { UserData } from '../../providers/user-data';
-
 import { UserOptions } from '../../interfaces/user-options';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 
 
@@ -27,7 +27,8 @@ export class LoginPage {
     public router: Router,
     private http: HttpClient,
     private toastController: ToastController,
-    private nav: NavController
+    private nav: NavController,
+    public liveUpdateService: LiveUpdateService,
   ) { }
 
   async presentError(message) {

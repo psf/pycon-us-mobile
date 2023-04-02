@@ -10,6 +10,7 @@ import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
+import { LiveUpdateService } from './providers/live-update.service';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,6 @@ export class AppComponent implements OnInit {
   loggedIn = false;
   dark = false;
 
-  deploy: Deploy;
   updateAvailable: any = null;
 
   hasApps = false;
@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private userData: UserData,
     private toastCtrl: ToastController,
+    public liveUpdateService: LiveUpdateService,
   ) {
     this.initializeApp();
   }
@@ -54,11 +55,7 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.checkLoginStatus();
     this.listenForLoginEvents();
-    this.deploy = new Deploy();
-    this.deploy.configure({});
-    this.deploy.checkForUpdate().then((response) => {
-      this.updateAvailable = response;
-    });
+    this.liveUpdateService.checkForUpdate();
   }
 
   initializeApp() {

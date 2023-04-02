@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 
 @Component({
@@ -25,7 +26,9 @@ export class MapPage implements OnInit, OnDestroy {
     public platform: Platform,
     private pycon: PyConAPI,
     private storage: Storage,
-    private toastController: ToastController) {}
+    private toastController: ToastController,
+    public liveUpdateService: LiveUpdateService,
+  ) {}
 
   sortScans() {
     return this.scan_presentation.sort(function(a, b) {

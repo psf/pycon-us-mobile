@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NavController, AlertController } from '@ionic/angular';
 
 import { UserData } from '../../providers/user-data';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class AccountPage implements AfterViewInit {
     public alertCtrl: AlertController,
     public nav: NavController,
     public router: Router,
-    public userData: UserData
+    public userData: UserData,
+    public liveUpdateService: LiveUpdateService,
   ) { }
 
   ngAfterViewInit() {

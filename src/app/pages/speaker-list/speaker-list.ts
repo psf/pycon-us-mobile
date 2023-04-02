@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
+import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
   selector: 'page-speaker-list',
@@ -23,7 +24,7 @@ export class SpeakerListPage implements OnInit {
     public config: Config,
     private changeDetection: ChangeDetectorRef,
     private loadingCtrl: LoadingController,
-
+    public liveUpdateService: LiveUpdateService,
   ) {}
 
   updateSpeakers() {
