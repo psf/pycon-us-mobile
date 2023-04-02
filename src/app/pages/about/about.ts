@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
@@ -10,7 +10,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: 'about.html',
   styleUrls: ['./about.scss'],
 })
-export class AboutPage implements OnInit {
+export class AboutPage {
   current: any = null;
 
   constructor(
@@ -45,8 +45,5 @@ export class AboutPage implements OnInit {
    }).catch((err) => {
      console.log(err);
    });
-  }
-
-  async ngOnInit() {
   }
 }
