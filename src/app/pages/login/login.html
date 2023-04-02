@@ -18,7 +18,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating">Email address</ion-label>
-        <ion-input [(ngModel)]="login.email" name="email" type="text" inputmode="email" #email="ngModel" spellcheck="false" autocapitalize="off"
+        <ion-input appAutofill [(ngModel)]="login.email" name="email" type="email" inputmode="email" autocomplete="email" #email="ngModel" spellcheck="false" autocapitalize="off"
           required>
         </ion-input>
       </ion-item>
@@ -31,7 +31,7 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input [(ngModel)]="login.password" name="password" type="password" #password="ngModel" required>
+        <ion-input appAutofill [(ngModel)]="login.password" name="password" type="password" autocomplete="current-password" #password="ngModel" required>
         </ion-input>
       </ion-item>
 
