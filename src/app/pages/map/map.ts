@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { Platform } from '@ionic/angular';
+import { Config, Platform } from '@ionic/angular';
 import { BarcodeScanner, SupportedFormat, CameraDirection, ScanResult } from '@capacitor-community/barcode-scanner';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
@@ -15,15 +15,18 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./map.scss']
 })
 export class MapPage implements OnInit, OnDestroy {
-
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
   scan_presentation = [];
 
+  ios: boolean;
+  show_permissions_error: boolean = false;
+
   constructor(
     public confData: ConferenceData,
     public platform: Platform,
+    private config: Config,
     private pycon: PyConAPI,
     private storage: Storage,
     private toastController: ToastController,
@@ -96,8 +99,10 @@ export class MapPage implements OnInit, OnDestroy {
   startScan = async () => {
     const permission = await this.checkPermission();
     if (!permission) {
+      this.show_permissions_error = true;
       return;
     }
+    this.show_permissions_error = false;
     BarcodeScanner.hideBackground();
     this.content_visibility = 'hidden';
     this.scan_start_button_visibility = 'hidden';
@@ -121,6 +126,7 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.ios = this.config.get('mode') === `ios`;
     this.refresh_presentation();
     setTimeout(this.syncAllPending, 60000);
   }
