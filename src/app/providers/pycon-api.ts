@@ -32,6 +32,28 @@ export class PyConAPI {
     toast.present();
   }
 
+  async buildRequestAuthHeaders(method, url, body): Promise<any> {
+    const apiKey = await this.userData.getAuthKey().then((value) => {return value});
+    const secret = await this.userData.getSecret().then((value) => {return value});
+
+    const timestamp = Math.round(Date.now() / 1000)
+    const baseString = [
+      secret,
+      timestamp,
+      method,
+      url,
+      body,
+    ].join("")
+
+    const headers = {
+      'X-API-Key': apiKey,
+      'X-API-Signature': createHash().update(baseString).digest("hex"),
+      'X-API-Timestamp': String(timestamp),
+    }
+
+    return headers;
+  }
+
   async syncScan(accessCode: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
@@ -39,10 +61,6 @@ export class PyConAPI {
     const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
       return value
     });
-
-    if (synced !== null) {
-      this.presentSuccess('Lead already captured for ' + synced.data.first_name);
-    }
 
     if (pending === null) {
       console.log('Unable to sync missing ' + accessCode);
@@ -52,27 +70,15 @@ export class PyConAPI {
     const _accessCode = scanData[0];
     const _validator = scanData[scanData.length - 1];
 
-    const apiKey = await this.userData.getAuthKey().then((value) => {return value});
-    const secret = await this.userData.getSecret().then((value) => {return value});
+    const method = 'GET';
+    const url = '/2023/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator;
+    const body = '';
 
-    const timestamp = Math.round(Date.now() / 1000)
-    const baseString = [
-      secret,
-      timestamp,
-      'GET',
-      '/2023/api/lead-retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
-      '',
-    ].join("")
-
-    const headers = {
-      'X-API-Key': apiKey,
-      'X-API-Signature': createHash().update(baseString).digest("hex"),
-      'X-API-Timestamp': String(timestamp),
-    }
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
 
     this.http.get(
-      this.base + '/2023/api/lead-retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
-      {headers: headers}
+      this.base + url,
+      {headers: authHeaders}
     ).pipe(timeout(2000), catchError(error => {
       console.log('Unable to capture lead, ' + error)
         throw error;
@@ -81,13 +87,83 @@ export class PyConAPI {
       next: data => {
         console.log(data['data']);
         this.storage.set('synced-scan-' + accessCode, {...data, ...pending}).then((value) => {
-          this.presentSuccess('Successfully captured lead for ' + data['data'].first_name);
           this.storage.remove('pending-scan-' + accessCode).then((value) => {});
         });
       },
       error: error => {
       }
     });
+  }
+
+  async syncNote(accessCode: string): Promise<any> {
+    const pending = await this.storage.get('pending-note-' + accessCode).then((value) => {
+      return value
+    });
+
+    if (pending === null) {
+      console.log('Unable to sync note for missing ' + accessCode);
+    }
+
+    const method = 'POST';
+    const url = '/2023/api/v1/lead_retrieval/' + accessCode + "/note/";
+    const body = JSON.stringify(pending);
+    const headers = {"Content-Type": "application/json"}
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+
+    this.http.post(
+      this.base + url,
+      body,
+      {headers: {...headers, ...authHeaders}}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to capture lead, ' + error)
+        throw error;
+      })
+    ).subscribe({
+      next: data => {
+        console.log(data);
+        this.storage.remove('pending-note-' + accessCode).then((value) => {});
+      },
+      error: error => {
+      }
+    });
+  }
+
+  async getNote(accessCode): Promise<any> {
+    return this.storage.get('note-' + accessCode).then((value) => {
+      return value;
+    })
+  }
+
+  async storeNote(accessCode: string, note: string): Promise<any> {
+    const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
+      return value
+    });
+    const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
+      return value
+    });
+    console.log(pending, synced, note);
+    this.storage.set('note-' + accessCode, {accessCode: accessCode, note: note})
+    this.storage.set('pending-note-' + accessCode, {accessCode: accessCode, note: note}).then((value) => {
+      this.syncNote(accessCode);
+    })
+    if (synced != null) {
+      this.storage.set('synced-scan-' + accessCode, {...synced, ...{note: true}})
+    }
+    if (pending != null) {
+      this.storage.set('pending-scan-' + accessCode, {...pending, ...{note: true}})
+    }
+  }
+
+  async fetchScan(accessCode: string): Promise<any> {
+    const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
+      return value
+    });
+    const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
+      return value
+    });
+    if (synced != null) { return synced };
+    if (pending != null) { return pending };
   }
 
   async storeScan(accessCode: string, scanData: string): Promise<any> {
@@ -99,10 +175,8 @@ export class PyConAPI {
     });
     if (synced != null) {
       console.log('Already captured ' + accessCode)
-      this.presentSuccess('Already have captured lead for ' + synced.data.first_name);
       return;
     } else if (pending != null) {
-      this.presentSuccess('Already have scan awaiting capture for ' + accessCode)
       this.syncScan(accessCode);
       return;
     } else {
@@ -111,7 +185,6 @@ export class PyConAPI {
         'pending-scan-' + accessCode,
         {scanData: scanData, scannedAt: scanDate.toISOString()}
       ).then(() => {
-        this.presentSuccess('Successfully stored scan for ' + accessCode);
         console.log('Scanned ' + accessCode);
         this.syncScan(accessCode);
       }).catch((error) => {
