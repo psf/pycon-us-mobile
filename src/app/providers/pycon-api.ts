@@ -47,20 +47,14 @@ export class PyConAPI {
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
-    this.http.get(
+    return this.http.get(
       this.base + url,
       {headers: authHeaders}
     ).pipe(timeout(2000), catchError(error => {
       console.log('Unable to fetch mobile state, ' + error)
         throw error;
       })
-    ).subscribe({
-      next: data => {
-        return data;
-      },
-      error: error => {
-      }
-    });
+    );
   }
 
   async patchUserData(payload: any): Promise<any> {

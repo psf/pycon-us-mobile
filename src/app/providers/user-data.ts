@@ -22,11 +22,16 @@ export class UserData {
     });
   }
 
-  async fetchPreferences() {
-    this.pycon.fetchPreferences().then((data) => {
-      if (data?.favorites) {
-        this.storage.set('favorite_sessions', data.favorites).then(() => {});
-      }
+  fetchPreferences() {
+    this.pycon.fetchPreferences().then(data => {
+      data.subscribe(userPrefs => {
+        console.log(userPrefs);
+        if (userPrefs?.favorites) {
+          console.log(userPrefs)
+          this.favorites = userPrefs.favorites;
+          this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
+        }
+      })
     })
   }
 
@@ -60,6 +65,7 @@ export class UserData {
 
   login(data: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
+      this.fetchPreferences();
       this.setNickname(data.nickname);
       this.setEmail(data.email);
       this.setAuthKey(data.key);
@@ -72,6 +78,7 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
+      this.storage.remove('favorite_sessions');
       this.storage.remove('email');
       this.storage.remove('nickname');
       this.storage.remove('key');
