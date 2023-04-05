@@ -60,7 +60,7 @@ export class PyConAPI {
       secret,
       timestamp,
       'GET',
-      '/2023/api/lead-retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
+      '/2023/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
       '',
     ].join("")
 
@@ -71,7 +71,7 @@ export class PyConAPI {
     }
 
     this.http.get(
-      this.base + '/2023/api/lead-retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
+      this.base + '/2023/api/v1/lead_retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
       {headers: headers}
     ).pipe(timeout(2000), catchError(error => {
       console.log('Unable to capture lead, ' + error)
