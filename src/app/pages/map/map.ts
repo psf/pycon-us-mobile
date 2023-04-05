@@ -3,10 +3,11 @@ import { ConferenceData } from '../../providers/conference-data';
 import { Config, Platform } from '@ionic/angular';
 import { BarcodeScanner, SupportedFormat, CameraDirection, ScanResult } from '@capacitor-community/barcode-scanner';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { LeadNoteModalComponent } from '../../lead-note-modal/lead-note-modal.component';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class MapPage implements OnInit, OnDestroy {
     private config: Config,
     private pycon: PyConAPI,
     private storage: Storage,
-    private toastController: ToastController,
+    public modalCtrl: ModalController,
     public liveUpdateService: LiveUpdateService,
   ) {}
 
@@ -47,13 +48,42 @@ export class MapPage implements OnInit, OnDestroy {
     var allScans = [];
     this.storage.forEach((value, key, index) => {
       if (key.startsWith("pending-scan-")) {
-        console.log(value);
-        allScans.push({"status": "pending", "scanned_at": value.scannedAt, "access_code": value.scanData.split(":")[0]})
+        allScans.push({
+          "status": "pending",
+          "scanned_at": value.scannedAt,
+          "access_code": value.scanData.split(":")[0]
+        })
       } else if (key.startsWith("synced-scan-")) {
-        allScans.push({"status": "captured", "scanned_at": value.scannedAt, "first_name": value.data.first_name})
+        allScans.push({
+          "status": "captured",
+          "scanned_at": value.scannedAt,
+          "access_code": value.scanData.split(":")[0],
+          "first_name": value.data.first_name
+        })
       }
     });
     this.scan_presentation = allScans;
+  }
+
+  openNoteModal = async (accessCode, scan) => {
+    const note = await this.pycon.getNote(accessCode);
+    console.log(note);
+    const modal = await this.modalCtrl.create({
+      component: LeadNoteModalComponent,
+      componentProps: {
+        'scan': scan,
+        'note': note?.note,
+      }
+    })
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    console.log(data, role)
+
+    if (role === 'save') {
+      console.log(accessCode, data.note)
+      this.pycon.storeNote(accessCode, data.note);
+    }
   }
 
   syncAllPending = async () => {

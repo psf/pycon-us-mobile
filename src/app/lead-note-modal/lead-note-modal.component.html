@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Make a note</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <h1>
+              <ion-icon
+                [color]="(scan.status == 'captured')? 'success' : 'default'"
+                [name]="(scan.status == 'captured')? 'id-card-outline' : 'qr-code'">
+              </ion-icon>
+              {{(scan.status == 'captured')? scan.first_name : scan.access_code}}
+            </h1>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Note</ion-label>
+    <ion-textarea
+      [(ngModel)]="note"
+      placeholder="Write your notes here..."
+      maxlength=3000
+      autoGrow=true
+      inputmode="text"></ion-textarea>
+  </ion-item>
+</ion-content>

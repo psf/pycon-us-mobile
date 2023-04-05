@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AutofillDirective } from './autofill.directive';
 import { LiveUpdateService } from './providers/live-update.service';
+import { LeadNoteModalComponent } from './lead-note-modal/lead-note-modal.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { LiveUpdateService } from './providers/live-update.service';
       enabled: environment.production
     })
   ],
-  declarations: [AppComponent, AutofillDirective],
+  declarations: [AppComponent, AutofillDirective, LeadNoteModalComponent],
   providers: [InAppBrowser, LiveUpdateService],
   bootstrap: [AppComponent]
 })

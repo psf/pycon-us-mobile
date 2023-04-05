@@ -40,7 +40,7 @@
             </ion-col>
             <ion-col>
               <div class="ion-float-end ion-float-top">
-                <ion-button (click)="openNoteModal(scan.access_code)" size="75%" fill="clear">
+                <ion-button (click)="openNoteModal(scan.access_code, scan)" size="75%" fill="clear">
                   <ion-icon [name]="scan.note? 'document-text': 'document-outline'"></ion-icon>
                   <ion-text size="small">Note</ion-text>
                 </ion-button>

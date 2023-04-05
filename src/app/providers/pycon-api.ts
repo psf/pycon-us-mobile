@@ -100,6 +100,35 @@ export class PyConAPI {
     });
   }
 
+  async getNote(accessCode): Promise<any> {
+    return this.storage.get('note-' + accessCode).then((value) => {
+      return value;
+    })
+  }
+
+  async storeNote(accessCode: string, note: string): Promise<any> {
+    console.log(accessCode, note);
+    const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
+      return value
+    });
+    const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
+      return value
+    });
+    console.log(pending, synced, note);
+    this.storage.set(
+      'note-' + accessCode,
+      {accessCode: accessCode, note: note}
+    ).then((value) => {this.presentSuccess("stored: " + note);});
+    if (synced != null) {
+      this.storage.set('synced-scan-' + accessCode, {...synced, ...{note: true}})
+      //this.syncNote(accessCode)
+    }
+    if (pending != null) {
+      this.storage.set('pending-scan-' + accessCode, {...pending, ...{note: true}})
+      //this.syncNote(accessCode)
+    }
+  }
+
   async storeScan(accessCode: string, scanData: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
