@@ -4,14 +4,6 @@
       <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updateSpeakers()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
-      </ion-segment-button>
-    </ion-segment>
     <ion-title *ngIf="!ios && !showSearchbar">Speakers</ion-title>
     <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="speakerQueryText" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">

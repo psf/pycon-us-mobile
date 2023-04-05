@@ -13,14 +13,25 @@ export class UserData {
 
   constructor(
     public storage: Storage
-  ) { }
+  ) {
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = data;
+    });
+  }
 
   hasFavorite(sessionId: string): boolean {
-    return (this.favorites.indexOf(sessionId) > -1);
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = data;
+    });
+    return (this.favorites.indexOf(String(sessionId)) > -1);
   }
 
   addFavorite(sessionId: string): void {
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = data;
+    });
     this.favorites.push(sessionId);
+    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   removeFavorite(sessionId: string): void {
@@ -28,6 +39,7 @@ export class UserData {
     if (index > -1) {
       this.favorites.splice(index, 1);
     }
+    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   login(data: any): Promise<any> {
