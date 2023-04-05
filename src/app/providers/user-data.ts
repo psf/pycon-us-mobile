@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { PyConAPI } from '../providers/pycon-api';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,26 +14,58 @@ export class UserData {
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
 
   constructor(
-    public storage: Storage
-  ) { }
+    public storage: Storage,
+    private pycon: PyConAPI,
+  ) {
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = (data === null)? [] : data;
+    });
+  }
+
+  fetchPreferences() {
+    this.pycon.fetchPreferences().then(data => {
+      data.subscribe(userPrefs => {
+        console.log(userPrefs);
+        if (userPrefs?.favorites) {
+          console.log(userPrefs)
+          this.favorites = userPrefs.favorites;
+          this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
+        }
+      })
+    })
+  }
 
   hasFavorite(sessionId: string): boolean {
-    return (this.favorites.indexOf(sessionId) > -1);
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = (data === null)? [] : data;
+    });
+    return (this.favorites.indexOf(String(sessionId)) > -1);
   }
 
   addFavorite(sessionId: string): void {
-    this.favorites.push(sessionId);
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = (data === null)? [] : data;
+    });
+    this.favorites.push(String(sessionId));
+    this.pycon.patchUserData({favorites: this.favorites});
+    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   removeFavorite(sessionId: string): void {
-    const index = this.favorites.indexOf(sessionId);
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = (data === null)? [] : data;
+    });
+    const index = this.favorites.indexOf(String(sessionId));
     if (index > -1) {
       this.favorites.splice(index, 1);
     }
+    this.pycon.patchUserData({favorites: this.favorites});
+    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   login(data: any): Promise<any> {
     return this.storage.set(this.HAS_LOGGED_IN, true).then(() => {
+      this.fetchPreferences();
       this.setNickname(data.nickname);
       this.setEmail(data.email);
       this.setAuthKey(data.key);
@@ -44,6 +78,7 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
+      this.storage.remove('favorite_sessions');
       this.storage.remove('email');
       this.storage.remove('nickname');
       this.storage.remove('key');
