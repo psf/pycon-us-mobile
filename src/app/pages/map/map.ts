@@ -20,6 +20,8 @@ export class MapPage implements OnInit, OnDestroy {
   scan_stop_button_visibility = 'hidden';
   scan_presentation = [];
 
+  scan_timeout: ReturnType<typeof setTimeout> = null;
+
   ios: boolean;
   show_permissions_error: boolean = false;
 
@@ -91,7 +93,8 @@ export class MapPage implements OnInit, OnDestroy {
     if (result.hasContent) {
       this.pycon.storeScan(result.content.split(':')[0], result.content).then(() => {
         console.log(result.content); // log the raw scanned content
-        setTimeout(BarcodeScanner.resumeScanning, 1500);
+        clearTimeout(this.scan_timeout);
+        this.scan_timeout = setTimeout(BarcodeScanner.resumeScanning, 1500);
       });
     }
   }
