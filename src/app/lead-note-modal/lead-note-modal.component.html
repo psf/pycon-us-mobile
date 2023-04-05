@@ -17,10 +17,10 @@
           <ion-col>
             <h1>
               <ion-icon
-                [color]="(scan.status == 'captured')? 'success' : 'default'"
-                [name]="(scan.status == 'captured')? 'id-card-outline' : 'qr-code'">
+                [color]="(scan.status === 'captured')? 'success' : 'default'"
+                [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
               </ion-icon>
-              {{(scan.status == 'captured')? scan.first_name : scan.access_code}}
+              {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
             </h1>
           </ion-col>
         </ion-row>

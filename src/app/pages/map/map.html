@@ -29,14 +29,14 @@
             <ion-col>
               <h1>
                 <ion-icon
-                  [color]="(scan.status == 'captured')? 'success' : 'default'"
-                  [name]="(scan.status == 'captured')? 'id-card-outline' : 'qr-code'">
+                  [color]="(scan.status === 'captured')? 'success' : 'default'"
+                  [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
                 </ion-icon>
-                {{(scan.status == 'captured')? scan.first_name : scan.access_code}}
+                {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
               </h1>
               <p>Scanned {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status == 'captured'">Captured {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status == 'pending'">Pending capture when online...</p>
+              <p *ngIf="scan.status === 'captured'">Captured {{scan.scanned_at|dateAgo}}</p>
+              <p *ngIf="scan.status === 'pending'">Pending capture when online...</p>
             </ion-col>
             <ion-col>
               <div class="ion-float-end ion-float-top">
@@ -79,11 +79,11 @@
             <ion-col>
               <h1>
                 <ion-icon
-                  [color]="(last_scan.status == 'captured')? 'success' : 'default'"
-                  [name]="(last_scan.status == 'captured')? 'id-card-outline' : 'qr-code'">
+                  [color]="(last_scan.status === 'captured')? 'success' : 'default'"
+                  [name]="(last_scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
                 </ion-icon>
-                {{(last_scan.status == 'captured')? last_scan.first_name : last_scan.access_code}}
-                <ion-spinner *ngIf="last_scan.status != 'captured'" name="dots"></ion-spinner>
+                {{(last_scan.status === 'captured')? last_scan.first_name : last_scan.access_code}}
+                <ion-spinner *ngIf="last_scan.status !== 'captured'" name="dots"></ion-spinner>
               </h1>
             </ion-col>
             <ion-col>
