@@ -32,6 +32,28 @@ export class PyConAPI {
     toast.present();
   }
 
+  async buildRequestAuthHeaders(method, url, body): Promise<any> {
+    const apiKey = await this.userData.getAuthKey().then((value) => {return value});
+    const secret = await this.userData.getSecret().then((value) => {return value});
+
+    const timestamp = Math.round(Date.now() / 1000)
+    const baseString = [
+      secret,
+      timestamp,
+      method,
+      url,
+      body,
+    ].join("")
+
+    const headers = {
+      'X-API-Key': apiKey,
+      'X-API-Signature': createHash().update(baseString).digest("hex"),
+      'X-API-Timestamp': String(timestamp),
+    }
+
+    return headers;
+  }
+
   async syncScan(accessCode: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
@@ -52,27 +74,15 @@ export class PyConAPI {
     const _accessCode = scanData[0];
     const _validator = scanData[scanData.length - 1];
 
-    const apiKey = await this.userData.getAuthKey().then((value) => {return value});
-    const secret = await this.userData.getSecret().then((value) => {return value});
+    const method = 'GET';
+    const url = '/2023/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator;
+    const body = '';
 
-    const timestamp = Math.round(Date.now() / 1000)
-    const baseString = [
-      secret,
-      timestamp,
-      'GET',
-      '/2023/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
-      '',
-    ].join("")
-
-    const headers = {
-      'X-API-Key': apiKey,
-      'X-API-Signature': createHash().update(baseString).digest("hex"),
-      'X-API-Timestamp': String(timestamp),
-    }
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
 
     this.http.get(
-      this.base + '/2023/api/v1/lead_retrieval/capture/?attendee_access_code=' + accessCode + "&badge_validator=" + _validator,
-      {headers: headers}
+      this.base + url,
+      {headers: authHeaders}
     ).pipe(timeout(2000), catchError(error => {
       console.log('Unable to capture lead, ' + error)
         throw error;
