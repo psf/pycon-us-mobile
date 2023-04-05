@@ -62,10 +62,6 @@ export class PyConAPI {
       return value
     });
 
-    if (synced !== null) {
-      this.presentSuccess('Lead already captured for ' + synced.data.first_name);
-    }
-
     if (pending === null) {
       console.log('Unable to sync missing ' + accessCode);
     }
@@ -91,7 +87,6 @@ export class PyConAPI {
       next: data => {
         console.log(data['data']);
         this.storage.set('synced-scan-' + accessCode, {...data, ...pending}).then((value) => {
-          this.presentSuccess('Successfully captured lead for ' + data['data'].first_name);
           this.storage.remove('pending-scan-' + accessCode).then((value) => {});
         });
       },
@@ -107,7 +102,6 @@ export class PyConAPI {
   }
 
   async storeNote(accessCode: string, note: string): Promise<any> {
-    console.log(accessCode, note);
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
     });
@@ -118,7 +112,7 @@ export class PyConAPI {
     this.storage.set(
       'note-' + accessCode,
       {accessCode: accessCode, note: note}
-    ).then((value) => {this.presentSuccess("stored: " + note);});
+    )
     if (synced != null) {
       this.storage.set('synced-scan-' + accessCode, {...synced, ...{note: true}})
       //this.syncNote(accessCode)
@@ -127,6 +121,17 @@ export class PyConAPI {
       this.storage.set('pending-scan-' + accessCode, {...pending, ...{note: true}})
       //this.syncNote(accessCode)
     }
+  }
+
+  async fetchScan(accessCode: string): Promise<any> {
+    const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
+      return value
+    });
+    const synced = await this.storage.get('synced-scan-' + accessCode).then((value) => {
+      return value
+    });
+    if (synced != null) { return synced };
+    if (pending != null) { return pending };
   }
 
   async storeScan(accessCode: string, scanData: string): Promise<any> {
@@ -138,10 +143,8 @@ export class PyConAPI {
     });
     if (synced != null) {
       console.log('Already captured ' + accessCode)
-      this.presentSuccess('Already have captured lead for ' + synced.data.first_name);
       return;
     } else if (pending != null) {
-      this.presentSuccess('Already have scan awaiting capture for ' + accessCode)
       this.syncScan(accessCode);
       return;
     } else {
@@ -150,7 +153,6 @@ export class PyConAPI {
         'pending-scan-' + accessCode,
         {scanData: scanData, scannedAt: scanDate.toISOString()}
       ).then(() => {
-        this.presentSuccess('Successfully stored scan for ' + accessCode);
         console.log('Scanned ' + accessCode);
         this.syncScan(accessCode);
       }).catch((error) => {
