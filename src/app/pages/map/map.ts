@@ -95,12 +95,12 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   syncAllPending = async () => {
-    this.storage.forEach((value, key, index) => {
+    await this.storage.forEach((value, key, index) => {
       if (key.startsWith("pending-scan-")) {
         this.pycon.syncScan(value.scanData.split(':')[0]).then((resp) => {console.log(resp)});
       }
     });
-    this.storage.forEach((value, key, index) => {
+    await this.storage.forEach((value, key, index) => {
       if (key.startsWith("pending-note-")) {
         this.pycon.syncNote(value.accessCode).then((resp) => {console.log(resp)});
       }
