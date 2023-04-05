@@ -75,12 +75,11 @@ export class MapPage implements OnInit, OnDestroy {
     clearTimeout(this.scan_timeout);
     this.ignore_scans = true;
     const note = await this.pycon.getNote(accessCode);
-    console.log(note);
     const modal = await this.modalCtrl.create({
       component: LeadNoteModalComponent,
       componentProps: {
         'scan': scan,
-        'note': note?.note,
+        'note': (note)? note.note : null,
       }
     })
     modal.present();
@@ -99,6 +98,11 @@ export class MapPage implements OnInit, OnDestroy {
     this.storage.forEach((value, key, index) => {
       if (key.startsWith("pending-scan-")) {
         this.pycon.syncScan(value.scanData.split(':')[0]).then((resp) => {console.log(resp)});
+      }
+    });
+    this.storage.forEach((value, key, index) => {
+      if (key.startsWith("pending-note-")) {
+        this.pycon.syncNote(value.accessCode).then((resp) => {console.log(resp)});
       }
     });
     setTimeout(this.syncAllPending, 60000);
@@ -133,7 +137,8 @@ export class MapPage implements OnInit, OnDestroy {
     this.detectorRef.detectChanges();
   }
 
-  updateLastScan = async (accessCode: string) => {
+  updateLastScan = async (accessCode: string, calNo: number) => {
+    calNo += 1;
     this.pycon.fetchScan(accessCode).then((scan) => {
       if (scan) {
         this.last_scan = {
@@ -144,13 +149,17 @@ export class MapPage implements OnInit, OnDestroy {
           "note": scan.note,
         };
         this.detectorRef.detectChanges();
-        if (!scan.data?.first_name) {
-          setTimeout(() => {this.updateLastScan(accessCode);}, 100);
+        if (!scan.data?.first_name && calNo < 30) {
+          setTimeout(() => {this.updateLastScan(accessCode, calNo);}, 100);
         } else {
           this.last_scan_timeout = setTimeout(this.clearLastScan, 5000);
         }
       } else {
-        setTimeout(() => {this.updateLastScan(accessCode);}, 100);
+        if (calNo < 30) {
+          setTimeout(() => {this.updateLastScan(accessCode, calNo);}, 100);
+        } else {
+          this.last_scan_timeout = setTimeout(this.clearLastScan, 5000);
+        }
       }
     });
   }
@@ -158,7 +167,7 @@ export class MapPage implements OnInit, OnDestroy {
   handleScan = async (result: ScanResult) => {
     if (result.hasContent && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.content.split(':')[0]);
+      this.updateLastScan(result.content.split(':')[0], 0);
       this.pycon.storeScan(result.content.split(':')[0], result.content).then(() => {
         console.log(result.content); // log the raw scanned content
         clearTimeout(this.scan_timeout);

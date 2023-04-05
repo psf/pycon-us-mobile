@@ -95,6 +95,40 @@ export class PyConAPI {
     });
   }
 
+  async syncNote(accessCode: string): Promise<any> {
+    const pending = await this.storage.get('pending-note-' + accessCode).then((value) => {
+      return value
+    });
+
+    if (pending === null) {
+      console.log('Unable to sync note for missing ' + accessCode);
+    }
+
+    const method = 'POST';
+    const url = '/2023/api/v1/lead_retrieval/' + accessCode + "/note/";
+    const body = JSON.stringify(pending);
+    const headers = {"Content-Type": "application/json"}
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+
+    this.http.post(
+      this.base + url,
+      body,
+      {headers: {...headers, ...authHeaders}}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to capture lead, ' + error)
+        throw error;
+      })
+    ).subscribe({
+      next: data => {
+        console.log(data);
+        this.storage.remove('pending-note-' + accessCode).then((value) => {});
+      },
+      error: error => {
+      }
+    });
+  }
+
   async getNote(accessCode): Promise<any> {
     return this.storage.get('note-' + accessCode).then((value) => {
       return value;
@@ -109,17 +143,15 @@ export class PyConAPI {
       return value
     });
     console.log(pending, synced, note);
-    this.storage.set(
-      'note-' + accessCode,
-      {accessCode: accessCode, note: note}
-    )
+    this.storage.set('note-' + accessCode, {accessCode: accessCode, note: note})
+    this.storage.set('pending-note-' + accessCode, {accessCode: accessCode, note: note}).then((value) => {
+      this.syncNote(accessCode);
+    })
     if (synced != null) {
       this.storage.set('synced-scan-' + accessCode, {...synced, ...{note: true}})
-      //this.syncNote(accessCode)
     }
     if (pending != null) {
       this.storage.set('pending-scan-' + accessCode, {...pending, ...{note: true}})
-      //this.syncNote(accessCode)
     }
   }
 
