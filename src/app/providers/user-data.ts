@@ -22,6 +22,14 @@ export class UserData {
     });
   }
 
+  async fetchPreferences() {
+    this.pycon.fetchPreferences().then((data) => {
+      if (data?.favorites) {
+        this.storage.set('favorite_sessions', data.favorites).then(() => {});
+      }
+    })
+  }
+
   hasFavorite(sessionId: string): boolean {
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;
