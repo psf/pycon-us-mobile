@@ -24,6 +24,7 @@ export class MapPage implements OnInit, OnDestroy {
   last_scan: any = null;
   last_scan_timeout: ReturnType<typeof setTimeout> = null;
   scan_timeout: ReturnType<typeof setTimeout> = null;
+  ignore_scans: boolean = false;
 
   ios: boolean;
   show_permissions_error: boolean = false;
@@ -71,6 +72,8 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   openNoteModal = async (accessCode, scan) => {
+    clearTimeout(this.scan_timeout);
+    this.ignore_scans = true;
     const note = await this.pycon.getNote(accessCode);
     console.log(note);
     const modal = await this.modalCtrl.create({
@@ -81,16 +84,15 @@ export class MapPage implements OnInit, OnDestroy {
       }
     })
     modal.present();
-    this.stopScan();
 
     const { data, role } = await modal.onWillDismiss();
 
+    this.ignore_scans = false;
     if (role === 'save' && data.note) {
       this.pycon.storeNote(accessCode, data.note).then(() => {
         this.refresh_presentation();
       });
     }
-    this.startScan();
   }
 
   syncAllPending = async () => {
@@ -154,7 +156,7 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   handleScan = async (result: ScanResult) => {
-    if (result.hasContent) {
+    if (result.hasContent && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
       this.updateLastScan(result.content.split(':')[0]);
       this.pycon.storeScan(result.content.split(':')[0], result.content).then(() => {
