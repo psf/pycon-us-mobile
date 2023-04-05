@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { PyConAPI } from '../providers/pycon-api';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,33 +14,39 @@ export class UserData {
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
 
   constructor(
-    public storage: Storage
+    public storage: Storage,
+    private pycon: PyConAPI,
   ) {
     this.storage.get('favorite_sessions').then((data) => {
-      this.favorites = data;
+      this.favorites = (data === null)? [] : data;
     });
   }
 
   hasFavorite(sessionId: string): boolean {
     this.storage.get('favorite_sessions').then((data) => {
-      this.favorites = data;
+      this.favorites = (data === null)? [] : data;
     });
     return (this.favorites.indexOf(String(sessionId)) > -1);
   }
 
   addFavorite(sessionId: string): void {
     this.storage.get('favorite_sessions').then((data) => {
-      this.favorites = data;
+      this.favorites = (data === null)? [] : data;
     });
-    this.favorites.push(sessionId);
+    this.favorites.push(String(sessionId));
+    this.pycon.patchUserData({favorites: this.favorites});
     this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   removeFavorite(sessionId: string): void {
-    const index = this.favorites.indexOf(sessionId);
+    this.storage.get('favorite_sessions').then((data) => {
+      this.favorites = (data === null)? [] : data;
+    });
+    const index = this.favorites.indexOf(String(sessionId));
     if (index > -1) {
       this.favorites.splice(index, 1);
     }
+    this.pycon.patchUserData({favorites: this.favorites});
     this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 

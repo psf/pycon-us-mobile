@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { createHash } from 'sha1-uint8array';
 import { of } from 'rxjs';
@@ -16,25 +15,13 @@ export class PyConAPI {
   base = 'https://us.pycon.org'
 
   constructor(
-    private userData: UserData,
-    private toastController: ToastController,
     private http: HttpClient,
     private storage: Storage
   ) { }
 
-  async presentSuccess(message) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 1000,
-      position: 'top',
-      icon: 'check'
-    });
-    toast.present();
-  }
-
   async buildRequestAuthHeaders(method, url, body): Promise<any> {
-    const apiKey = await this.userData.getAuthKey().then((value) => {return value});
-    const secret = await this.userData.getSecret().then((value) => {return value});
+    const apiKey = await this.storage.get('key').then((value) => {return value});
+    const secret = await this.storage.get('secret').then((value) => {return value});
 
     const timestamp = Math.round(Date.now() / 1000)
     const baseString = [
@@ -52,6 +39,29 @@ export class PyConAPI {
     }
 
     return headers;
+  }
+
+  async patchUserData(payload: any): Promise<any> {
+    const method = "PATCH";
+    const url = '/2023/api/v1/user/mobile_state/';
+    const body = JSON.stringify(payload);
+    const headers = {"Content-Type": "application/json"}
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    this.http.patch(
+      this.base + url,
+      body,
+      {headers: {...headers, ...authHeaders}}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to persist mobile state, ' + error)
+        throw error;
+      })
+    ).subscribe({
+      next: data => {
+      },
+      error: error => {
+      }
+    });
   }
 
   async syncScan(accessCode: string): Promise<any> {
