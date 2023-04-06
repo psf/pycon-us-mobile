@@ -65,11 +65,8 @@ export class ConferenceData {
     };
 
     data.schedule.forEach((slot: any) => {
-      if (["break", "blank"].includes(slot.kind)) {
+      if (["blank"].includes(slot.kind)) {
         return;
-      }
-      if (slot.kind == "plenary") {
-        slot.room = "Main Stage"
       }
       if (slot.kind == "sponsor-workshop") {
         slot.kind = "Sponsor Presentation"
