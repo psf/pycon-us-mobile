@@ -11,7 +11,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: 'about.html',
   styleUrls: ['./about.scss'],
 })
-export class AboutPage {
+export class AboutPage implements OnInit {
   content: any;
 
   constructor(
