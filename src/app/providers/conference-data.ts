@@ -134,8 +134,8 @@ export class ConferenceData {
 
       this.data.sessions.push(session);
 
-      var day = start.toISOString().split('T')[0];
-      var group = start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase();
+      let day = start.toISOString().split('T')[0];
+      let group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(
         (d: any) => d.date === day
