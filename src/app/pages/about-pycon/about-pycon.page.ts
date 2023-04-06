@@ -7,11 +7,11 @@ import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html',
-  styleUrls: ['./about.scss'],
+  selector: 'app-about-pycon',
+  templateUrl: './about-pycon.page.html',
+  styleUrls: ['./about-pycon.page.scss'],
 })
-export class AboutPage implements OnInit {
+export class AboutPyconPage implements OnInit {
   content: any;
 
   constructor(

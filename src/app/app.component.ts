@@ -10,6 +10,7 @@ import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
+import { ConferenceData } from './providers/conference-data';
 import { LiveUpdateService } from './providers/live-update.service';
 
 @Component({
@@ -35,6 +36,11 @@ export class AppComponent implements OnInit {
       url: '/app/tabs/sponsors',
       icon: 'business'
     },
+    {
+      title: 'About',
+      url: '/app/tabs/about-pycon',
+      icon: 'information-circle'
+    },
   ];
   nickname = null;
   loggedIn = false;
@@ -52,6 +58,7 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private userData: UserData,
     private toastCtrl: ToastController,
+    public confData: ConferenceData,
     public liveUpdateService: LiveUpdateService,
   ) {
     this.initializeApp();
@@ -64,6 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
+    this.confData.load();
     this.platform.ready().then(() => {
       if (this.platform.is('hybrid')) {
         StatusBar.hide();

@@ -21,6 +21,7 @@
               <ion-label>
                 {{p.title}}
               </ion-label>
+              <ion-badge *ngIf="(p.title === 'About' && liveUpdateService.updateAvailable?.available)">Live Update Available</ion-badge>
             </ion-item>
 
           </ion-menu-toggle>
@@ -75,17 +76,6 @@
         </ion-list>
 
         <ion-list lines="none">
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/app/tabs/about" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="information-circle-outline">
-              </ion-icon>
-              <ion-label>
-                About
-              </ion-label>
-              <ion-badge *ngIf="liveUpdateService.updateAvailable?.available">Live Update Available</ion-badge>
-            </ion-item>
-          </ion-menu-toggle>
 
           <ion-item>
             <ion-icon slot="start" name="moon-outline"></ion-icon>

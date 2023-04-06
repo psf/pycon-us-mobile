@@ -28,6 +28,10 @@ const routes: Routes = [
   {
     path: 'sponsors',
     loadChildren: () => import('./pages/sponsors/sponsors.module').then( m => m.SponsorsPageModule)
+  },
+  {
+    path: 'about-pycon',
+    loadChildren: () => import('./pages/about-pycon/about-pycon.module').then( m => m.AboutPyconPageModule)
   }
 ];
 

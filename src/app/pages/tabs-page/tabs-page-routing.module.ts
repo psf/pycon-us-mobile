@@ -58,11 +58,11 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'about',
+        path: 'about-pycon',
         children: [
           {
             path: '',
-            loadChildren: () => import('../about/about.module').then(m => m.AboutModule)
+            loadChildren: () => import('../about-pycon/about-pycon.module').then(m => m.AboutPyconPageModule)
           }
         ]
       },

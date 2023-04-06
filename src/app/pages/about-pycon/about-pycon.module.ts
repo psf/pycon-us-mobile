@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { AboutPage } from './about';
-import { AboutPageRoutingModule } from './about-routing.module';
+import { AboutPyconPageRoutingModule } from './about-pycon-routing.module';
+
+import { AboutPyconPage } from './about-pycon.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AboutPageRoutingModule,
+    AboutPyconPageRoutingModule
   ],
-  declarations: [AboutPage],
-  entryComponents: [],
-  bootstrap: [AboutPage],
+  declarations: [AboutPyconPage]
 })
-export class AboutModule {}
+export class AboutPyconPageModule {}
