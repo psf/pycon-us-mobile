@@ -40,6 +40,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'sponsors',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../sponsors/sponsors.module').then(m => m.SponsorsPageModule)
+          }
+        ]
+      },
+      {
         path: 'lead-retrieval',
         children: [
           {

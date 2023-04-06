@@ -10,12 +10,6 @@
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
-        <span *ngIf="ios">Filter</span>
-        <span *ngIf="!ios">
-          <ion-icon slot="icon-only" name="options"></ion-icon>
-        </span>
-      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

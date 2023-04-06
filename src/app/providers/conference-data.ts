@@ -53,7 +53,7 @@ export class ConferenceData {
   }
 
   processData(data: any) {
-    this.storage.set('schedule-cache', this.data);
+    this.storage.set('schedule-cache', data);
 
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
@@ -61,15 +61,13 @@ export class ConferenceData {
       "schedule": [],
       "speakers": [],
       "tracks": [],
-      "sessions": []
+      "sessions": [],
+      "conference": data.conference
     };
 
     data.schedule.forEach((slot: any) => {
-      if (["break", "blank"].includes(slot.kind)) {
+      if (["blank"].includes(slot.kind)) {
         return;
-      }
-      if (slot.kind == "plenary") {
-        slot.room = "Main Stage"
       }
       if (slot.kind == "sponsor-workshop") {
         slot.kind = "Sponsor Presentation"
@@ -135,7 +133,7 @@ export class ConferenceData {
       this.data.sessions.push(session);
 
       var day = start.toISOString().split('T')[0];
-      var group = start.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'}).toLowerCase();
+      var group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(
         (d: any) => d.date === day
@@ -251,6 +249,24 @@ export class ConferenceData {
 
     // all tests must be true if it should not be hidden
     session.hide = !(matchesQueryText && matchesTracks && matchesSegment);
+  }
+
+  getSponsors() {
+    return this.load().pipe(
+      map((data: any) => {
+        return data.conference.sponsors;
+      })
+    );
+  }
+
+  getContent() {
+    return this.load().pipe(
+      map((data: any) => {
+        console.log('here');
+        console.log(data);
+        return data.conference.content;
+      })
+    );
   }
 
   getSpeakers(queryText: string) {

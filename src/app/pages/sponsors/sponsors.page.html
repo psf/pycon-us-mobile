@@ -1,0 +1,40 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Sponsors</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Sponsors</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row *ngFor="let sponsorLevel of sponsors | keyvalue : levelOrder">
+      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let sponsor of sponsorLevel.value" [hidden]="sponsor.hide">
+        <ion-card class="sponsor-card">
+          <ion-card-header>
+            <ion-card-subtitle>{{sponsor.level}}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+              <ion-item>
+                <ion-img slot="start" style="min-width: 128px; max-width: 33%; max-height: 33%;" [src]="sponsor.logo_url" [alt]="sponsor.name + ' logo'"></ion-img>
+                <ion-label>
+                  <ion-text><b>{{sponsor.name}}</b></ion-text><br><br>
+                  <ion-text *ngIf="sponsor?.booth_number">Expo Hall Booth: {{sponsor.booth_number}}<br></ion-text>
+                  <ion-text *ngIf="sponsor?.job_fair_table_number">Job Fair Table: {{sponsor.job_fair_table_number}}</ion-text>
+                </ion-label>
+              </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
