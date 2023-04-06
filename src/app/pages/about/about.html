@@ -10,10 +10,13 @@
 
 <ion-content>
   <ion-grid>
-    <ion-row>
-      <ion-col>
-          <ion-button (click)="performAutomaticUpdate()" *ngIf="liveUpdateService.updateAvailable?.available">Fetch latest update</ion-button>
-      </ion-col>
-    </ion-row>
+     <ion-col>
+      <ion-row *ngIf="liveUpdateService.updateAvailable?.available">
+        <ion-button (click)="performAutomaticUpdate()" *ngIf="liveUpdateService.updateAvailable?.available">Fetch latest update</ion-button>
+      </ion-row>
+      <ion-row>
+        <div [innerHtml]="content.about"></div>
+      </ion-row>
+    </ion-col>
   </ion-grid>
 </ion-content>

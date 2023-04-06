@@ -254,8 +254,17 @@ export class ConferenceData {
   getSponsors() {
     return this.load().pipe(
       map((data: any) => {
-        console.log(data);
         return data.conference.sponsors;
+      })
+    );
+  }
+
+  getContent() {
+    return this.load().pipe(
+      map((data: any) => {
+        console.log('here');
+        console.log(data);
+        return data.conference.content;
       })
     );
   }
