@@ -29,7 +29,12 @@ export class AppComponent implements OnInit {
       title: 'Speakers',
       url: '/app/tabs/speakers',
       icon: 'people'
-    }
+    },
+    {
+      title: 'Sponsors',
+      url: '/app/tabs/sponsors',
+      icon: 'business'
+    },
   ];
   nickname = null;
   loggedIn = false;

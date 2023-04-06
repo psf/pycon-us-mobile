@@ -53,7 +53,7 @@ export class ConferenceData {
   }
 
   processData(data: any) {
-    this.storage.set('schedule-cache', this.data);
+    this.storage.set('schedule-cache', data);
 
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
@@ -61,7 +61,8 @@ export class ConferenceData {
       "schedule": [],
       "speakers": [],
       "tracks": [],
-      "sessions": []
+      "sessions": [],
+      "conference": data.conference
     };
 
     data.schedule.forEach((slot: any) => {
@@ -248,6 +249,15 @@ export class ConferenceData {
 
     // all tests must be true if it should not be hidden
     session.hide = !(matchesQueryText && matchesTracks && matchesSegment);
+  }
+
+  getSponsors() {
+    return this.load().pipe(
+      map((data: any) => {
+        console.log(data);
+        return data.conference.sponsors;
+      })
+    );
   }
 
   getSpeakers(queryText: string) {
