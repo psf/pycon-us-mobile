@@ -23,14 +23,19 @@ export class UserData {
   }
 
   fetchPreferences() {
-    this.pycon.fetchPreferences().then(data => {
-      data.subscribe(userPrefs => {
-        console.log(userPrefs);
-        if (userPrefs?.favorites) {
-          console.log(userPrefs)
-          this.favorites = userPrefs.favorites;
-          this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
-        }
+    this.isLoggedIn().then((loggedIn) => {
+      if (!loggedIn) {
+        return
+      }
+      this.pycon.fetchPreferences().then(data => {
+        data.subscribe(userPrefs => {
+          console.log(userPrefs);
+          if (userPrefs?.favorites) {
+            console.log(userPrefs)
+            this.favorites = userPrefs.favorites;
+            this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
+          }
+        })
       })
     })
   }
