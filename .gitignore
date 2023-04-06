@@ -32,5 +32,6 @@ plugins/ios.json
 $RECYCLE.BIN/
 
 .DS_Store
+capacitor.config.json
 Thumbs.db
 UserInterfaceState.xcuserstate
