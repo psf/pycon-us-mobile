@@ -20,9 +20,9 @@ import { LiveUpdateService } from './providers/live-update.service';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  appPages = [
+  schedulePages = [
     {
-      title: 'Schedule',
+      title: 'Full Schedule',
       url: '/app/tabs/schedule',
       icon: 'calendar'
     },
@@ -31,11 +31,15 @@ export class AppComponent implements OnInit {
       url: '/app/tabs/speakers',
       icon: 'people'
     },
+  ]
+  sponsorPages = [
     {
       title: 'Sponsors',
       url: '/app/tabs/sponsors',
       icon: 'business'
     },
+  ]
+  appPages = [
     {
       title: 'About',
       url: '/app/tabs/about-pycon',
