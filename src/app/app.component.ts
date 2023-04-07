@@ -21,30 +21,20 @@ import { LiveUpdateService } from './providers/live-update.service';
 })
 export class AppComponent implements OnInit {
   schedulePages = [
-    {
-      title: 'Full Schedule',
-      url: '/app/tabs/schedule',
-      icon: 'calendar'
-    },
-    {
-      title: 'Speakers',
-      url: '/app/tabs/speakers',
-      icon: 'people'
-    },
+    { title: 'Schedule', url: '/app/tabs/schedule', icon: 'calendar' },
+    { title: 'Speakers', url: '/app/tabs/speakers', icon: 'people' },
+    { title: 'Talks', url: '/app/tabs/schedule/talks', icon: 'mic'},
+    { title: 'Charlas', url: '/app/tabs/schedule/charlas', icon: 'mic'},
+    { title: 'Tutorials', url: '/app/tabs/schedule/tutorials', icon: 'laptop'},
+    { title: 'Posters', url: '/app/tabs/schedule/posters', icon: 'reader'},
+    { title: 'Events and Summits', url: '/app/tabs/schedule/events', icon: 'calendar-number'},
   ]
   sponsorPages = [
-    {
-      title: 'Sponsors',
-      url: '/app/tabs/sponsors',
-      icon: 'business'
-    },
+    { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business'    },
+    { title: 'Presentations', url: '/app/tabs/schedule/sponsor-presentations', icon: 'mic'},
   ]
   appPages = [
-    {
-      title: 'About',
-      url: '/app/tabs/about-pycon',
-      icon: 'information-circle'
-    },
+    { title: 'About', url: '/app/tabs/about-pycon', icon: 'information-circle' },
   ];
   nickname = null;
   loggedIn = false;

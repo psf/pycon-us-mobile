@@ -1,0 +1,55 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons *ngIf="!showSearchbar" slot="start">
+      <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title *ngIf="!ios && !showSearchbar">{{trackName}}</ion-title>
+    <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="sessionQueryText" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{trackName}}</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
+    </ion-toolbar>
+
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let session of displaySessions" [hidden]="session.hide">
+        <ion-card class="session-card">
+          <ion-card-content>
+            <ion-list lines="none">
+              <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
+                <ion-label>
+                  <h3>
+                    <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
+                    {{session.track}}: {{session.name}}
+                  </h3>
+                  <p>
+                    {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}} <span *ngIf="session?.speakerNames">&mdash; {{session.speakerNames?.join(', ')}}</span>
+                  </p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-infinite-scroll [disabled]="!scrolling" (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

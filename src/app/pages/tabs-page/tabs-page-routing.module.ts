@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs-page';
 import { SchedulePage } from '../schedule/schedule';
+import { ScheduleListPageModule } from '../schedule-list/schedule-list.module';
 
 
 const routes: Routes = [
@@ -15,6 +16,10 @@ const routes: Routes = [
           {
             path: '',
             component: SchedulePage,
+          },
+          {
+            path: ':trackSlug',
+            loadChildren: () => import('../schedule-list/schedule-list.module').then(m => m.ScheduleListPageModule)
           },
           {
             path: 'session/:sessionId',

@@ -130,7 +130,9 @@ export class ConferenceData {
         });
       }
 
-      this.data.sessions.push(session);
+      if (!slot.sessions) {
+        this.data.sessions.push(session);
+      }
 
       if (slot.sessions) {
         slot.sessions.forEach((shared_session, index, arr) => {
@@ -165,6 +167,7 @@ export class ConferenceData {
               "speakerNames": shared_session.authors,
               "timeStart": start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
               "timeEnd": end.toLocaleString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+              "trackSlug": slot.kind + 's',
               "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
               "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
               "id": shared_session.conf_key,
@@ -271,6 +274,30 @@ export class ConferenceData {
     );
   }
 
+  getSessions(
+    queryText = '',
+    excludeTracks: any[] = [],
+  ) {
+    return this.load().pipe(
+      map((data: any) => {
+        const sessions = []
+
+        queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+        const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+        data.sessions.forEach((session: any) => {
+          // check if this session should show or not
+          this.filterSession(session, queryWords, excludeTracks, 'all');
+          if (!session.hide) {
+            sessions.push(session);
+          }
+        });
+
+        return sessions;
+      })
+    );
+  }
+
   filterSession(
     session: any,
     queryWords: string[],
@@ -284,6 +311,16 @@ export class ConferenceData {
         if (session.name.toLowerCase().indexOf(queryWord) > -1) {
           matchesQueryText = true;
         }
+        if (session.description) {
+          if (session.description.toLowerCase().indexOf(queryWord) > -1) {
+            matchesQueryText = true;
+          }
+        }
+        session.speakers.forEach((speaker: any) => {
+          if (speaker.name.toLowerCase().indexOf(queryWord) > -1) {
+            matchesQueryText = true;
+          }
+        });
       });
     } else {
       // if there are no query words then this session passes the query test
