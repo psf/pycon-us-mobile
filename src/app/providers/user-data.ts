@@ -52,7 +52,11 @@ export class UserData {
       this.favorites = (data === null)? [] : data;
     });
     this.favorites.push(String(sessionId));
-    this.pycon.patchUserData({favorites: this.favorites});
+    this.isLoggedIn().then((loggedIn) => {
+      if (loggedIn) {
+        this.pycon.patchUserData({favorites: this.favorites});
+      }
+    });
     this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
@@ -64,7 +68,11 @@ export class UserData {
     if (index > -1) {
       this.favorites.splice(index, 1);
     }
-    this.pycon.patchUserData({favorites: this.favorites});
+    this.isLoggedIn().then((loggedIn) => {
+      if (loggedIn) {
+        this.pycon.patchUserData({favorites: this.favorites});
+      }
+    });
     this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
