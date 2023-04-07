@@ -262,8 +262,6 @@ export class ConferenceData {
   getContent() {
     return this.load().pipe(
       map((data: any) => {
-        console.log('here');
-        console.log(data);
         return data.conference.content;
       })
     );
