@@ -28,6 +28,7 @@
           <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/schedule/session/{{session.id}}">
             <ion-label>
               <h2>{{ session.track }}: {{session.name}}</h2>
+              <ion-text style="font-size: smaller;">{{session.day}} {{session.timeStart}} in {{session.location}}</ion-text>
             </ion-label>
           </ion-item>
         </ion-card-header>

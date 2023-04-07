@@ -47,6 +47,7 @@
               <ion-item *ngFor="let session of speaker.sessions" detail="false" routerLink="/app/tabs/speakers/session/{{session.id}}">
                 <ion-label>
                   <h3>{{session.track}}: {{session.name}}</h3>
+                  <ion-text style="font-size: smaller;">{{session.day}} {{session.timeStart}} in {{session.location}}</ion-text>
                 </ion-label>
               </ion-item>
 
