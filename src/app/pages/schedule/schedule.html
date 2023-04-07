@@ -78,18 +78,20 @@
         [hidden]="session.hide">
         <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
           <ion-label>
-            <h3>{{session.track}}: {{session.name}}</h3>
+            <h3>
+              <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
+              {{session.track}}: {{session.name}}
+            </h3>
             <p>
               {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}} <span *ngIf="session?.speakerNames">&mdash; {{session.speakerNames?.join(', ')}}</span>
             </p>
           </ion-label>
         </ion-item>
         <ion-item-options>
-          <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
+          <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="!session.favorite">
             Favorite
           </ion-item-option>
-          <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')"
-            *ngIf="segment === 'favorites'">
+          <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="session.favorite">
             Remove
           </ion-item-option>
         </ion-item-options>
