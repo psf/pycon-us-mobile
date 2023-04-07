@@ -127,6 +127,7 @@ export class SchedulePage implements OnInit {
     } else {
       // Add as a favorite
       this.user.addFavorite(sessionData.id);
+      this.updateSchedule();
 
       // Close the open item
       slidingItem.close();
