@@ -12,7 +12,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./about-pycon.page.scss'],
 })
 export class AboutPyconPage implements OnInit {
-  content: any;
+  content: any = "";
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -20,13 +20,6 @@ export class AboutPyconPage implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {}
-
-  updateContent() {
-    this.confData.getContent().subscribe((content: any[]) => {
-      console.log(content);
-      this.content = content;
-    });
-  }
 
   reloadContent() {
     this.loadingCtrl.create({
