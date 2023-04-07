@@ -132,6 +132,69 @@ export class ConferenceData {
 
       this.data.sessions.push(session);
 
+      if (slot.sessions) {
+        slot.sessions.forEach((shared_session, index, arr) => {
+          if (shared_session.speakers) {
+            shared_session.speakers.forEach((speaker: any) => {
+              const speakerExists = this.data.speakers.find(
+                (s: any) => s.id === speaker.id
+              )
+              if (!(speakerExists)){
+                this.data.speakers.push({
+                  "id": speaker.id,
+                  "name": speaker.name,
+                  // only display the speaker photo if it's not null in the response.
+                  // otherwise, show a default fallback photo
+                  "profilePic": speaker.photo ? speaker.photo : 'assets/img/person-circle-outline.png',
+                  "about": speaker.bio,
+                });
+              }
+            });
+          }
+
+          // transform any markdown shared_session names to regular text
+          shared_session.name = markdownToTxt(shared_session.name);
+
+          var start = new Date(slot.start);
+          var end = new Date(slot.end);
+          var session = {
+              "name": shared_session.name,
+              "location": slot.room,
+              "description": shared_session.description,
+              "speakers": [],
+              "speakerNames": shared_session.authors,
+              "timeStart": start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+              "timeEnd": end.toLocaleString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+              "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
+              "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
+              "id": shared_session.conf_key,
+              "day": start.toLocaleDateString('en-us', {weekday: 'short'})
+          }
+
+          const track = this.data.tracks.find(
+            (t: any) => t.name === slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)
+          )
+          if (!(track)) {
+            this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": "mic-outline"})
+          }
+
+          if (shared_session.speakers) {
+            session.speakerNames.forEach((speakerName: any) => {
+              const speaker = this.data.speakers.find(
+                (s: any) => s.name === speakerName
+              );
+              if (speaker) {
+                session.speakers.push(speaker);
+                speaker.sessions = speaker.sessions || [];
+                speaker.sessions.push(session);
+              }
+            });
+          }
+
+          this.data.sessions.push(session);
+        })
+      }
+
       var day = start.toISOString().split('T')[0];
       var group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
