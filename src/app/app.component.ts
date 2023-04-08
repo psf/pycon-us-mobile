@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loadTheme();
     this.checkLoginStatus();
     this.listenForLoginEvents();
     this.liveUpdateService.checkForUpdate();
@@ -125,5 +126,15 @@ export class AppComponent implements OnInit {
     this.menu.enable(false);
     this.storage.set('ion_did_tutorial', false);
     this.router.navigateByUrl('/tutorial');
+  }
+
+  loadTheme() {
+    this.userData.getDarkTheme().then(dark => {
+      this.dark = dark;
+    });
+  }
+
+  toggleDarkTheme() {
+    this.userData.toggleDarkTheme();
   }
 }
