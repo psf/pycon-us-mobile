@@ -163,4 +163,15 @@ export class UserData {
       return value;
     });
   }
+
+  getScheduleFilters(): Promise<Array<string>> {
+    return this.storage.get('scheduleFilters').then((value) => {
+      // If there are none, return an empty array
+      return value || [];
+    });
+  }
+
+  setScheduleFilters(filters: any) {
+    this.storage.set('scheduleFilters', filters);
+  }
 }
