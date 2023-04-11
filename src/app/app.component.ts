@@ -20,27 +20,20 @@ import { LiveUpdateService } from './providers/live-update.service';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
+  schedulePages = [
+    { title: 'Schedule',  url: '/app/tabs/schedule',         icon: 'calendar' },
+    { title: 'Talks',     indent: true, url: '/app/tabs/tracks/talks',     icon: 'mic'},
+    { title: 'Charlas',   indent: true, url: '/app/tabs/tracks/charlas',   icon: 'mic'},
+    { title: 'Tutorials', indent: true, url: '/app/tabs/tracks/tutorials', icon: 'laptop'},
+    { title: 'Posters',   indent: true, url: '/app/tabs/tracks/posters',   icon: 'reader'},
+    { title: 'Speakers',  url: '/app/tabs/speakers',         icon: 'people' },
+  ]
+  sponsorPages = [
+    { title: 'Sponsors',      url: '/app/tabs/sponsors',                     icon: 'business'    },
+    { title: 'Presentations', indent: true, url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic'},
+  ]
   appPages = [
-    {
-      title: 'Schedule',
-      url: '/app/tabs/schedule',
-      icon: 'calendar'
-    },
-    {
-      title: 'Speakers',
-      url: '/app/tabs/speakers',
-      icon: 'people'
-    },
-    {
-      title: 'Sponsors',
-      url: '/app/tabs/sponsors',
-      icon: 'business'
-    },
-    {
-      title: 'About',
-      url: '/app/tabs/about-pycon',
-      icon: 'information-circle'
-    },
+    { title: 'About', url: '/app/tabs/about-pycon', icon: 'information-circle' },
   ];
   nickname = null;
   loggedIn = false;

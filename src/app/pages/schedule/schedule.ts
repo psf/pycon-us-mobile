@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
@@ -35,6 +35,7 @@ export class SchedulePage implements OnInit {
     public confData: ConferenceData,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
+    public route: ActivatedRoute,
     public router: Router,
     public routerOutlet: IonRouterOutlet,
     public toastCtrl: ToastController,
@@ -44,9 +45,11 @@ export class SchedulePage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.reloadSchedule();
-
     this.ios = this.config.get('mode') === 'ios';
+
+    this.route.params.subscribe(routeParams => {
+      this.reloadSchedule();
+    })
   }
 
   async handleRefresh(event) {
