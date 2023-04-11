@@ -21,17 +21,16 @@ import { LiveUpdateService } from './providers/live-update.service';
 })
 export class AppComponent implements OnInit {
   schedulePages = [
-    { title: 'Schedule', url: '/app/tabs/schedule', icon: 'calendar' },
-    { title: 'Speakers', url: '/app/tabs/speakers', icon: 'people' },
-    { title: 'Talks', url: '/app/tabs/schedule/talks', icon: 'mic'},
-    { title: 'Charlas', url: '/app/tabs/schedule/charlas', icon: 'mic'},
-    { title: 'Tutorials', url: '/app/tabs/schedule/tutorials', icon: 'laptop'},
-    { title: 'Posters', url: '/app/tabs/schedule/posters', icon: 'reader'},
-    { title: 'Events and Summits', url: '/app/tabs/schedule/events', icon: 'calendar-number'},
+    { title: 'Schedule',  url: '/app/tabs/schedule',         icon: 'calendar' },
+    { title: 'Speakers',  url: '/app/tabs/speakers',         icon: 'people' },
+    { title: 'Talks',     url: '/app/tabs/tracks/talks',     icon: 'mic'},
+    { title: 'Charlas',   url: '/app/tabs/tracks/charlas',   icon: 'mic'},
+    { title: 'Tutorials', url: '/app/tabs/tracks/tutorials', icon: 'laptop'},
+    { title: 'Posters',   url: '/app/tabs/tracks/posters',   icon: 'reader'},
   ]
   sponsorPages = [
-    { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business'    },
-    { title: 'Presentations', url: '/app/tabs/schedule/sponsor-presentations', icon: 'mic'},
+    { title: 'Sponsors',      url: '/app/tabs/sponsors',                     icon: 'business'    },
+    { title: 'Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic'},
   ]
   appPages = [
     { title: 'About', url: '/app/tabs/about-pycon', icon: 'information-circle' },

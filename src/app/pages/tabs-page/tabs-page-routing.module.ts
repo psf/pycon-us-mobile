@@ -18,13 +18,18 @@ const routes: Routes = [
             component: SchedulePage,
           },
           {
-            path: ':trackSlug',
-            loadChildren: () => import('../schedule-list/schedule-list.module').then(m => m.ScheduleListPageModule)
-          },
-          {
             path: 'session/:sessionId',
             loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
           }
+        ]
+      },
+      {
+        path: 'tracks',
+        children: [
+          {
+            path: ':trackSlug',
+            loadChildren: () => import('../schedule-list/schedule-list.module').then(m => m.ScheduleListPageModule)
+          },
         ]
       },
       {

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnInit } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
@@ -17,15 +17,17 @@ const slugify = str =>
   templateUrl: './schedule-list.page.html',
   styleUrls: ['./schedule-list.page.scss'],
 })
-export class ScheduleListPage {
+export class ScheduleListPage implements OnInit {
   // Get a reference to the search bar
   @ViewChild('search') search : any;
   trackName: string;
   trackSlug: string;
   excludeTracks: any[] = [];
+
   sessions: any[] = [];
   displaySessions: any[] = [];
   sessionQueryText = '';
+
   ios: boolean;
   showSearchbar: boolean;
   page: number = 0;
@@ -58,16 +60,17 @@ export class ScheduleListPage {
 
   resetSessions() {
     this.page = 0;
+    this.scrolling = true;
     this.sessionQueryText = "";
     this.sessions = [];
     this.displaySessions = [];
     this.reloadSessions();
+    this.changeDetection.detectChanges();
   }
 
   async generateSessions() {
     if (this.page >= 0) {
       this.sessions.slice(25*this.page, 25*this.page + 25).forEach(session => this.displaySessions.push(session));
-      console.log(this.sessions.length, this.displaySessions.length)
       if (this.sessions.length == this.displaySessions.length) {
         this.page = -1
         this.scrolling = false;
@@ -108,14 +111,16 @@ export class ScheduleListPage {
      }, 500); // ms delay
    }
 
-  ionViewWillEnter() {
-    this.ios = this.config.get('mode') === 'ios';
-    this.sessions = [];
-    this.displaySessions = [];
+  ionViewWillLeave() {
+    console.log('here');
+  }
+
+  initSchedule(slug) {
+    this.trackSlug = slug
+    this.trackName = ""
+    this.excludeTracks = []
     this.confData.load().subscribe((data: any) => {
       if (data.sessions) {
-        this.trackSlug = this.route.snapshot.paramMap.get('trackSlug');
-        this.excludeTracks = []
         this.confData.getTracks().subscribe((tracks: any[]) => {
           tracks.forEach((track, index, arr) => {
             if (slugify(track.name+'s') !== this.trackSlug) {
@@ -125,9 +130,23 @@ export class ScheduleListPage {
             }
           })
         });
-        this.reloadSessions();
+        this.resetSessions();
+        this.changeDetection.detectChanges();
       }
     });
+  }
+
+  ngOnInit() {
+    this.ios = this.config.get('mode') === 'ios';
+
+    this.route.params.subscribe(routeParams => {
+      console.log(routeParams);
+      this.initSchedule(routeParams.trackSlug);
+    });
+  }
+
+  ionViewWillEnter() {
+    this.initSchedule(this.route.snapshot.paramMap.get('trackSlug'));
   }
 
 }

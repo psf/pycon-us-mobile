@@ -32,7 +32,7 @@
         <ion-card class="session-card">
           <ion-card-content>
             <ion-list lines="none">
-              <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
+              <ion-item detail="false" lines="none" class="session-item" routerLink="/app/tabs/schedule/session/{{session.id}}">
                 <ion-label>
                   <h3>
                     <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
