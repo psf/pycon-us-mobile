@@ -65,7 +65,6 @@ export class ScheduleListPage implements OnInit {
     this.sessions = [];
     this.displaySessions = [];
     this.reloadSessions();
-    this.changeDetection.detectChanges();
   }
 
   async generateSessions() {
@@ -77,7 +76,6 @@ export class ScheduleListPage implements OnInit {
       } else {
         this.page += 1;
         this.scrolling = true;
-        this.changeDetection.detectChanges();
       }
     }
   }
@@ -131,7 +129,6 @@ export class ScheduleListPage implements OnInit {
           })
         });
         this.resetSessions();
-        this.changeDetection.detectChanges();
       }
     });
   }
@@ -144,9 +141,4 @@ export class ScheduleListPage implements OnInit {
       this.initSchedule(routeParams.trackSlug);
     });
   }
-
-  ionViewWillEnter() {
-    this.initSchedule(this.route.snapshot.paramMap.get('trackSlug'));
-  }
-
 }
