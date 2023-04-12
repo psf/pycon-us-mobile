@@ -40,6 +40,18 @@ export class UserData {
     })
   }
 
+  // Get current theme from storage
+  getDarkTheme() {
+    return this.storage.get('darkTheme');
+  }
+
+  // Toggle Dark Theme. Sets inverted value to storage
+  toggleDarkTheme() {
+    this.getDarkTheme().then((darkTheme) => {
+      this.storage.set('darkTheme', !darkTheme);
+    });
+  }
+
   hasFavorite(sessionId: string): boolean {
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;
