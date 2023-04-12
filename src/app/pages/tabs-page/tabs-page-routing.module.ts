@@ -77,6 +77,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'about-psf',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../about-psf/about-psf.module').then(m => m.AboutPsfPageModule)
+          }
+        ]
+      },
+      {
         path: 'social-media',
         children: [
           {

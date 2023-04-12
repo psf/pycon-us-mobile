@@ -17,7 +17,7 @@
           </ion-list-header>
           <ion-menu-toggle autoHide="false" *ngFor="let p of schedulePages; let i = index">
             <ion-item [class]="p.indent? 'indent' : ''" [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
-              <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
@@ -34,7 +34,7 @@
               <div class="" slot="content">
               <ion-menu-toggle autoHide="false" *ngFor="let p of presentationPages; let i = index">
                 <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
-                  <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+                  <ion-icon slot="start" [name]="p.icon"></ion-icon>
                   <ion-label>
                     {{p.title}}
                   </ion-label>
@@ -50,7 +50,7 @@
           </ion-list-header>
           <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
-              <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
