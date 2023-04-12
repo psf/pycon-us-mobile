@@ -46,6 +46,9 @@ export class SchedulePage implements OnInit {
 
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';
+    this.user.getScheduleFilters().then(filters => {
+      this.excludeTracks = filters;
+    });
 
     this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
