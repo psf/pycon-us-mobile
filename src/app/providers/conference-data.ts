@@ -107,7 +107,7 @@ export class ConferenceData {
           "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
           "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
           "id": slot.conf_key,
-          "day": start.toLocaleDateString('en-us', {weekday: 'short'})
+          "day": start.toLocaleDateString('en-us', {timeZone: "MST7MDT", weekday: 'short'})
       }
 
       const track = this.data.tracks.find(
@@ -171,7 +171,7 @@ export class ConferenceData {
               "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
               "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
               "id": shared_session.conf_key,
-              "day": start.toLocaleDateString('en-us', {weekday: 'short'})
+              "day": start.toLocaleDateString('en-us', {timeZone: "MST7MDT", weekday: 'short'})
           }
 
           const track = this.data.tracks.find(
@@ -198,7 +198,11 @@ export class ConferenceData {
         })
       }
 
-      var day = start.toISOString().split('T')[0];
+      const offset = -6; // Hardcode offset for MST7MDT
+      var mstDate= new Date(start.getTime() + (offset*3600*1000))
+      console.log(offset, start, mstDate);
+      var day = mstDate.toISOString().split('T')[0];
+      console.log(day);
       var group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(
