@@ -22,25 +22,27 @@
       {{session.day}} {{session.date}} - {{session.timeStart}} &ndash; {{session.timeEnd}}
       <br /> {{session.location}}
     </ion-text>
-    <h3>Presented by</h3>
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col size="12" size-md="6" *ngFor="let speaker of session.speakers">
-          <ion-card class="speaker-card">
-            <ion-card-header>
-              <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
-                <ion-avatar slot="start">
-                  <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
-                </ion-avatar>
-                <ion-label>
-                  <h2>{{speaker.name}}</h2>
+    <div *ngIf="session.speakers.length > 0">
+      <h3>Presented by</h3>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12" size-md="6" *ngFor="let speaker of session.speakers">
+            <ion-card class="speaker-card">
+              <ion-card-header>
+                <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
+                  <ion-avatar slot="start">
+                    <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
+                  </ion-avatar>
+                  <ion-label>
+                    <h2>{{speaker.name}}</h2>
 
-                </ion-label>
-              </ion-item>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                  </ion-label>
+                </ion-item>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </div>
 </ion-content>
