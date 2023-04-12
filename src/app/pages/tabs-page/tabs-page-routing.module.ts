@@ -77,6 +77,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'social-media',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../social-media/social-media.module').then(m => m.SocialMediaPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'

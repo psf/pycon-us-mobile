@@ -25,18 +25,25 @@
 
           </ion-menu-toggle>
 
-          <ion-list-header>
-            Sponsors
-          </ion-list-header>
-          <ion-menu-toggle autoHide="false" *ngFor="let p of sponsorPages; let i = index">
-            <ion-item [class]="p.indent? 'indent' : ''" [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
-              <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
-              <ion-label>
-                {{p.title}}
-              </ion-label>
-            </ion-item>
+          <ion-accordion-group>
+            <ion-accordion value="first">
+              <ion-item slot="header" color="white">
+                <ion-icon slot="start" name="newspaper"></ion-icon>
+                <ion-label>Presentations</ion-label>
+              </ion-item>
+              <div class="" slot="content">
+              <ion-menu-toggle autoHide="false" *ngFor="let p of presentationPages; let i = index">
+                <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+                  <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+                  <ion-label>
+                    {{p.title}}
+                  </ion-label>
+                </ion-item>
 
-          </ion-menu-toggle>
+              </ion-menu-toggle>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
 
           <ion-list-header>
             Information
@@ -51,6 +58,7 @@
             </ion-item>
 
           </ion-menu-toggle>
+
         </ion-list>
 
         <ion-list *ngIf="hasApps" lines="none">
