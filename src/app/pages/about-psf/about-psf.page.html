@@ -4,7 +4,7 @@
       <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Social Media</ion-title>
+    <ion-title>The PSF</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,8 +13,14 @@
   <ion-grid>
     <ion-row>
      <ion-col>
+       <h1>Python Software Foundation</h1><br>
+       <ion-button onclick="window.open('https://psfmember.org/civicrm/contribute/transact/?reset=1&id=2', '_system', 'location=yes'); return false;">Donate to the PSF</ion-button>
+     </ion-col>
+    </ion-row>
+    <ion-row>
+     <ion-col>
       <ion-row>
-        <ion-col [innerHtml]="content['social-media']">
+        <ion-col [innerHtml]="content['about-psf']">
         </ion-col>
       </ion-row>
     </ion-col>

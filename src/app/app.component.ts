@@ -21,20 +21,21 @@ import { LiveUpdateService } from './providers/live-update.service';
 })
 export class AppComponent implements OnInit {
   schedulePages = [
-    { title: 'Schedule',  url: '/app/tabs/schedule',         icon: 'calendar' },
-    { title: 'Speakers',  url: '/app/tabs/speakers',         icon: 'people' },
+    { title: 'Schedule',  url: '/app/tabs/schedule',         icon: 'calendar-outline' },
+    { title: 'Speakers',  url: '/app/tabs/speakers',         icon: 'people-outline' },
   ]
   presentationPages = [
-    { title: 'Talks',     group: 'presentations', url: '/app/tabs/tracks/talks',     icon: 'mic'},
-    { title: 'Charlas',   group: 'presentations', url: '/app/tabs/tracks/charlas',   icon: 'mic'},
-    { title: 'Tutorials', group: 'presentations', url: '/app/tabs/tracks/tutorials', icon: 'laptop'},
-    { title: 'Posters',   group: 'presentations', url: '/app/tabs/tracks/posters',   icon: 'reader'},
-    { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic'},
+    { title: 'Talks',     group: 'presentations', url: '/app/tabs/tracks/talks',     icon: 'mic-outline'},
+    { title: 'Charlas',   group: 'presentations', url: '/app/tabs/tracks/charlas',   icon: 'mic-outline'},
+    { title: 'Tutorials', group: 'presentations', url: '/app/tabs/tracks/tutorials', icon: 'laptop-outline'},
+    { title: 'Posters',   group: 'presentations', url: '/app/tabs/tracks/posters',   icon: 'reader-outline'},
+    { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic-outline'},
   ]
   appPages = [
-    { title: 'About', url: '/app/tabs/about-pycon', icon: 'information-circle' },
-    { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles' },
-    { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business' },
+    { title: 'About PyCon', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
+    { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
+    { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
+    { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
   ]
   nickname = null;
   loggedIn = false;
