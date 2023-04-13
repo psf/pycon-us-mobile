@@ -93,11 +93,16 @@ export class ConferenceData {
 
       // transform any markdown slot names to regular text
       slot.name = markdownToTxt(slot.name);
+      slot.preRegistered = slot.name.includes('pre-registration')? true : false;
+      if (slot.preRegistered) {
+        slot.name = slot.name.split(', pre-registration')[0];
+      }
 
       var start = new Date(slot.start);
       var end = new Date(slot.end);
       var session = {
           "name": slot.name,
+          "preRegistered": slot.preRegistered,
           "location": slot.room,
           "description": slot.description,
           "speakers": [],

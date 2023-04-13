@@ -21,6 +21,7 @@
     <ion-text color="medium">
       {{session.day}} {{session.date}} - {{session.timeStart}} &ndash; {{session.timeEnd}}
       <br /> {{session.location}}
+      <p *ngIf="session.preRegistered">Pre-registration required to attend this event.</p>
     </ion-text>
     <div *ngIf="session.speakers.length > 0">
       <h3>Presented by</h3>
