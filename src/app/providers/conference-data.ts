@@ -13,6 +13,14 @@ import { UserData } from './user-data';
 })
 export class ConferenceData {
   data: any;
+  slotColors: any = {
+    plenary: 'primary',
+    poster: 'tertiary',
+    event: 'light',
+    summit: 'light',
+    break: 'light',
+    informational: 'medium',
+  };
 
   constructor(
     public http: HttpClient,
@@ -102,6 +110,7 @@ export class ConferenceData {
       var end = new Date(slot.end);
       var session = {
           "name": slot.name,
+          "color": this.slotColors[slot.kind],
           "preRegistered": slot.preRegistered,
           "location": slot.room,
           "description": slot.description,
