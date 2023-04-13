@@ -80,7 +80,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+      <ion-item-sliding *ngFor="let session of group.sessions | sessionOrder" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
         <ion-item [color]="session?.color? session.color : ''" [routerLink]="session.listRender? '/app/tabs/tracks/' + session.section: '/app/tabs/schedule/session/'+session.id">
           <ion-label>
             <h3>
