@@ -13,6 +13,14 @@ import { UserData } from './user-data';
 })
 export class ConferenceData {
   data: any;
+  slotColors: any = {
+    plenary: 'primary',
+    poster: 'tertiary',
+    event: 'light',
+    summit: 'light',
+    break: 'light',
+    informational: 'medium',
+  };
 
   constructor(
     public http: HttpClient,
@@ -69,6 +77,9 @@ export class ConferenceData {
       if (["blank"].includes(slot.kind)) {
         return;
       }
+      if (slot.name == "Slot") {
+        return;
+      }
       if (slot.kind == "sponsor-workshop") {
         slot.kind = "Sponsor Presentation"
       }
@@ -93,11 +104,19 @@ export class ConferenceData {
 
       // transform any markdown slot names to regular text
       slot.name = markdownToTxt(slot.name);
+      slot.preRegistered = (slot.name.includes('pre-registration') || slot.kind === "tutorial")? true : false;
+      if (slot.preRegistered) {
+        slot.name = slot.name.split(', pre-registration')[0];
+      }
 
       var start = new Date(slot.start);
       var end = new Date(slot.end);
       var session = {
           "name": slot.name,
+          "color": this.slotColors[slot.kind],
+          "preRegistered": slot.preRegistered,
+          "listRender": slot.list_render,
+          "section": slot.section,
           "location": slot.room,
           "description": slot.description,
           "speakers": [],
@@ -200,9 +219,7 @@ export class ConferenceData {
 
       const offset = -6; // Hardcode offset for MST7MDT
       var mstDate= new Date(start.getTime() + (offset*3600*1000))
-      console.log(offset, start, mstDate);
       var day = mstDate.toISOString().split('T')[0];
-      console.log(day);
       var group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(

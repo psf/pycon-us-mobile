@@ -80,13 +80,14 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-        <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
+      <ion-item-sliding *ngFor="let session of group.sessions | sessionOrder" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+        <ion-item [color]="session?.color? session.color : ''" [routerLink]="session.listRender? '/app/tabs/tracks/' + session.section: '/app/tabs/schedule/session/'+session.id">
           <ion-label>
             <h3>
               <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
               {{session.track}}: {{session.name}}
             </h3>
+            <ion-text *ngIf="session.preRegistered" color="medium" ><p class="pre-registerd">Pre-registration required</p></ion-text>
             <p>
               {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> &mdash; {{session.timeEnd}}</span>: {{session.location}} <span *ngIf="session?.speakerNames">&mdash; {{session.speakerNames?.join(', ')}}</span>
             </p>
