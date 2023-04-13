@@ -93,7 +93,7 @@ export class ConferenceData {
 
       // transform any markdown slot names to regular text
       slot.name = markdownToTxt(slot.name);
-      slot.preRegistered = slot.name.includes('pre-registration')? true : false;
+      slot.preRegistered = (slot.name.includes('pre-registration') || slot.kind === "tutorial")? true : false;
       if (slot.preRegistered) {
         slot.name = slot.name.split(', pre-registration')[0];
       }
