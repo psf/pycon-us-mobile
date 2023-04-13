@@ -77,6 +77,9 @@ export class ConferenceData {
       if (["blank"].includes(slot.kind)) {
         return;
       }
+      if (slot.name == "Slot") {
+        return;
+      }
       if (slot.kind == "sponsor-workshop") {
         slot.kind = "Sponsor Presentation"
       }
@@ -216,9 +219,7 @@ export class ConferenceData {
 
       const offset = -6; // Hardcode offset for MST7MDT
       var mstDate= new Date(start.getTime() + (offset*3600*1000))
-      console.log(offset, start, mstDate);
       var day = mstDate.toISOString().split('T')[0];
-      console.log(day);
       var group = start.toLocaleTimeString([], {timeZone: "MST7MDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(
