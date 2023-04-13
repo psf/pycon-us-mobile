@@ -28,24 +28,28 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let session of displaySessions" [hidden]="session.hide">
-        <ion-card class="session-card">
-          <ion-card-content>
-            <ion-list lines="none">
-              <ion-item detail="false" lines="none" class="session-item" routerLink="/app/tabs/schedule/session/{{session.id}}">
-                <ion-label>
-                  <h3>
-                    <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
-                    {{session.track}}: {{session.name}}
-                  </h3>
-                  <p>
-                    {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}} <span *ngIf="session?.speakerNames">&mdash; {{session.speakerNames?.join(', ')}}</span>
-                  </p>
-                </ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
+      <ion-col size-xl="6" size-md="6" size-sm="6" size-xs="12" *ngFor="let session of displaySessions" [hidden]="session.hide">
+        <ion-item lines="none" detail="false" routerLink="/app/tabs/schedule/session/{{session.id}}">
+          <ion-card class="session-card">
+            <ion-card-header>
+              <ion-card-title class="session-card-title">
+                  <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
+                  {{session.name}}
+              </ion-card-title>
+              <ion-card-subtitle>
+                  <b>{{session.track}}</b>: {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-chip *ngFor="let speaker of session.speakers">
+              <ion-avatar>
+                <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
+              </ion-avatar>
+              <ion-label>{{ speaker.name }}</ion-label>
+              </ion-chip>
+            </ion-card-content>
+          </ion-card>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
