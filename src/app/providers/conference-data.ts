@@ -112,6 +112,8 @@ export class ConferenceData {
           "name": slot.name,
           "color": this.slotColors[slot.kind],
           "preRegistered": slot.preRegistered,
+          "listRender": slot.list_render,
+          "section": slot.section,
           "location": slot.room,
           "description": slot.description,
           "speakers": [],
