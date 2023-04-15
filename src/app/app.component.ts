@@ -5,6 +5,13 @@ import { MenuController, Platform, ToastController } from '@ionic/angular';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications,
+  Token,
+} from '@capacitor/push-notifications';
+
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
 import { Storage } from '@ionic/storage';
@@ -63,6 +70,7 @@ export class AppComponent implements OnInit {
     this.loadTheme();
     this.checkLoginStatus();
     this.listenForLoginEvents();
+    this.setupPush();
     this.liveUpdateService.checkForUpdate();
   }
 
@@ -131,5 +139,41 @@ export class AppComponent implements OnInit {
 
   toggleDarkTheme() {
     this.userData.toggleDarkTheme();
+  }
+
+  setupPush() {
+    // Request permission to use push notifications
+    // iOS will prompt user and return if they granted permission or not
+    // Android will just grant without prompting
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register();
+      } else {
+        // Show some error
+      }
+    });
+
+    PushNotifications.addListener('registration', (token: Token) => {
+      console.log('Push registration success, token: ' + token.value);
+    });
+
+    PushNotifications.addListener('registrationError', (error: any) => {
+      console.log('Error on registration: ' + JSON.stringify(error));
+    });
+
+    PushNotifications.addListener(
+      'pushNotificationReceived',
+      (notification: PushNotificationSchema) => {
+        console.log('Push received: ' + JSON.stringify(notification));
+      },
+    );
+
+    PushNotifications.addListener(
+      'pushNotificationActionPerformed',
+      (notification: ActionPerformed) => {
+        console.log('Push action performed: ' + JSON.stringify(notification));
+      },
+    );
   }
 }

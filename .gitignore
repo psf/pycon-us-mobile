@@ -36,3 +36,7 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 android/app/src/main/assets/capacitor.config.json
 ios/App/App/capacitor.config.json
+
+# Push creds
+android/app/google-services.json
+ios/App/App/GoogleService-Info.plist
