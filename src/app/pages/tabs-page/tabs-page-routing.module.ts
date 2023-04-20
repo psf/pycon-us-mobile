@@ -68,6 +68,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'door-check',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../door-check/door-check.module').then(m => m.DoorCheckPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {

@@ -12,6 +12,28 @@
             <ion-label>Hello, {{nickname}}</ion-label>
           </ion-item>
 
+          <ion-list-header *ngIf="hasApps">
+            Apps
+          </ion-list-header>
+
+          <ion-menu-toggle *ngIf="hasDoorCheck" autoHide="false">
+            <ion-item routerLink="/app/tabs/door-check" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="checkbox-outline"></ion-icon>
+              <ion-label>
+                Door Check
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle *ngIf="hasLeadRetrieval" autoHide="false">
+            <ion-item routerLink="/app/tabs/lead-retrieval" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="qr-code"></ion-icon>
+              <ion-label>
+                Lead Scanner
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-list-header>
             Schedule
           </ion-list-header>
@@ -57,22 +79,6 @@
               <ion-badge *ngIf="(p.title === 'About PyCon' && liveUpdateService.updateAvailable?.available)">Live Update Available</ion-badge>
             </ion-item>
 
-          </ion-menu-toggle>
-
-        </ion-list>
-
-        <ion-list *ngIf="hasApps" lines="none">
-          <ion-list-header>
-            Apps
-          </ion-list-header>
-
-          <ion-menu-toggle *ngIf="hasLeadRetrieval" autoHide="false">
-            <ion-item routerLink="/app/tabs/lead-retrieval" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="qr-code"></ion-icon>
-              <ion-label>
-                Lead Scanner
-              </ion-label>
-            </ion-item>
           </ion-menu-toggle>
 
         </ion-list>
