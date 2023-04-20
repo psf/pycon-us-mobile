@@ -50,6 +50,10 @@
       </ion-card>
     </ion-item>
 
+    <ion-item *ngIf="!product">
+      <ion-text>Select a product to start scanning!</ion-text>
+    </ion-item>
+
   </ion-list>
 </ion-content>
 
@@ -65,8 +69,8 @@
                   [color]="(last_scan.status)? 'success' : 'danger'"
                   [name]="(last_scan.status)? 'checkmark-circle-outline' : 'alert-circle-outline'">
                 </ion-icon>
-                <ion-text *ngIf="last_scan.status"> All good attendee has access!</ion-text>
-                <ion-text *ngIf="!last_scan.status"> Entry not permitted</ion-text>
+                <ion-text *ngIf="last_scan.status"> All good attendee has access!<br><small><code>{{ last_scan.code }}</code></small></ion-text>
+                <ion-text *ngIf="!last_scan.status"> Entry not permitted.<br><small><code>{{ last_scan.code }}</code></small></ion-text>
               </h1>
             </ion-col>
           </ion-row>
@@ -76,7 +80,7 @@
   </ion-card>
   <ion-toolbar class="footer-toolbar">
     <ion-buttons class="footer-buttons">
-      <ion-button fill="solid" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
+      <ion-button fill="solid" [disabled]="(product === null)" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
         Start Scanner!
       </ion-button>
       <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">

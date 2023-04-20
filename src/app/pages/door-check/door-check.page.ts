@@ -52,46 +52,25 @@ export class DoorCheckPage implements OnInit {
   }
 
   getProductName(productId: number) {
-    return this.redeemable_products.find(x => x.id === productId).name
+    return this.redeemable_products.find(x => x.id === productId)?.name
   }
 
   getCategoryName(categoryId: number) {
-    return this.redeemable_categories.find(x => x.id === categoryId).name
+    return this.redeemable_categories.find(x => x.id === categoryId)?.name
   }
 
   refreshProducts() {
-    this.display_products = this.filterProducts();
+    this.display_products = this.filterProducts().sort(function(a, b){if (a.name < b.name) return -1; if (a.name < b.name) return 1; return 0;});
     this.detectorRef.detectChanges();
-  }
-
-  refresh_presentation = async () => {
-    var allScans = [];
-    this.storage.forEach((value, key, index) => {
-      if (key.startsWith("pending-scan-")) {
-        allScans.push({
-          "status": "pending",
-          "scanned_at": value.scannedAt,
-          "access_code": value.scanData.split(":")[0],
-          "note": value.note,
-        })
-      } else if (key.startsWith("synced-scan-")) {
-        allScans.push({
-          "status": "captured",
-          "scanned_at": value.scannedAt,
-          "access_code": value.scanData.split(":")[0],
-          "first_name": value.data.first_name,
-          "note": value.note,
-        })
-      }
-    });
-    this.scan_presentation = allScans;
   }
 
   updateLastScan = async (accessCode: string) => {
     this.last_scan = {
-      "status": this.product_attendees.includes(accessCode)
+      "status": this.product_attendees.includes(accessCode),
+      "code": accessCode
     };
     this.detectorRef.detectChanges();
+    this.last_scan_timeout = setTimeout(this.clearLastScan, 5000);
   }
 
   checkPermission = async () => {
@@ -148,7 +127,6 @@ export class DoorCheckPage implements OnInit {
     this.last_scan = null;
     clearTimeout(this.scan_timeout);
     await BarcodeScanner.stopScan()
-    this.refresh_presentation();
     this.scan_stop_button_visibility = 'hidden';
     this.scan_start_button_visibility = '';
     this.content_visibility = '';
@@ -166,7 +144,6 @@ export class DoorCheckPage implements OnInit {
         this.redeemable_categories = redeemable?.redeemable_categories;
       })
     })
-    this.refresh_presentation();
   }
 
   ngOnDestroy(): void {
