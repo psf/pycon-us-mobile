@@ -34,6 +34,8 @@ export class DoorCheckPage implements OnInit {
   redeemable_categories: any = null;
   display_products: any = null;
 
+  product_attendees: any = null;
+
   constructor(
     public platform: Platform,
     private config: Config,
@@ -85,31 +87,11 @@ export class DoorCheckPage implements OnInit {
     this.scan_presentation = allScans;
   }
 
-  updateLastScan = async (accessCode: string, calNo: number) => {
-    calNo += 1;
-    this.pycon.fetchScan(accessCode).then((scan) => {
-      if (scan) {
-        this.last_scan = {
-          "status": scan.data?.first_name? "captured": "pending",
-          "scanned_at": scan.scannedAt,
-          "access_code": scan.scanData.split(":")[0],
-          "first_name": scan.data?.first_name? scan.data.first_name : null,
-          "note": scan.note,
-        };
-        this.detectorRef.detectChanges();
-        if (!scan.data?.first_name && calNo < 30) {
-          setTimeout(() => {this.updateLastScan(accessCode, calNo);}, 100);
-        } else {
-          this.last_scan_timeout = setTimeout(this.clearLastScan, 5000);
-        }
-      } else {
-        if (calNo < 30) {
-          setTimeout(() => {this.updateLastScan(accessCode, calNo);}, 100);
-        } else {
-          this.last_scan_timeout = setTimeout(this.clearLastScan, 5000);
-        }
-      }
-    });
+  updateLastScan = async (accessCode: string) => {
+    this.last_scan = {
+      "status": this.product_attendees.includes(accessCode)
+    };
+    this.detectorRef.detectChanges();
   }
 
   checkPermission = async () => {
@@ -132,16 +114,20 @@ export class DoorCheckPage implements OnInit {
   handleScan = async (result: ScanResult) => {
     if (result.hasContent && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.content.split(':')[0], 0);
-      this.pycon.storeScan(result.content.split(':')[0], result.content).then(() => {
-        console.log(result.content); // log the raw scanned content
-        clearTimeout(this.scan_timeout);
-        this.scan_timeout = setTimeout(BarcodeScanner.resumeScanning, 1500);
-      });
+      this.updateLastScan(result.content.split(':')[0]);
     }
   }
 
   startScan = async () => {
+    console.log(this.product);
+    if (this.product) {
+      await this.pycon.fetchAttendeesByProduct(this.product).then((data) => {
+        data.subscribe(attendees => {
+          console.log(attendees);
+          this.product_attendees = attendees;
+        })
+      })
+    }
     const permission = await this.checkPermission();
     if (!permission) {
       this.show_permissions_error = true;

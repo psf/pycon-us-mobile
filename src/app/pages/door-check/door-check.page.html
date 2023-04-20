@@ -62,11 +62,11 @@
             <ion-col>
               <h1>
                 <ion-icon
-                  [color]="(last_scan.status === 'captured')? 'success' : 'default'"
-                  [name]="(last_scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
+                  [color]="(last_scan.status)? 'success' : 'danger'"
+                  [name]="(last_scan.status)? 'checkmark-circle-outline' : 'alert-circle-outline'">
                 </ion-icon>
-                {{(last_scan.status === 'captured')? last_scan.first_name : last_scan.access_code}}
-                <ion-spinner *ngIf="last_scan.status !== 'captured'" name="dots"></ion-spinner>
+                <ion-text *ngIf="last_scan.status"> All good attendee has access!</ion-text>
+                <ion-text *ngIf="!last_scan.status"> Entry not permitted</ion-text>
               </h1>
             </ion-col>
           </ion-row>
