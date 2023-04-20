@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic-outline'},
   ]
   appPages = [
-    { title: 'About PyCon', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
+    { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
