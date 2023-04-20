@@ -16,6 +16,7 @@ export class DoorCheckPage implements OnInit {
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
   scan_presentation = [];
+  dirty: boolean = false;
 
   last_scan: any = null;
   last_scan_timeout: ReturnType<typeof setTimeout> = null;
@@ -25,6 +26,14 @@ export class DoorCheckPage implements OnInit {
   ios: boolean;
   show_permissions_error: boolean = false;
 
+  mode: string|null = "door_check";
+  category: number|null = null;
+  product: number|null = null;
+
+  redeemable_products: any = null;
+  redeemable_categories: any = null;
+  display_products: any = null;
+
   constructor(
     public platform: Platform,
     private config: Config,
@@ -32,6 +41,26 @@ export class DoorCheckPage implements OnInit {
     private storage: Storage,
     public detectorRef: ChangeDetectorRef,
   ) { }
+
+  filterProducts() {
+    if (this.category) {
+      return this.redeemable_products.filter(product => product.category === this.category);
+    }
+    return this.redeemable_products
+  }
+
+  getProductName(productId: number) {
+    return this.redeemable_products.find(x => x.id === productId).name
+  }
+
+  getCategoryName(categoryId: number) {
+    return this.redeemable_categories.find(x => x.id === categoryId).name
+  }
+
+  refreshProducts() {
+    this.display_products = this.filterProducts();
+    this.detectorRef.detectChanges();
+  }
 
   refresh_presentation = async () => {
     var allScans = [];
@@ -145,6 +174,12 @@ export class DoorCheckPage implements OnInit {
 
   ngOnInit(): void {
     this.ios = this.config.get('mode') === `ios`;
+    this.pycon.fetchCheckInProducts().then((data) => {
+      data.subscribe(redeemable => {
+        this.redeemable_products = redeemable?.redeemable_products;
+        this.redeemable_categories = redeemable?.redeemable_categories;
+      })
+    })
     this.refresh_presentation();
   }
 

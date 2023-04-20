@@ -18,3 +18,9 @@
   font-size: .6em;
   padding-bottom: .5em;
 }
+
+::ng-deep .mycomponent-wider-popover
+{
+  --width: 95%;
+  --max-width: 400px;
+}
