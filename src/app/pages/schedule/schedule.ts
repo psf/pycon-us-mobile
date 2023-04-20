@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
+import { AlertController, IonContent, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
@@ -17,6 +17,7 @@ export class SchedulePage implements OnInit {
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
   // Get a reference to the search bar
   @ViewChild('search') search : any;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
 
   ios: boolean;
   hasData: boolean = false;
@@ -29,6 +30,7 @@ export class SchedulePage implements OnInit {
   groups: any = [];
   confDate: string;
   showSearchbar: boolean;
+  currentTime: Date;
 
   constructor(
     public alertCtrl: AlertController,
@@ -50,9 +52,30 @@ export class SchedulePage implements OnInit {
       this.excludeTracks = filters;
     });
 
+    this.currentTime = new Date();
+    this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
+      console.log(data)
+      var currDay = data.filter(d => d.date === this.currentTime.toISOString().split("T")[0]);
+      console.log(currDay)
+      if (currDay !== []) {
+        this.dayIndex = currDay[0].index;
+      }
+    });
+
+    this.dayIndex = "1";
+
     this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
     })
+  }
+
+  ionViewDidEnter() {
+    //const id = document.getElementsByClassName("future")[0] as HTMLElement
+    //console.log(id)
+    //console.log(this.content)
+    //console.log(id.offsetTop);
+    //this.content.scrollToBottom();
+    //this.content.scrollToPoint(0, id.offsetTop-60, 500)
   }
 
   async handleRefresh(event) {

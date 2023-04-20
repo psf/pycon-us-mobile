@@ -75,8 +75,8 @@
   <ion-list #scheduleList [hidden]="shownSessions === 0">
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
       <ion-item-divider sticky>
-        <ion-label>
-          {{days[dayIndex].day}} - {{group.time}}
+        <ion-label [class]="(group.startTime < currentTime)? 'past': (group.startTime)? 'future' : 'non'">
+          {{days[dayIndex].day}} - {{group.time}} {{group.startTime}} {{currentTime}}
         </ion-label>
       </ion-item-divider>
 

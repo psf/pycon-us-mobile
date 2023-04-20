@@ -232,7 +232,7 @@ export class ConferenceData {
         if (scheduleDayGroup) {
             scheduleDayGroup.sessions.push(session)
 	} else {
-            scheduleDay.groups.push({"time": group, "sessions": [session]})
+            scheduleDay.groups.push({"time": group, "sessions": [session], "startTime": start})
         }
       } else {
         this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session]}]})
