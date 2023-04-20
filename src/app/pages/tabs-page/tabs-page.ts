@@ -11,6 +11,7 @@ export class TabsPage implements OnInit {
   sponsors: any = [];
   currentBannerSponsor: any;
   hasLeadRetrieval: boolean = false;
+  hasDoorCheck: boolean = false;
 
   constructor(
     private userData: UserData,
@@ -65,13 +66,27 @@ export class TabsPage implements OnInit {
     }, 200)
   }
 
+  checkHasDoorCheck() {
+    return this.userData.checkHasDoorCheck().then(hasDoorCheck => {
+      return this.updateHasDoorCheck(hasDoorCheck);
+    });
+  }
+
+  updateHasDoorCheck(hasDoorCheck: boolean) {
+    setTimeout(() => {
+      this.hasDoorCheck = hasDoorCheck;
+    }, 200)
+  }
+
   listenForLoginEvents() {
     window.addEventListener('user:login', () => {
       this.checkHasLeadRetrieval();
+      this.checkHasDoorCheck();
     });
 
     window.addEventListener('user:logout', () => {
       this.checkHasLeadRetrieval();
+      this.checkHasDoorCheck();
     });
   }
 }

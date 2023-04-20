@@ -12,6 +12,7 @@ export class UserData {
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
+  HAS_DOOR_CHECK = 'hasDoorCheck';
 
   constructor(
     public storage: Storage,
@@ -96,6 +97,7 @@ export class UserData {
       this.setAuthKey(data.key);
       this.setSecret(data.secret);
       this.setHasLeadRetrieval(data.features?.lead_retrieval);
+      this.setHasDoorCheck(data.features?.door_check_in);
     }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
@@ -109,6 +111,7 @@ export class UserData {
       this.storage.remove('key');
       this.storage.remove('secret');
       this.storage.remove(this.HAS_LEAD_RETRIEVAL);
+      this.storage.remove(this.HAS_DOOR_CHECK);
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -172,6 +175,16 @@ export class UserData {
 
   checkHasLeadRetrieval(): Promise<boolean> {
     return this.storage.get(this.HAS_LEAD_RETRIEVAL).then((value) => {
+      return value;
+    });
+  }
+
+  setHasDoorCheck(value: boolean): Promise<any> {
+    return this.storage.set(this.HAS_DOOR_CHECK, value);
+  }
+
+  checkHasDoorCheck(): Promise<boolean> {
+    return this.storage.get(this.HAS_DOOR_CHECK).then((value) => {
       return value;
     });
   }
