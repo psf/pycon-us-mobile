@@ -29,7 +29,7 @@
         <ion-row *ngFor="let product of category.value">
           <ion-col>
             <ion-item>
-              <ion-checkbox (ionChange)="checkProduct($event, product.product_id, product.redeemable)" slot="start"></ion-checkbox>
+              <ion-checkbox [disabled]="product.redeemable === 0" (ionChange)="checkProduct($event, product.product_id, product.redeemable)" slot="start"></ion-checkbox>
               <ion-label><b>{{product.redeemable}}x</b> {{product.product_name}}<div *ngIf="product.redeemable !== product.purchased"><br>({{product.purchased - product.redeemable}} already redeemed)</div></ion-label>
             </ion-item>
           </ion-col>
