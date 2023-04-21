@@ -13,6 +13,7 @@ export class UserData {
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
   HAS_DOOR_CHECK = 'hasDoorCheck';
+  HAS_MASK_VIOLATION = 'hasMaskViolation';
 
   constructor(
     public storage: Storage,
@@ -98,6 +99,7 @@ export class UserData {
       this.setSecret(data.secret);
       this.setHasLeadRetrieval(data.features?.lead_retrieval);
       this.setHasDoorCheck(data.features?.door_check_in);
+      this.setHasMaskViolation(data.features?.mask_violation);
     }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
@@ -112,6 +114,7 @@ export class UserData {
       this.storage.remove('secret');
       this.storage.remove(this.HAS_LEAD_RETRIEVAL);
       this.storage.remove(this.HAS_DOOR_CHECK);
+      this.storage.remove(this.HAS_MASK_VIOLATION);
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -185,6 +188,16 @@ export class UserData {
 
   checkHasDoorCheck(): Promise<boolean> {
     return this.storage.get(this.HAS_DOOR_CHECK).then((value) => {
+      return value;
+    });
+  }
+
+  setHasMaskViolation(value: boolean): Promise<any> {
+    return this.storage.set(this.HAS_MASK_VIOLATION, value);
+  }
+
+  checkHasMaskViolation(): Promise<boolean> {
+    return this.storage.get(this.HAS_MASK_VIOLATION).then((value) => {
       return value;
     });
   }

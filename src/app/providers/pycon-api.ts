@@ -146,6 +146,23 @@ export class PyConAPI {
     );
   }
 
+  async captureMaskViolation(accessCode: string): Promise<any> {
+    const method = 'GET';
+    const url = '/2023/api/v1/mask_violations/capture/?attendee_access_code=' + accessCode;
+    const body = '';
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to capture violation, ' + error)
+        throw error;
+      })
+    )
+  }
+
   async syncScan(accessCode: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value

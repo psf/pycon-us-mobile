@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
   hasApps = false;
   hasLeadRetrieval = false;
   hasDoorCheck= false;
+  hasMaskViolation = false;
 
   constructor(
     private menu: MenuController,
@@ -97,6 +98,10 @@ export class AppComponent implements OnInit {
       this.userData.checkHasDoorCheck().then(hasDoorCheck => {
         this.hasApps = this.hasApps || hasDoorCheck;
         this.hasDoorCheck = hasDoorCheck;
+      });
+      this.userData.checkHasMaskViolation().then(hasMaskViolation => {
+        this.hasApps = this.hasApps || hasMaskViolation;
+        this.hasMaskViolation = hasMaskViolation;
       });
       this.userData.getNickname().then(nickname => {
         this.nickname = nickname;

@@ -86,6 +86,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'mask-violation',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../mask-violation/mask-violation.module').then(m => m.MaskViolationPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {
