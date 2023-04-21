@@ -76,7 +76,7 @@
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
       <ion-item-divider sticky>
         <ion-label [class]="(group.startTime < currentTime)? 'past': (group.startTime)? 'future' : 'non'">
-          {{days[dayIndex].day}} - {{group.time}} {{group.startTime}} {{currentTime}}
+          {{days[dayIndex].day}} - {{group.time}}
         </ion-label>
       </ion-item-divider>
 
