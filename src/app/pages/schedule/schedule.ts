@@ -57,7 +57,7 @@ export class SchedulePage implements OnInit {
       console.log(data)
       var currDay = data.filter(d => d.date === this.currentTime.toISOString().split("T")[0]);
       console.log(currDay)
-      if (currDay !== []) {
+      if (currDay.length > 0) {
         this.dayIndex = currDay[0].index;
       }
     });
