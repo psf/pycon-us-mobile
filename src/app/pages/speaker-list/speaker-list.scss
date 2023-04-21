@@ -1,6 +1,8 @@
 .speaker-card {
   display: flex;
   flex-direction: column;
+  // add a border around the card to make it stand out
+  border: 1px solid var(--ion-color-step-150, #d7d8da);
 }
 
 /* Due to the fact the cards are inside of columns the margins don't overlap
