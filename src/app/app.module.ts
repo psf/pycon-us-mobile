@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { AutofillDirective } from './autofill.directive';
 import { LiveUpdateService } from './providers/live-update.service';
 import { LeadNoteModalComponent } from './lead-note-modal/lead-note-modal.component';
+import { RedemptionModalComponent } from './redemption-modal/redemption-modal.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,7 @@ import { LeadNoteModalComponent } from './lead-note-modal/lead-note-modal.compon
       enabled: environment.production
     })
   ],
-  declarations: [AppComponent, AutofillDirective, LeadNoteModalComponent],
+  declarations: [AppComponent, AutofillDirective, LeadNoteModalComponent, RedemptionModalComponent],
   providers: [InAppBrowser, LiveUpdateService],
   bootstrap: [AppComponent]
 })

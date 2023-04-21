@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Redeem Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item lines="none">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{attendeeName}}</ion-card-title>
+        <ion-card-subtitle>Redeeming for</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-text *ngIf="!hasItemsToRedeem">No items to redeem</ion-text>
+        <ion-text *ngIf="hasItemsToRedeem">
+        Redeemable products are listed below, select the ones you'll be handing the attendee,
+        then press "Redeem" to mark them as provided.
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+  <ion-item *ngIf="hasItemsToRedeem" lines="none">
+    <ion-grid>
+      <div *ngFor="let category of redeemableProductsByCategory | keyvalue">
+        <ion-row><ion-col><h2>{{category.key}}</h2></ion-col></ion-row>
+        <ion-row *ngFor="let product of category.value">
+          <ion-col>
+            <ion-item>
+              <ion-checkbox (ionChange)="checkProduct($event, product.product_id, product.redeemable)" slot="start"></ion-checkbox>
+              <ion-label><b>{{product.redeemable}}x</b> {{product.product_name}}<div *ngIf="product.redeemable !== product.purchased"><br>({{product.purchased - product.redeemable}} already redeemed)</div></ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col>
+          <ion-button [disabled]="!canRedeem" (click)="confirm()">Redeem now</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-content>

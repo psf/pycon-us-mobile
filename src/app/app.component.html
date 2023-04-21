@@ -25,6 +25,15 @@
             </ion-item>
           </ion-menu-toggle>
 
+          <ion-menu-toggle *ngIf="hasDoorCheck" autoHide="false">
+            <ion-item routerLink="/app/tabs/t-shirt-redemption" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="checkbox-outline"></ion-icon>
+              <ion-label>
+                Swag Pickup
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle *ngIf="hasLeadRetrieval" autoHide="false">
             <ion-item routerLink="/app/tabs/lead-retrieval" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="qr-code"></ion-icon>

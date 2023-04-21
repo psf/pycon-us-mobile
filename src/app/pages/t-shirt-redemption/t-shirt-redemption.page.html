@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>T-Shirt Redemption</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [style.visibility]="content_visibility">
+  <ion-list>
+    <ion-item *ngIf="show_permissions_error">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Uh oh..</ion-card-title>
+          <ion-card-subtitle>Camera Permissions Not Granted</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-text>Looks like you did not grant this application permission to access your camera.</ion-text>
+          <ion-text>
+            You can resolve this by opening<br><br>
+            <code *ngIf="ios">Settings > Privacy & Security > Camera > PyCon US 2023<br><br></code>
+            <code *ngIf="!ios">Settings > Apps > PyCon US 2023 > Permissions > Camera<br><br></code>
+            And enabling camera permssions for this app.
+          </ion-text>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="category" [multiple]="true" interface="popover" [interfaceOptions]="{'cssClass': 'mycomponent-wider-popover'}" aria-label="categories"  label="Category" placeholder="Category">
+        <ion-select-option *ngFor="let category of redeemable_categories" [value]="category.id">{{category.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="category">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Redeeming for...</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <h1 *ngFor="let category_id of category">{{ getCategoryName(category_id) }}</h1>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+    <ion-item *ngIf="!category">
+      <ion-text>Select a category to start scanning!</ion-text>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-card *ngIf="last_scan">
+    <ion-item>
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h1>
+                <ion-icon
+                  [color]="(last_scan.status)? 'success' : 'danger'"
+                  [name]="(last_scan.status)? 'checkmark-circle-outline' : 'alert-circle-outline'">
+                </ion-icon>
+                <ion-text *ngIf="last_scan.status"> All good attendee has access!<br><small><code>{{ last_scan.code }}</code></small></ion-text>
+                <ion-text *ngIf="!last_scan.status"> Entry not permitted.<br><small><code>{{ last_scan.code }}</code></small></ion-text>
+              </h1>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+    </ion-item>
+  </ion-card>
+  <ion-toolbar class="footer-toolbar">
+    <ion-buttons class="footer-buttons">
+      <ion-button fill="solid" [disabled]="(category === null)" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
+        Start Scanner!
+      </ion-button>
+      <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">
+        Stop Scanner
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

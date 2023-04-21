@@ -1,0 +1,26 @@
+.footer-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.footer-button {
+  position: absolute;
+}
+.footer-toolbar {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.header-info {
+  font-size: .6em;
+  padding-bottom: .5em;
+}
+
+::ng-deep .mycomponent-wider-popover
+{
+  --width: 95%;
+  --max-width: 400px;
+}

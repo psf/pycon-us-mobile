@@ -77,6 +77,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 't-shirt-redemption',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../t-shirt-redemption/t-shirt-redemption.module').then(m => m.TShirtRedemptionPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {

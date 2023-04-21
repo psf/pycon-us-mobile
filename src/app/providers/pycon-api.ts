@@ -112,6 +112,40 @@ export class PyConAPI {
     );
   }
 
+  async fetchAttendeeProducts(accessCode: string, categoryIdList: Array<number>, mode: string) {
+    const method = "GET"
+    const url = '/2023/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&category_pk_list=' + categoryIdList.join(',') + '&mode=' + mode;
+    const body = '';
+      
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.get( 
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );  
+  }
+
+  async redeemProducts(payload) {
+    const method = "POST"
+    const url = '/2023/api/v1/check_in/redeem_products/'
+    const body = JSON.stringify(payload);
+    const headers = {"Content-Type": "application/json"}
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.post(
+      this.base + url,
+      body,
+      {headers: {...headers, ...authHeaders}}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );
+  }
+
   async syncScan(accessCode: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
