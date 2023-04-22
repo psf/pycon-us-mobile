@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 
-import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
@@ -72,7 +71,6 @@ export class AppComponent implements OnInit {
     this.confData.load();
     this.platform.ready().then(() => {
       if (this.platform.is('hybrid')) {
-        StatusBar.hide();
         SplashScreen.hide();
       }
     });
