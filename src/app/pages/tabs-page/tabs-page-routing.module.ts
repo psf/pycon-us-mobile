@@ -95,6 +95,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'checkout',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../checkout/checkout.module').then(m => m.CheckoutPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {

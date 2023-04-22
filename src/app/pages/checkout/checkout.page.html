@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Point of Sale</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [style.visibility]="content_visibility">
+  <div *ngIf="attendee">
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col>
+        <div *ngFor="let category of inventory | keyvalue">
+          <ion-item><ion-text><h4>{{category.key}}</h4></ion-text></ion-item>
+l
+          <ion-item *ngFor="let product of category.value">
+            <ion-grid>
+              <ion-row>
+                <ion-col size=2>
+                  <ion-button (click)="addToCart(product.product_id)" size="small"><ion-icon name="add-outline"></ion-icon></ion-button>&nbsp;
+                </ion-col>
+                <ion-col size=3>
+                  <ion-item *ngIf="product.product_pay_what_you_want" class="ion-no-padding">$ <ion-input style="display: inline-block" [id]="'product-' + product.product_id + '-price'" label="Amount" type="number" [value]="product.product_price"></ion-input></ion-item>
+                  <ion-text class="ion-text-start" *ngIf="!product.product_pay_what_you_want" [id]="'product-' + product.product_id + '-price'" lines="none" [value]="product.product_price">$ {{product.product_price}}</ion-text>
+                </ion-col>
+                <ion-col>
+                  {{product.product_name}}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </div>
+</ion-content>
+
+<ion-footer style="background-color: lightgrey">
+  <div *ngIf="cart.length > 0">
+  <ion-grid class="ion-padding-horizontal">
+    <ion-row>
+      <ion-col size=6><h4>Cart</h4></ion-col>
+      <ion-col>
+       <ion-button size="small" color="danger" (click)="reset()">reset</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button size="small" (click)="clearCart()">clear</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let productQuantity of cart">
+      <ion-col size=2>{{productQuantity.quantity}}x</ion-col>
+      <ion-col size=3>${{productQuantity.price}}</ion-col>
+      <ion-col>
+        {{productQuantity.product_name}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full">Checkout</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </div>
+  <ion-toolbar class="footer-toolbar">
+    <ion-buttons class="footer-buttons">
+      <ion-button fill="solid" [disabled]="(attendee === null)" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
+        Start Scanner!
+      </ion-button>
+      <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">
+        Stop Scanner
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -25,6 +25,15 @@
             </ion-item>
           </ion-menu-toggle>
 
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/app/tabs/checkout" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="card-outline"></ion-icon>
+              <ion-label>
+                Point of Sale
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle *ngIf="hasDoorCheck" autoHide="false">
             <ion-item routerLink="/app/tabs/door-check" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="checkbox-outline"></ion-icon>

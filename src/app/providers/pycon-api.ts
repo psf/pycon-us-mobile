@@ -41,6 +41,42 @@ export class PyConAPI {
     return headers;
   }
 
+  async getUrl(url: string): Promise<any> {
+    const method = "GET";
+    const body = '';
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );
+  }
+
+  async postUrl(url: string, payload: Object): Promise<any> {
+    const method = "POST"
+    const body = JSON.stringify(payload);
+    const headers = {"Content-Type": "application/json"}
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.post(
+      this.base + url,
+      body,
+      {headers: {...headers, ...authHeaders}}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );
+  }
+
+  async fetchAttendeeData(accessCode: string): Promise<any> {return this.getUrl('/2023/api/v1/fetch_attendee_data/?attendee_access_code=' + accessCode)};
+  async fetchInventory(attendeeId: number, productSet: string): Promise<any> {return this.getUrl('/2023/api/v1/fetch_inventory/?attendee_id=' + attendeeId + '&product_set=' + productSet)};
+  async fetchConnectionToken(): Promise<any> {return this.getUrl('/2023/api/v1/connection_token')};
+
   async fetchPreferences(): Promise<any> {
     const method = "GET";
     const url = '/2023/api/v1/user/mobile_state/';
