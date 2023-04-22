@@ -12,6 +12,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 })
 export class SpeakerDetailPage {
   speaker: any;
+  backHref = '';
 
   constructor(
     private dataProvider: ConferenceData,
@@ -21,6 +22,10 @@ export class SpeakerDetailPage {
     public inAppBrowser: InAppBrowser,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  ionViewDidEnter() {
+    this.backHref = this.route.snapshot.queryParamMap.get('prevUrl') || '/app/tabs/speakers';
+  }
 
   ionViewWillEnter() {
     this.dataProvider.load().subscribe((data: any) => {
