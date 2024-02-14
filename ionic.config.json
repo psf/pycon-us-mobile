@@ -2,6 +2,7 @@
   "name": "pycon-us-2023",
   "type": "angular",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   }
 }

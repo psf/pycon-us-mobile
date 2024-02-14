@@ -44,7 +44,7 @@ export class ConferenceData {
       return of(this.data);
     } else {
       return this.http
-        .get('https://us.pycon.org/2023/schedule/conference.json')
+        .get('https://us.pycon.org/2024/schedule/conference.json')
         .pipe(timeout(10000), catchError(error => {
           console.log('Unable to load latest from remote, ' + error)
           return this.storage.get('schedule-cache').then((data) => {

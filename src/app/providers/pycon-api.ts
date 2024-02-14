@@ -43,7 +43,7 @@ export class PyConAPI {
 
   async fetchPreferences(): Promise<any> {
     const method = "GET";
-    const url = '/2023/api/v1/user/mobile_state/';
+    const url = '/2024/api/v1/user/mobile_state/';
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -59,7 +59,7 @@ export class PyConAPI {
 
   async patchUserData(payload: any): Promise<any> {
     const method = "PATCH";
-    const url = '/2023/api/v1/user/mobile_state/';
+    const url = '/2024/api/v1/user/mobile_state/';
     const body = JSON.stringify(payload);
     const headers = {"Content-Type": "application/json"}
 
@@ -82,7 +82,7 @@ export class PyConAPI {
 
   async fetchCheckInProducts(): Promise<any> {
     const method = "GET"
-    const url = '/2023/api/v1/check_in/redeemable/';
+    const url = '/2024/api/v1/check_in/redeemable/';
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -98,7 +98,7 @@ export class PyConAPI {
 
   async fetchAttendeesByProduct(productId: number): Promise<any> {
     const method = "GET"
-    const url = '/2023/api/v1/check_in/attendees_by_product/' + productId + '/';
+    const url = '/2024/api/v1/check_in/attendees_by_product/' + productId + '/';
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -114,7 +114,7 @@ export class PyConAPI {
 
   async fetchAttendeeProducts(accessCode: string, categoryIdList: Array<number>, mode: string) {
     const method = "GET"
-    const url = '/2023/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&category_pk_list=' + categoryIdList.join(',') + '&mode=' + mode;
+    const url = '/2024/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&category_pk_list=' + categoryIdList.join(',') + '&mode=' + mode;
     const body = '';
       
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -130,7 +130,7 @@ export class PyConAPI {
 
   async redeemProducts(payload) {
     const method = "POST"
-    const url = '/2023/api/v1/check_in/redeem_products/'
+    const url = '/2024/api/v1/check_in/redeem_products/'
     const body = JSON.stringify(payload);
     const headers = {"Content-Type": "application/json"}
 
@@ -148,7 +148,7 @@ export class PyConAPI {
 
   async captureMaskViolation(accessCode: string): Promise<any> {
     const method = 'GET';
-    const url = '/2023/api/v1/mask_violations/capture/?attendee_access_code=' + accessCode;
+    const url = '/2024/api/v1/mask_violations/capture/?attendee_access_code=' + accessCode;
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -180,7 +180,7 @@ export class PyConAPI {
     const _validator = scanData[scanData.length - 1];
 
     const method = 'GET';
-    const url = '/2023/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator;
+    const url = '/2024/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator;
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -214,7 +214,7 @@ export class PyConAPI {
     }
 
     const method = 'POST';
-    const url = '/2023/api/v1/lead_retrieval/' + accessCode + "/note/";
+    const url = '/2024/api/v1/lead_retrieval/' + accessCode + "/note/";
     const body = JSON.stringify(pending);
     const headers = {"Content-Type": "application/json"}
 
