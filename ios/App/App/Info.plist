@@ -37,7 +37,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Scanning Attendee badge QR codes</string>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen.storyboard</string>
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
