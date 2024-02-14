@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="app_name">PyCon US 2023</string>
-  <string name="title_activity_main">PyCon US 2023</string>
+  <string name="app_name">PyCon US</string>
+  <string name="title_activity_main">PyCon US</string>
   <string name="package_name">org.pycon.us</string>
   <string name="custom_url_scheme">org.pycon.us</string>
   <string name="ionic_app_id">e8e09c7a</string>
