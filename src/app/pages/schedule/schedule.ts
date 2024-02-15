@@ -62,7 +62,7 @@ export class SchedulePage implements OnInit {
       }
     });
 
-    this.dayIndex = "1";
+    this.dayIndex = "0";
 
     this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
