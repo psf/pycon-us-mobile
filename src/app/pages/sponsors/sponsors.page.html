@@ -25,7 +25,7 @@
 
           <ion-card-content>
               <ion-item>
-                <ion-img slot="start" style="min-width: 128px; max-width: 33%; max-height: 33%;" [src]="sponsor.logo_url" [alt]="sponsor.name + ' logo'"></ion-img>
+                <ion-img class="sponsor-logo" slot="start" style="min-width: 128px; max-width: 33%; max-height: 33%;" [src]="sponsor.logo_url" [alt]="sponsor.name + ' logo'"></ion-img>
                 <ion-label>
                   <ion-text><b>{{sponsor.name}}</b></ion-text><br><br>
                   <ion-text *ngIf="sponsor?.booth_number">Expo Hall Booth: {{sponsor.booth_number}}<br></ion-text>
