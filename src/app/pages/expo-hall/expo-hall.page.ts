@@ -14,6 +14,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 })
 export class ExpoHallPage implements OnInit {
   sponsors: any;
+  private scrolled: boolean = false;
   private iterableDiffer;
 
   constructor(
@@ -22,6 +23,7 @@ export class ExpoHallPage implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {
+    this.scrolled = false;
   }
 
   reloadSponsors() {
@@ -35,12 +37,12 @@ export class ExpoHallPage implements OnInit {
         for (const [level, sponsorss] of Object.entries(this.sponsors)) {
           for(const [index, sponsor] of Object.entries(sponsorss)) {
             if (sponsor.booth_number !== null) {
-                console.log(sponsor);
                 let elem = document.getElementById("booth"+sponsor.booth_number);
                 elem.innerHTML = "<img class=\"booth-img\" src=\"" + sponsor.logo_url+ "\">";
             }
           }
         }
+        this.scrolled = false;
         this.changeDetection.detectChanges();
         setTimeout(() => {loader.dismiss()}, 100);
       });
@@ -52,7 +54,12 @@ export class ExpoHallPage implements OnInit {
   }
 
   ngAfterViewChecked() {
-    document.getElementById("mapContainer").scrollLeft = 200;
+    if (this.scrolled === true) {
+      return;
+    } else {
+      document.getElementById("mapContainer").scrollLeft = 200;
+      this.scrolled = true;
+    }
   }
 
 }
