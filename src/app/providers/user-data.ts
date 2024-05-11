@@ -24,6 +24,21 @@ export class UserData {
     });
   }
 
+  fetchFeatures() {
+    this.isLoggedIn().then((loggedIn) => {
+      if (!loggedIn) {
+        return
+      }
+      this.pycon.fetchFeatures().then(data => {
+        data.subscribe(data => {
+            this.setHasLeadRetrieval(data.features?.lead_retrieval);
+            this.setHasDoorCheck(data.features?.door_check_in);
+            this.setHasMaskViolation(data.features?.mask_violation);
+        })
+      })
+    })
+  }
+
   fetchPreferences() {
     this.isLoggedIn().then((loggedIn) => {
       if (!loggedIn) {

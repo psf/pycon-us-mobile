@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { NavController, AlertController } from '@ionic/angular';
 
+import { AppComponent } from '../../app.component';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
@@ -17,12 +18,17 @@ export class AccountPage implements AfterViewInit {
   nickname: string;
 
   constructor(
+    public app: AppComponent,
     public alertCtrl: AlertController,
     public nav: NavController,
     public router: Router,
     public userData: UserData,
     public liveUpdateService: LiveUpdateService,
   ) { }
+
+  ngOnInit() {
+    this.app.fetchFeatures();
+  }
 
   ngAfterViewInit() {
     this.getEmail();

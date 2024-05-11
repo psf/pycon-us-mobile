@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
     this.loadTheme();
     this.checkLoginStatus();
     this.listenForLoginEvents();
+    this.fetchFeatures();
     this.liveUpdateService.checkForUpdate();
   }
 
@@ -81,6 +82,15 @@ export class AppComponent implements OnInit {
       this.updateLoggedInStatus(loggedIn);
       if (loggedIn) {
         this.userData.fetchPreferences();
+      }
+    });
+  }
+
+  fetchFeatures() {
+    this.userData.isLoggedIn().then(loggedIn => {
+      if (loggedIn) {
+        this.userData.fetchFeatures();
+        this.updateLoggedInStatus(loggedIn);
       }
     });
   }
@@ -121,6 +131,8 @@ export class AppComponent implements OnInit {
     this.userData.logout().then(() => {
       this.hasApps = false;
       this.hasLeadRetrieval = false;
+      this.hasDoorCheck = false;
+      this.hasMaskViolation = false;
       return this.router.navigateByUrl('/app/tabs/schedule');
     });
   }

@@ -41,6 +41,23 @@ export class PyConAPI {
     return headers;
   }
 
+  async fetchFeatures(): Promise<any> {
+    const method = "GET";
+    const url = '/2024/api/v1/user/check_features/';
+    const body = '';
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    console.log(url);
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );
+  }
+
   async fetchPreferences(): Promise<any> {
     const method = "GET";
     const url = '/2024/api/v1/user/mobile_state/';
