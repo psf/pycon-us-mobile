@@ -10,6 +10,10 @@ const config: CapacitorConfig = {
     hostname: 'mobile.us.pycon.org',
     androidScheme: 'https',
   }
+
+  ios: {
+    scheme: "PyCon US",
+  },
 };
 
 export default config;
