@@ -18,10 +18,24 @@ ion-content{
 }
 
 .booth {
-  border: 1px solid red;
+  margin: auto;
+  text-align: center;
 }
 
-.booth::after {
-  font-size: .5rem;
-  content: attr(id);
+.booth-img {
+  max-height: 33%;
+  max-width: 85%;
+  margin-top: 20%;
+}
+
+.tall-booth .booth-img {
+  margin-top: 50%;
+}
+
+.sq-booth .booth-img {
+  margin-top: 25%;
+}
+
+.xtall-booth .booth-img {
+  margin-top: 66%
 }

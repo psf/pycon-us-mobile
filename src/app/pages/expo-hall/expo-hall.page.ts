@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { LoadingController } from '@ionic/angular';
 
@@ -10,6 +10,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   selector: 'app-expo-hall',
   templateUrl: './expo-hall.page.html',
   styleUrls: ['./expo-hall.page.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ExpoHallPage implements OnInit {
   sponsors: any;
@@ -23,12 +24,6 @@ export class ExpoHallPage implements OnInit {
   ) {
   }
 
-  updateSponsors() {
-    this.confData.getSponsors().subscribe((sponsors: any[]) => {
-      this.sponsors = sponsors;
-    });
-  }
-
   reloadSponsors() {
     this.loadingCtrl.create({
       message: 'Fetching latest...',
@@ -37,6 +32,15 @@ export class ExpoHallPage implements OnInit {
       loader.present();
       this.confData.getSponsors().subscribe((sponsors: any[]) => {
         this.sponsors = sponsors;
+        for (const [level, sponsorss] of Object.entries(this.sponsors)) {
+          for(const [index, sponsor] of Object.entries(sponsorss)) {
+            if (sponsor.booth_number !== null) {
+                console.log(sponsor);
+                let elem = document.getElementById("booth"+sponsor.booth_number);
+                elem.innerHTML = "<img class=\"booth-img\" src=\"" + sponsor.logo_url+ "\">";
+            }
+          }
+        }
         this.changeDetection.detectChanges();
         setTimeout(() => {loader.dismiss()}, 100);
       });
