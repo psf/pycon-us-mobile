@@ -59,6 +59,10 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'expo-hall',
+        loadChildren: () => import('../expo-hall/expo-hall.module').then( m => m.ExpoHallPageModule)
+      },
+      {
         path: 'lead-retrieval',
         children: [
           {

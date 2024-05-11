@@ -11,6 +11,7 @@ import { SessionDetailModule } from '../session-detail/session-detail.module';
 import { SpeakerDetailModule } from '../speaker-detail/speaker-detail.module';
 import { SpeakerListModule } from '../speaker-list/speaker-list.module';
 import { SponsorsPageModule } from '../sponsors/sponsors.module';
+import { ExpoHallPageModule } from '../expo-hall/expo-hall.module';
 import { AboutPyconPageModule } from '../about-pycon/about-pycon.module';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { AboutPyconPageModule } from '../about-pycon/about-pycon.module';
     SpeakerDetailModule,
     SpeakerListModule,
     SponsorsPageModule,
+    ExpoHallPageModule,
     AboutPyconPageModule,
     TabsPageRoutingModule
   ],

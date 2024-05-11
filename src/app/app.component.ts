@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
+    { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
   ]
   nickname = null;
   loggedIn = false;

@@ -1,0 +1,221 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Expo-Hall</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="map-container">
+  <div class="expo-hall-map" style="position: relative;">
+    <div class="boothgroup" style="position: absolute; top: calc(132.45 / 3429 * 100%); left: calc(160.07 / 4096 * 100%); width: calc(172.88 / 4096 * 100%); height: calc(515.05 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth130" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth128" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth126" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(874.26 / 3429 * 100%); left: calc(158.76 / 4096 * 100%); width: calc(171.36 / 4096 * 100%); height: calc(687.883 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth122" class="booth" style="position: absolute; width: 100%; height: 25%; top: 0%; left: 0%;"></div>
+          <div id="booth120" class="booth" style="position: absolute; width: 100%; height: 25%; top: 25%; left: 0%;"></div>
+          <div id="booth118" class="booth" style="position: absolute; width: 100%; height: 25%; top: 50%; left: 0%;"></div>
+          <div id="booth116" class="booth" style="position: absolute; width: 100%; height: 25%; top: 75%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(874.11 / 3429 * 100%); left: calc(532.81 / 4096 * 100%); width: calc(171.36 / 4096 * 100%); height: calc(687.883 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth123" class="booth" style="position: absolute; width: 100%; height: 25%; top: 0%; left: 0%;"></div>
+          <div id="booth121" class="booth" style="position: absolute; width: 100%; height: 25%; top: 25%; left: 0%;"></div>
+          <div id="booth119" class="booth" style="position: absolute; width: 100%; height: 25%; top: 50%; left: 0%;"></div>
+          <div id="booth117" class="booth" style="position: absolute; width: 100%; height: 25%; top: 75%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(875.587 / 3429 * 100%); left: calc(807.822 / 4096 * 100%); width: calc(171.36 / 4096 * 100%); height: calc(687.883 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth222" class="booth" style="position: absolute; width: 100%; height: 25%; top: 0%; left: 0%;"></div>
+          <div id="booth220" class="booth" style="position: absolute; width: 100%; height: 25%; top: 25%; left: 0%;"></div>
+          <div id="booth218" class="booth" style="position: absolute; width: 100%; height: 25%; top: 50%; left: 0%;"></div>
+          <div id="booth216" class="booth" style="position: absolute; width: 100%; height: 25%; top: 75%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(150.04 / 3429 * 100%); left: calc(1259.49 / 4096 * 100%); width: calc(171.29 / 4096 * 100%); height: calc(516.46 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth235" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth233" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth231" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(150.04 / 3429 * 100%); left: calc(1429.323 / 4096 * 100%); width: calc(171.36 / 4096 * 100%); height: calc(515.68 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth334" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth332" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth330" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(165.0199 / 3429 * 100%); left: calc(2445.708 / 4096 * 100%); width: calc(171.5213 / 4096 * 100%); height: calc(343.48 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth435" class="booth" style="position: absolute; width: 100%; height: 50%; top: 0%; left: 0%;"></div>
+          <div id="booth433" class="booth" style="position: absolute; width: 100%; height: 50%; top: 50%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(165.0199 / 3429 * 100%); left: calc(2617.177 / 4096 * 100%); width: calc(171.3626/ 4096 * 100%); height: calc(343.48 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth534" class="booth" style="position: absolute; width: 100%; height: 50%; top: 0%; left: 0%;"></div>
+          <div id="booth532" class="booth" style="position: absolute; width: 100%; height: 50%; top: 50%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(157.1894 / 3429 * 100%); left: calc(3707.144 / 4096 * 100%); width: calc(172.8895 / 4096 * 100%); height: calc(515.0506 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth633" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth631" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth629" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(791.6821 / 3429 * 100%); left: calc(3042.344 / 4096 * 100%); width: calc(171.3626 / 4096 * 100%); height: calc(860.084 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth525" class="booth" style="position: absolute; width: 100%; height: 20%; top: 0%; left: 0%;"></div>
+          <div id="booth523" class="booth" style="position: absolute; width: 100%; height: 20%; top: 20%; left: 0%;"></div>
+          <div id="booth521" class="booth" style="position: absolute; width: 100%; height: 20%; top: 40%; left: 0%;"></div>
+          <div id="booth519" class="booth" style="position: absolute; width: 100%; height: 20%; top: 60%; left: 0%;"></div>
+          <div id="booth517" class="booth" style="position: absolute; width: 100%; height: 20%; top: 80%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(792.2205 / 3429 * 100%); left: calc(3329.863 / 4096 * 100%); width: calc(172.7456 / 4096 * 100%); height: calc(860.084 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth624" class="booth" style="position: absolute; width: 100%; height: 20%; top: 0%; left: 0%;"></div>
+          <div id="booth622" class="booth" style="position: absolute; width: 100%; height: 20%; top: 20%; left: 0%;"></div>
+          <div id="booth620" class="booth" style="position: absolute; width: 100%; height: 20%; top: 40%; left: 0%;"></div>
+          <div id="booth618" class="booth" style="position: absolute; width: 100%; height: 20%; top: 60%; left: 0%;"></div>
+          <div id="booth616" class="booth" style="position: absolute; width: 100%; height: 20%; top: 80%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(788.2649 / 3429 * 100%); left: calc(3721.246 / 4096 * 100%); width: calc(173.2331 / 4096 * 100%); height: calc(860.084 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth625" class="booth" style="position: absolute; width: 100%; height: 20%; top: 0%; left: 0%;"></div>
+          <div id="booth623" class="booth" style="position: absolute; width: 100%; height: 20%; top: 20%; left: 0%;"></div>
+          <div id="booth621" class="booth" style="position: absolute; width: 100%; height: 20%; top: 40%; left: 0%;"></div>
+          <div id="booth619" class="booth" style="position: absolute; width: 100%; height: 20%; top: 60%; left: 0%;"></div>
+          <div id="booth617" class="booth" style="position: absolute; width: 100%; height: 20%; top: 80%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(701.8045 / 3429 * 100%); left: calc(1259.487 / 4096 * 100%); width: calc(342.0048 / 4096 * 100%); height: calc(342.5575 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth227" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 0%;"></div>
+          <div id="booth326" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 50%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1101.408 / 3429 * 100%); left: calc(1264.772 / 4096 * 100%); width: calc(342.6406 / 4096 * 100%); height: calc(342.5575 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth221" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 0%;"></div>
+          <div id="booth320" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 50%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(694.4091 / 3429 * 100%); left: calc(2446.511 / 4096 * 100%); width: calc(342.7554 / 4096 * 100%); height: calc(342.5575 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth427" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 0%;"></div>
+          <div id="booth526" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 50%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1101.754 / 3429 * 100%); left: calc(2441.532 / 4096 * 100%); width: calc(342.8555 / 4096 * 100%); height: calc(342.6715 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth421" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 0%;"></div>
+          <div id="booth520" class="booth" style="position: absolute; width: 50%; height: 100%; top: 0%; left: 50%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1786.206 / 3429 * 100%); left: calc(159.6803 / 4096 * 100%); width: calc(172.7474 / 4096 * 100%); height: calc(1032.044 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth110" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth104" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth100" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1777.439 / 3429 * 100%); left: calc(3699.943 / 4096 * 100%); width: calc(173.4491 / 4096 * 100%); height: calc(1032.340 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth611" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 0%; left: 0%;"></div>
+          <div id="booth605" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 33.33%; left: 0%;"></div>
+          <div id="booth601" class="booth" style="position: absolute; width: 100%; height: 33.33%; top: 66.66%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2257.647 / 3429 * 100%); left: calc(626.3714 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(513.8362 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth101" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1342.877 / 3429 * 100%); left: calc(1845.752 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(513.8362 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth315" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2292.597 / 3429 * 100%); left: calc(1851.882 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(513.8362 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth301" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2276.617 / 3429 * 100%); left: calc(3086.874 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(513.8362 / 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth501" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1548.366 / 3429 * 100%); left: calc(1259.487 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth212" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2459.285 / 3429 * 100%); left: calc(1259.487 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth201" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1911.597 / 3429 * 100%); left: calc(1847.097 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth309" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(1561.956  / 3429 * 100%); left: calc(2431.690 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth412" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2020.308 / 3429 * 100%); left: calc(2439.343 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth407" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="boothgroup" style="position: absolute; top: calc(2460.533 / 3429 * 100%); left: calc(2436.631 / 4096 * 100%); width: calc(342.5704 / 4096 * 100%); height: calc(342.5574/ 3429 * 100%);">
+      <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
+          <div id="booth401" class="booth" style="position: absolute; width: 100%; height: 100%; top: 0%; left: 0%;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
