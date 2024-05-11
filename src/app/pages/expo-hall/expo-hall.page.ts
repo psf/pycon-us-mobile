@@ -13,13 +13,15 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 })
 export class ExpoHallPage implements OnInit {
   sponsors: any;
+  private iterableDiffer;
 
   constructor(
     private loadingCtrl: LoadingController,
     private confData: ConferenceData,
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
-  ) { }
+  ) {
+  }
 
   updateSponsors() {
     this.confData.getSponsors().subscribe((sponsors: any[]) => {
@@ -43,6 +45,10 @@ export class ExpoHallPage implements OnInit {
 
   ngOnInit() {
     this.reloadSponsors();
+  }
+
+  ngAfterViewChecked() {
+    document.getElementById("mapContainer").scrollLeft = 200;
   }
 
 }
