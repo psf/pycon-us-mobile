@@ -1,14 +1,30 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="!showSearchbar" slot="start">
       <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Expo-Hall</ion-title>
+    <ion-title *ngIf="!ios && !showSearchbar">Expo-Hall</ion-title>
+    <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="searchQueryText" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="searchSponsors()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<div id="mapContainer" class="map-container">
+<ion-content>
+<div id="mapContainer" #mapContainer class="map-container">
+  <div class="search-container" style="position: absolute; width: 100%; z-index: 10;">
+  <div id="search-results" style="width: 90%; margin: auto;">
+    <div class="search-result" style="width: 100%; background-color: white; padding-left: 5%; padding-top: .75em; padding-bottom: .75em;" *ngFor="let sponsor of queryResults">
+      <div style="width: 100%; height: 100%" (click)="selectSponsor(sponsor);">
+        <img src="{{ sponsor.logo_url }}" style="width: 2em; max-height: 1em;"><span style="padding-left: 1em;">{{ sponsor.name }}</span>
+      </div>
+    </div>
+  </div>
+  </div>
   <div class="expo-hall-map" style="position: relative;">
     <div class="boothgroup" style="position: absolute; top: calc(132.45 / 3429 * 100%); left: calc(160.07 / 4096 * 100%); width: calc(172.88 / 4096 * 100%); height: calc(515.05 / 3429 * 100%);">
       <div class="boothgroupinner" style="position: relative; width: 100%; height: 100%;">
@@ -219,3 +235,4 @@
 
   </div>
 </div>
+</ion-content>

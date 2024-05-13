@@ -393,6 +393,49 @@ export class ConferenceData {
     );
   }
 
+  querySponsors(queryText: string) {
+    queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+    const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+    return this.load().pipe(
+      map((data: any) => {
+        const results = [];
+        for (const [level, sponsorss] of Object.entries(data.conference.sponsors)) {
+          for(const [index, sponsor] of Object.entries(sponsorss)) {
+            if (this.filterSponsors(sponsor, queryWords)) {
+              if (sponsor.booth_number !== null) {
+                results.push(sponsor);
+              }
+            }
+          }
+        }
+        return results;
+      })
+    );
+  }
+
+
+  filterSponsors(
+    sponsor: any,
+    queryWords: string[],
+  ) {
+    let matchesQueryText = false;
+    if (queryWords.length) {
+      // of any query word is in the speaker name than it passes the query test
+      queryWords.forEach((queryWord: string) => {
+        if (sponsor.name.toLowerCase().indexOf(queryWord) > -1) {
+          console.log(sponsor.name);
+          matchesQueryText = true;
+        }
+      });
+    } else {
+      // if there are no query words then this session passes the query test
+      matchesQueryText = true;
+    }
+
+    // all tests must be true if it should not be hidden
+    return matchesQueryText
+  }
+
   getSpeakers(queryText: string) {
     queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
     const queryWords = queryText.split(' ').filter(w => !!w.trim().length);

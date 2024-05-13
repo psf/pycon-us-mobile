@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { KeyValue } from '@angular/common';
+import { Keyboard } from '@capacitor/keyboard';
 import { LoadingController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
@@ -14,7 +15,14 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 })
 export class ExpoHallPage implements OnInit {
   sponsors: any;
+  @ViewChild('search') search : any;
+  @ViewChild('mapContainer') mapContainer: any;
+  searchQueryText = '';
+  queryResults: any[] = [];
+  ios: boolean;
+  showSearchbar: boolean;
   private scrolled: boolean = false;
+  private scrollTarget: any;
   private iterableDiffer;
 
   constructor(
@@ -24,6 +32,18 @@ export class ExpoHallPage implements OnInit {
     public liveUpdateService: LiveUpdateService,
   ) {
     this.scrolled = false;
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const height = this.mapContainer.nativeElement.offsetHeight;
+      this.mapContainer.nativeElement.style.height = height + 'px';
+    });
+    Keyboard.addListener('keyboardDidShow', info => {
+    });
+    Keyboard.addListener('keyboardWillHide', () => {
+    });
+    Keyboard.addListener('keyboardDidHide', () => {
+      this.mapContainer.nativeElement.style.height = '100%';
+      this.scrollTarget.scrollIntoView();
+    });
   }
 
   reloadSponsors() {
@@ -48,6 +68,45 @@ export class ExpoHallPage implements OnInit {
       });
     });
   }
+
+  resetSearch() {
+    this.searchQueryText = "";
+    this.queryResults = [];
+    let elems = document.getElementsByClassName('booth-highlight')
+    Array.from(elems).forEach((elem: any) => {elem.classList.remove('booth-highlight');})
+  }
+
+  searchSponsors() {
+    if (this.searchQueryText === "" || this.searchQueryText === " ") {
+      this.resetSearch();
+      return;
+    }
+    this.queryResults = [];
+    let elems = document.getElementsByClassName('booth-highlight')
+    Array.from(elems).forEach((elem: any) => {elem.classList.remove('booth-highlight');})
+    this.confData.querySponsors(this.searchQueryText).subscribe((sponsors: any[]) => {
+      this.queryResults = sponsors;
+      this.queryResults.forEach((sponsor: any) => {
+        let elem = document.getElementById("booth"+sponsor.booth_number);
+        elem.classList.add("booth-highlight");
+      })
+    });
+  }
+
+  selectSponsor(sponsor) {
+    this.showSearchbar = false;
+    this.resetSearch();
+    let elem = document.getElementById("booth"+sponsor.booth_number);
+    elem.classList.add("booth-highlight");
+    this.scrollTarget = elem;
+    this.scrollTarget.scrollIntoView();
+  }
+
+  async focusButton() {
+     setTimeout(() => {
+       this.search.setFocus();
+     }, 500); // ms delay
+   }
 
   ngOnInit() {
     this.reloadSponsors();
