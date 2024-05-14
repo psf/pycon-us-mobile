@@ -10,7 +10,7 @@ import { PyConAPI } from '../../providers/pycon-api';
   templateUrl: './mask-violation.page.html',
   styleUrls: ['./mask-violation.page.scss'],
 })
-export class MaskViolationPage implements OnInit {
+export class MaskViolationPage implements OnInit, OnDestroy {
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';

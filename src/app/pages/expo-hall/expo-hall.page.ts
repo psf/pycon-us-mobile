@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ViewEncapsulation, AfterViewChecked } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { Keyboard } from '@capacitor/keyboard';
 import { LoadingController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./expo-hall.page.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ExpoHallPage implements OnInit {
+export class ExpoHallPage implements OnInit, AfterViewChecked {
   sponsors: any;
   @ViewChild('search') search : any;
   @ViewChild('mapContainer') mapContainer: any;
