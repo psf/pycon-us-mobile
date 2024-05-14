@@ -12,8 +12,8 @@ const config: CapacitorConfig = {
   }
 
   ios: {
-    scheme: "PyCon US",
-  },
+    scheme: 'PyCon US',
+  }
 };
 
 export default config;
