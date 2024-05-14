@@ -1,7 +1,7 @@
 {
-  "name": "ionic-conference-app",
+  "name": "pycon-us-mobile-app",
   "version": "0.0.0",
-  "description": "Ionic Conference App",
+  "description": "Ionic Conference App for PyCon US",
   "author": "Ionic Team <hi@ionicframework.com>",
   "license": "Apache-2.0",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/ionic-conference-app.git"
+    "url": "https://github.com/psf/pycon-us-mobile.git"
   },
   "private": true,
   "dependencies": {
