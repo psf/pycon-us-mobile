@@ -11,7 +11,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: './door-check.page.html',
   styleUrls: ['./door-check.page.scss'],
 })
-export class DoorCheckPage implements OnInit {
+export class DoorCheckPage implements OnInit, OnDestroy {
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';

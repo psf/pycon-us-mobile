@@ -43,5 +43,6 @@ export class RedemptionModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('OnInit RedemptionModalComponent')
   }
 }

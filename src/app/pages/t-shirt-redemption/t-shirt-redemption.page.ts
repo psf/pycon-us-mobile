@@ -14,7 +14,7 @@ import { RedemptionModalComponent } from '../../redemption-modal/redemption-moda
   templateUrl: './t-shirt-redemption.page.html',
   styleUrls: ['./t-shirt-redemption.page.scss'],
 })
-export class TShirtRedemptionPage implements OnInit {
+export class TShirtRedemptionPage implements OnInit, OnDestroy {
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
