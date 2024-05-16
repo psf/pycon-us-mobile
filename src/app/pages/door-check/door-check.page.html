@@ -35,6 +35,7 @@
         <div *ngFor="let product of display_products">
           <ion-select-option [value]="product.id">{{product.name}}</ion-select-option>
         </div>
+        <ion-select-option value="all">ALL</ion-select-option>
       </ion-select>
     </ion-item>
 

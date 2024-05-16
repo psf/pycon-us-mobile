@@ -28,7 +28,7 @@ export class DoorCheckPage implements OnInit {
 
   mode: string|null = "door_check";
   category: number|null = null;
-  product: number|null = null;
+  product: any = null;
 
   redeemable_products: any = null;
   redeemable_categories: any = null;
@@ -99,13 +99,25 @@ export class DoorCheckPage implements OnInit {
 
   startScan = async () => {
     console.log(this.product);
-    if (this.product) {
-      await this.pycon.fetchAttendeesByProduct(this.product).then((data) => {
-        data.subscribe(attendees => {
-          console.log(attendees);
-          this.product_attendees = attendees;
+    if (this.product === "all") {
+      this.product_attendees = [];
+      this.display_products.forEach((prod) => {
+        console.log(prod);
+        this.pycon.fetchAttendeesByProduct(prod.id).then((data) => {
+          data.subscribe(attendees => {
+            this.product_attendees = this.product_attendees.concat(attendees);
+          })
         })
       })
+    } else {
+      if (this.product) {
+        await this.pycon.fetchAttendeesByProduct(this.product).then((data) => {
+          data.subscribe(attendees => {
+            console.log(attendees);
+            this.product_attendees = attendees;
+          })
+        })
+      }
     }
     const permission = await this.checkPermission();
     if (!permission) {
