@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.updateAvailable?.available ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.updateAvailable?.available" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Conference Center</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" scrollX="true" scrollY="true" scrollEvents="true">
+
+<pinch-zoom>
+
+<div>
+  <ion-img class="floor-img" src="assets/img/floor-two.png"></ion-img>
+  <ion-img class="floor-img" src="assets/img/floor-three.png"></ion-img>
+  <ion-img class="floor-img" src="assets/img/floor-four.png"></ion-img>
+</div>
+
+</pinch-zoom>
+
+
+</ion-content>
