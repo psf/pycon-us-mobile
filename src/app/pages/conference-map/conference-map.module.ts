@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PinchZoomModule } from '@meddv/ngx-pinch-zoom';
+import { PinchZoomModule } from '@ciag/ngx-pinch-zoom';
 
 import { ConferenceMapPageRoutingModule } from './conference-map-routing.module';
 
