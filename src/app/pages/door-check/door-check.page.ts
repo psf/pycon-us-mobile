@@ -34,7 +34,7 @@ export class DoorCheckPage implements OnInit {
   redeemable_categories: any = null;
   display_products: any = null;
 
-  product_attendees: any = null;
+  product_attendees: Map<string, number>|null = null;
 
   constructor(
     public platform: Platform,
@@ -66,7 +66,7 @@ export class DoorCheckPage implements OnInit {
 
   updateLastScan = async (accessCode: string) => {
     this.last_scan = {
-      "status": this.product_attendees.includes(accessCode),
+      "status": this.product_attendees.has(accessCode) ? this.product_attendees[accessCode] : this.product_attendees[accessCode],
       "code": accessCode
     };
     this.detectorRef.detectChanges();
@@ -98,23 +98,33 @@ export class DoorCheckPage implements OnInit {
   }
 
   startScan = async () => {
-    console.log(this.product);
+    this.product_attendees = new Map(); 
     if (this.product === "all") {
-      this.product_attendees = [];
       this.display_products.forEach((prod) => {
-        console.log(prod);
-        this.pycon.fetchAttendeesByProduct(prod.id).then((data) => {
+        this.pycon.fetchAttendeesByProductWithQuantity(prod.id).then((data) => {
           data.subscribe(attendees => {
-            this.product_attendees = this.product_attendees.concat(attendees);
+            attendees.forEach((attendee) => {
+              if (this.product_attendees.has(attendee.id)) {
+                this.product_attendees[attendee.id] += attendee.quantity;
+              } else {
+                this.product_attendees[attendee.id] = attendee.quantity;
+              }
+            });
           })
         })
       })
     } else {
       if (this.product) {
-        await this.pycon.fetchAttendeesByProduct(this.product).then((data) => {
+        await this.pycon.fetchAttendeesByProductWithQuantity(this.product).then((data) => {
           data.subscribe(attendees => {
             console.log(attendees);
-            this.product_attendees = attendees;
+            attendees.forEach((attendee) => {
+              if (this.product_attendees.has(attendee.id)) {
+                this.product_attendees[attendee.id] += attendee.quantity;
+              } else {
+                this.product_attendees[attendee.id] = attendee.quantity;
+              }
+            });
           })
         })
       }

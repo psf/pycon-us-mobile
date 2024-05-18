@@ -129,6 +129,22 @@ export class PyConAPI {
     );
   }
 
+  async fetchAttendeesByProductWithQuantity(productId: number): Promise<any> {
+    const method = "GET"
+    const url = '/2024/api/v1/check_in/attendees_by_product_with_quantity/' + productId + '/';
+    const body = '';
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error)
+        throw error;
+      })
+    );
+  }
+
   async fetchAttendeeProducts(accessCode: string, categoryIdList: Array<number>, mode: string) {
     const method = "GET"
     const url = '/2024/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&category_pk_list=' + categoryIdList.join(',') + '&mode=' + mode;

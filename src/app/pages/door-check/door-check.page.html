@@ -70,8 +70,10 @@
                   [color]="(last_scan.status)? 'success' : 'danger'"
                   [name]="(last_scan.status)? 'checkmark-circle-outline' : 'alert-circle-outline'">
                 </ion-icon>
-                <ion-text *ngIf="last_scan.status"> All good attendee has access!<br><small><code>{{ last_scan.code }}</code></small></ion-text>
-                <ion-text *ngIf="!last_scan.status"> Entry not permitted.<br><small><code>{{ last_scan.code }}</code></small></ion-text>
+                <ion-text *ngIf="last_scan.status">All good attendee has access!</ion-text>
+                <ion-text *ngIf="!last_scan.status"> Entry not permitted.</ion-text><br>
+                <ion-text color="tertiary" *ngIf="last_scan.status > 1">({{ last_scan.status }})</ion-text><br>
+                <ion-text><small><code>{{ last_scan.code }}</code></small></ion-text>
               </h1>
             </ion-col>
           </ion-row>
