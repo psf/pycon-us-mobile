@@ -111,9 +111,9 @@ export class TShirtRedemptionPage implements OnInit {
   }
 
   handleScan = async (result: any) => {  // Should be type ScanResult or BarcodeScannedEvent???
-    if (result.barcode && !this.ignore_scans) {
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      await this.pycon.fetchAttendeeProducts(result.barcode.rawValue.split(':')[0], this.category, this.mode).then((data) => {
+      await this.pycon.fetchAttendeeProducts(result.barcodes[0].rawValue.split(':')[0], this.category, this.mode).then((data) => {
         data.subscribe(redemptionData => {
           console.log(redemptionData);
           this.openRedemptionModal(redemptionData)
@@ -133,7 +133,7 @@ export class TShirtRedemptionPage implements OnInit {
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
     const listener = await BarcodeScanner.addListener(
-      'barcodeScanned',
+      'barcodesScanned',
       async result => {
         this.handleScan(result)
       },

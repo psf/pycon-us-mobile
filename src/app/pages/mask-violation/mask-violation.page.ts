@@ -62,9 +62,9 @@ export class MaskViolationPage implements OnInit {
   }
 
   handleScan = async (result: any) => {  // Should be type ScanResult or BarcodeScannedEvent???
-    if (result.barcode && !this.ignore_scans) {
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.barcode.rawValue.split(':')[0]);
+      this.updateLastScan(result.barcodes[0].rawValue.split(':')[0]);
     }
   }
 
@@ -79,7 +79,7 @@ export class MaskViolationPage implements OnInit {
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
     const listener = await BarcodeScanner.addListener(
-      'barcodeScanned',
+      'barcodesScanned',
       async result => {
         this.handleScan(result)
       },

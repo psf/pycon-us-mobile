@@ -165,11 +165,11 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   handleScan = async (result: any) => {  // should be ScanResult or BarcodeScannedEvent
-    if (result.barcode && !this.ignore_scans) {
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.barcode.rawValue.split(':')[0], 0);
-      this.pycon.storeScan(result.barcode.rawValue.split(':')[0], result.barcode.rawValue).then(() => {
-        console.log(result.barcode.rawValue); // log the raw scanned content
+      this.updateLastScan(result.barcodes[0].rawValue.split(':')[0], 0);
+      this.pycon.storeScan(result.barcodes[0].rawValue.split(':')[0], result.barcodes[0].rawValue).then(() => {
+        console.log(result.barcodes[0].rawValue); // log the raw scanned content
         clearTimeout(this.scan_timeout);
       });
     }
@@ -186,7 +186,7 @@ export class MapPage implements OnInit, OnDestroy {
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
     const listener = await BarcodeScanner.addListener(
-      'barcodeScanned',
+      'barcodesScanned',
       async result => {
         this.handleScan(result)
       },

@@ -91,9 +91,9 @@ export class DoorCheckPage implements OnInit {
   }
 
   handleScan = async (result: any) => {
-    if (result.barcode && !this.ignore_scans) {
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.barcode.rawValue.split(':')[0]);
+      this.updateLastScan(result.barcodes[0].rawValue.split(':')[0]);
     }
   }
 
@@ -139,7 +139,7 @@ export class DoorCheckPage implements OnInit {
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
     const listener = await BarcodeScanner.addListener(
-      'barcodeScanned',
+      'barcodesScanned',
       async result => {
         this.handleScan(result)
       },
