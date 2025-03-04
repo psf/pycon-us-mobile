@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { ToastController } from '@ionic/angular';
 import markdownToTxt from 'markdown-to-txt';
 
@@ -27,7 +27,9 @@ export class ConferenceData {
     public user: UserData,
     public storage: Storage,
     private toastController: ToastController,
-  ) {}
+  ) {
+    this.storage.create();
+  }
 
   async presentMessage(message) {
     const toast = await this.toastController.create({

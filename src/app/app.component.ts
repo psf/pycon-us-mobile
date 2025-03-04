@@ -6,7 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 
 import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
 
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 
 import { UserData } from './providers/user-data';
 import { ConferenceData } from './providers/conference-data';
@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
     public confData: ConferenceData,
     public liveUpdateService: LiveUpdateService,
   ) {
+    this.storage.create();
     this.initializeApp();
   }
 
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit {
     this.listenForLoginEvents();
     this.fetchFeatures();
     this.liveUpdateService.checkForUpdate();
+    await this.storage.create();
   }
 
   initializeApp() {

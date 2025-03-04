@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { createHash } from 'sha1-uint8array';
 import { of } from 'rxjs';
 import { timeout, catchError } from 'rxjs/operators';
@@ -17,7 +17,9 @@ export class PyConAPI {
   constructor(
     private http: HttpClient,
     private storage: Storage
-  ) { }
+  ) {
+    this.storage.create();
+  }
 
   async buildRequestAuthHeaders(method, url, body): Promise<any> {
     const apiKey = await this.storage.get('key').then((value) => {return value});

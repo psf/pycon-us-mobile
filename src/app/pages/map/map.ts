@@ -2,7 +2,7 @@ import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, On
 import { ConferenceData } from '../../providers/conference-data';
 import { Config, Platform } from '@ionic/angular';
 import { BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
