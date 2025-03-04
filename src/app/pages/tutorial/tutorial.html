@@ -4,19 +4,15 @@
 </ion-header>
 
 <ion-content fullscreen="true">
-  <swiper [slidesPerView]="1" (swiper)="setSwiperInstance($event)" (slideChangeTransitionStart)="onSlideChangeStart()">
-    <ng-template swiperSlide>
-      <div class="slide-container">
-      <img src="assets/img/splash.png" class="slide-image" />
-      <h2 class="slide-title">
-        Welcome to
-        <b>PyCon US 2025</b>
-      </h2>
-      <ion-button fill="solid" (click)="startApp()">
-        Continue
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
-      </ion-button>
-      </div>
-    </ng-template>
-  </swiper>
+   <div class="slide-container">
+   <img src="assets/img/splash.png" class="slide-image" />
+   <h2 class="slide-title">
+     Welcome to
+     <b>PyCon US 2025</b>
+   </h2>
+   <ion-button fill="solid" (click)="startApp()">
+     Continue
+     <ion-icon slot="end" name="arrow-forward"></ion-icon>
+   </ion-button>
+   </div>
 </ion-content>
