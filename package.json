@@ -38,7 +38,7 @@
     "@capacitor/splash-screen": "^7.0.0",
     "@capacitor/status-bar": "^7.0.0",
     "@ciag/ngx-pinch-zoom": "13.3.0",
-    "@ionic/angular": "^7.8.6",
+    "@ionic/angular": "^8.4.3",
     "@ionic/storage-angular": "^4.0.0",
     "@json-editor/json-editor": "2.14.1",
     "cordova-plugin-inappbrowser": "5.0.0",
