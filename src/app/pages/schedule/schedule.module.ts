@@ -9,19 +9,16 @@ import { SchedulePageRoutingModule } from './schedule-routing.module';
 import { SessionOrderPipe } from '../../pipes/session-order.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SchedulePageRoutingModule
-  ],
-  declarations: [
-    SchedulePage,
-    ScheduleFilterPage,
-    SessionOrderPipe
-  ],
-  entryComponents: [
-    ScheduleFilterPage
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SchedulePageRoutingModule
+    ],
+    declarations: [
+        SchedulePage,
+        ScheduleFilterPage,
+        SessionOrderPipe
+    ]
 })
 export class ScheduleModule { }
