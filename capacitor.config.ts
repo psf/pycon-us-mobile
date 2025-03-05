@@ -14,6 +14,16 @@ const config: CapacitorConfig = {
   ios: {
     scheme: 'PyCon US',
   }
+
+  plugins: {
+    LiveUpdates: {
+      appId: 'e8e09c7a',
+      channel: 'Production',
+      autoUpdateMethod: 'none',
+      maxVersions: 3,
+      enabled: true
+    }
+  }
 };
 
 export default config;

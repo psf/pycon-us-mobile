@@ -4,8 +4,6 @@ import { MenuController, Platform, ToastController } from '@ionic/angular';
 
 import { SplashScreen } from '@capacitor/splash-screen';
 
-import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
-
 import { Storage } from '@ionic/storage-angular';
 
 import { UserData } from './providers/user-data';

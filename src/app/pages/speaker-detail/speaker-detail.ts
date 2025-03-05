@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActionSheetController } from '@ionic/angular';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
@@ -19,7 +19,6 @@ export class SpeakerDetailPage {
     private route: ActivatedRoute,
     public actionSheetCtrl: ActionSheetController,
     public confData: ConferenceData,
-    public inAppBrowser: InAppBrowser,
     public liveUpdateService: LiveUpdateService,
   ) {}
 
@@ -42,10 +41,10 @@ export class SpeakerDetailPage {
   }
 
   openExternalUrl(url: string) {
-    this.inAppBrowser.create(
-      url,
-      '_blank'
-    );
+    InAppBrowser.openInWebView({
+      url: url,
+      options: DefaultWebViewOptions,
+    });
   }
 
   async openSpeakerShare(speaker: any) {

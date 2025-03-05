@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
+import * as LiveUpdates from '@capacitor/live-updates';
 import { App } from '@capacitor/app';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LiveUpdateService {
-  deploy: Deploy;
   updateAvailable: any = null;
+  needsUpdate: boolean = false;
+  build: string = "base";
 
   constructor() {
-    this.deploy = new Deploy();
-    this.deploy.configure({});
-    this.checkForUpdate();
-
     App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         this.checkForUpdate();
@@ -21,9 +18,23 @@ export class LiveUpdateService {
     });
   }
 
+  async updateAppInfo() {
+    const info = await App.getInfo();
+    this.build = info.name + " " + info.version + "-" + info.build
+    console.log(this.build);
+  }
+
+  async reload() {
+    await LiveUpdates.reload();
+    this.needsUpdate = false;
+  }
+
   async checkForUpdate() {
-    this.deploy.checkForUpdate().then((response) => {
-      this.updateAvailable = response
-    })
+    await this.updateAppInfo();
+    const result = await LiveUpdates.sync();
+    this.updateAvailable = result;
+    if (this.updateAvailable.activeApplicationPathChanged) {
+        this.needsUpdate = true;
+    }
   }
 }

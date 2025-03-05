@@ -13,12 +13,14 @@ dependencies {
     implementation project(':capacitor-app')
     implementation project(':capacitor-device')
     implementation project(':capacitor-haptics')
+    implementation project(':capacitor-inappbrowser')
     implementation project(':capacitor-keyboard')
+    implementation project(':capacitor-live-updates')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
 
 }
-apply from: "../../node_modules/cordova-plugin-ionic/src/android/cordovapluginionic.gradle"
+
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

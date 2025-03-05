@@ -1,8 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
-import { Deploy } from 'cordova-plugin-ionic/dist/ngx';
-
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
@@ -35,29 +33,21 @@ export class AboutPyconPage implements OnInit {
     });
   }
 
+  async checkForUpdate() {
+    this.liveUpdateService.checkForUpdate();
+  }
+
   async performAutomaticUpdate() {
    this.loadingCtrl.create({
     message: 'Installing the latest build...',
     duration: 60000,
    }).then((loader) => {
      loader.present();
-     try {
-       this.liveUpdateService.deploy.getCurrentVersion().then((currentVersion) => {
-         console.log(currentVersion);
-         this.liveUpdateService.deploy.sync({updateMethod: 'auto'}).then((resp) => {
-           setTimeout(() => {loader.dismiss()}, 1000);
-           if (!currentVersion || currentVersion.versionId !== resp.versionId){
-             // We found an update, and are in process of redirecting you since you put auto!
-           }else{
-             // No update available
-           }
-           return resp;
-         });
-       }).catch((err) => {
-         console.log(err)
-       })
-     } catch (err) {
-       console.log(err)
+     if (this.liveUpdateService.needsUpdate) {
+         this.liveUpdateService.reload();
+         setTimeout(() => {loader.dismiss()}, 1000);
+     } else {
+         setTimeout(() => {loader.dismiss()}, 1000);
      }
    }).catch((err) => {
      console.log(err);
@@ -65,6 +55,7 @@ export class AboutPyconPage implements OnInit {
   }
 
   ngOnInit() {
+    this.liveUpdateService.checkForUpdate();
     this.reloadContent();
   }
 }
