@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace "org.pycon.us"
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "org.pycon.us"
         minSdkVersion rootProject.ext.minSdkVersion

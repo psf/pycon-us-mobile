@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 
@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   templateUrl: './redemption-modal.component.html',
   styleUrls: ['./redemption-modal.component.scss'],
 })
-export class RedemptionModalComponent implements OnInit {
+export class RedemptionModalComponent {
   @Input() accessCode: string;
   @Input() attendeeName: string;
   @Input() attendeeId: string;
@@ -40,8 +40,5 @@ export class RedemptionModalComponent implements OnInit {
   confirm() {
     console.log(this.toRedeem)
     this.modalCtrl.dismiss({accessCode: this.accessCode, toRedeem: this.toRedeem}, 'save');
-  }
-
-  ngOnInit(): void {
   }
 }

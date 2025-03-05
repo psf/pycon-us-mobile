@@ -1,7 +1,7 @@
 import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Config, Platform } from '@ionic/angular';
-import { BarcodeScanner, SupportedFormat, CameraDirection, ScanResult } from '@capacitor-community/barcode-scanner';
-import { Storage } from '@ionic/storage';
+import { BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
+import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
@@ -14,7 +14,7 @@ import { RedemptionModalComponent } from '../../redemption-modal/redemption-moda
   templateUrl: './t-shirt-redemption.page.html',
   styleUrls: ['./t-shirt-redemption.page.scss'],
 })
-export class TShirtRedemptionPage implements OnInit {
+export class TShirtRedemptionPage implements OnInit, OnDestroy {
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
@@ -62,8 +62,8 @@ export class TShirtRedemptionPage implements OnInit {
 
   checkPermission = async () => {
     try {
-      const status = await BarcodeScanner.checkPermission({ force: true });
-      if (status.granted) {
+      const status = await BarcodeScanner.checkPermissions();
+      if (status) {
         return true;
       }
       return false;
@@ -110,10 +110,10 @@ export class TShirtRedemptionPage implements OnInit {
     this.detectorRef.detectChanges();
   }
 
-  handleScan = async (result: ScanResult) => {
-    if (result.hasContent && !this.ignore_scans) {
+  handleScan = async (result: any) => {  // Should be type ScanResult or BarcodeScannedEvent???
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      await this.pycon.fetchAttendeeProducts(result.content.split(':')[0], this.category, this.mode).then((data) => {
+      await this.pycon.fetchAttendeeProducts(result.barcodes[0].rawValue.split(':')[0], this.category, this.mode).then((data) => {
         data.subscribe(redemptionData => {
           console.log(redemptionData);
           this.openRedemptionModal(redemptionData)
@@ -129,19 +129,25 @@ export class TShirtRedemptionPage implements OnInit {
       return;
     }
     this.show_permissions_error = false;
-    BarcodeScanner.hideBackground();
     this.content_visibility = 'hidden';
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
-    BarcodeScanner.startScanning({
-      targetedFormats: [SupportedFormat.QR_CODE],
-      cameraDirection: 'back'
-    }, this.handleScan);
+    const listener = await BarcodeScanner.addListener(
+      'barcodesScanned',
+      async result => {
+        this.handleScan(result)
+      },
+    );
+    BarcodeScanner.startScan({
+      formats: [BarcodeFormat.QrCode],
+      lensFacing: LensFacing.Back
+    });
   }
 
   stopScan = async () => {
     this.last_scan = null;
     clearTimeout(this.scan_timeout);
+    await BarcodeScanner.removeAllListeners();
     await BarcodeScanner.stopScan()
     this.scan_stop_button_visibility = 'hidden';
     this.scan_start_button_visibility = '';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 
 import { PyConAPI } from '../providers/pycon-api';
 
@@ -19,6 +19,7 @@ export class UserData {
     public storage: Storage,
     private pycon: PyConAPI,
   ) {
+    this.storage.create();
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;
     });

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Config, Platform } from '@ionic/angular';
-import { BarcodeScanner, SupportedFormat, CameraDirection, ScanResult } from '@capacitor-community/barcode-scanner';
-import { Storage } from '@ionic/storage';
+import { BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
+import { Storage } from '@ionic/storage-angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
 import { LiveUpdateService } from '../../providers/live-update.service';
@@ -11,7 +11,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: './door-check.page.html',
   styleUrls: ['./door-check.page.scss'],
 })
-export class DoorCheckPage implements OnInit {
+export class DoorCheckPage implements OnInit, OnDestroy {
   content_visibility = 'show';
   scan_start_button_visibility = 'show';
   scan_stop_button_visibility = 'hidden';
@@ -75,8 +75,8 @@ export class DoorCheckPage implements OnInit {
 
   checkPermission = async () => {
     try {
-      const status = await BarcodeScanner.checkPermission({ force: true });
-      if (status.granted) {
+      const status = await BarcodeScanner.checkPermissions();
+      if (status) {
         return true;
       }
       return false;
@@ -90,10 +90,10 @@ export class DoorCheckPage implements OnInit {
     this.detectorRef.detectChanges();
   }
 
-  handleScan = async (result: ScanResult) => {
-    if (result.hasContent && !this.ignore_scans) {
+  handleScan = async (result: any) => {
+    if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.content.split(':')[0]);
+      this.updateLastScan(result.barcodes[0].rawValue.split(':')[0]);
     }
   }
 
@@ -135,19 +135,25 @@ export class DoorCheckPage implements OnInit {
       return;
     }
     this.show_permissions_error = false;
-    BarcodeScanner.hideBackground();
     this.content_visibility = 'hidden';
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
-    BarcodeScanner.startScanning({
-      targetedFormats: [SupportedFormat.QR_CODE],
-      cameraDirection: 'back'
-    }, this.handleScan);
+    const listener = await BarcodeScanner.addListener(
+      'barcodesScanned',
+      async result => {
+        this.handleScan(result)
+      },
+    );
+    BarcodeScanner.startScan({
+      formats: [BarcodeFormat.QrCode],
+      lensFacing: LensFacing.Back
+    });
   };
 
   stopScan = async () => {
     this.last_scan = null;
     clearTimeout(this.scan_timeout);
+    await BarcodeScanner.removeAllListeners();
     await BarcodeScanner.stopScan()
     this.scan_stop_button_visibility = 'hidden';
     this.scan_start_button_visibility = '';
