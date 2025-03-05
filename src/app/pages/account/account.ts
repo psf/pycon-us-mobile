@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NavController, AlertController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: 'account.html',
   styleUrls: ['./account.scss'],
 })
-export class AccountPage implements AfterViewInit {
+export class AccountPage implements OnInit, AfterViewInit {
   email: string;
   nickname: string;
 

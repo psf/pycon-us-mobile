@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { LiveUpdateService } from '../../providers/live-update.service';
 
@@ -8,13 +8,10 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: './conference-map.page.html',
   styleUrls: ['./conference-map.page.scss'],
 })
-export class ConferenceMapPage implements OnInit {
+export class ConferenceMapPage {
 
   constructor(
     public liveUpdateService: LiveUpdateService,
   ) { }
-
-  ngOnInit() {
-  }
 
 }
