@@ -33,10 +33,10 @@ export class AppComponent implements OnInit {
   appPages = [
     { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
-    { title: 'Conference Map', url: '/app/tabs/conference-map', icon:'map-outline' },
+    //{ title: 'Conference Map', url: '/app/tabs/conference-map', icon:'map-outline' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
-    { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
+    //{ title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
   ]
   nickname = null;
   loggedIn = false;

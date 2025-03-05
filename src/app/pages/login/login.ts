@@ -18,7 +18,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
-  authUrl = 'https://us.pycon.org/2024/api/v1/authenticate/';
+  authUrl = 'https://us.pycon.org/2025/api/v1/authenticate/';
   login: UserOptions = { email: '', password: '' };
   submitted = false;
 
