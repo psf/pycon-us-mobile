@@ -1,6 +1,6 @@
 # PyCon US Mobile
 
-This application provides on-site tools for PyCon US 2025 Attendees, Sponsors,
+This application provides on-site tools for PyCon US Attendees, Sponsors,
 and Staff!
 
 ## Table of Contents
