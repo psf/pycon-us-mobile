@@ -7,13 +7,13 @@ import { timeout, catchError } from 'rxjs/operators';
 import { Network } from '@capacitor/network';
 
 import { UserData } from './user-data';
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PyConAPI {
-  base = 'https://us.pycon.org'
+  base = environment.baseUrl;
 
   constructor(
     private http: HttpClient,
@@ -152,9 +152,9 @@ export class PyConAPI {
     const method = "GET"
     const url = '/2025/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&category_pk_list=' + categoryIdList.join(',') + '&mode=' + mode;
     const body = '';
-      
+
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
-    return this.http.get( 
+    return this.http.get(
       this.base + url,
       {headers: authHeaders}
     ).pipe(timeout(2000), catchError(error => {
