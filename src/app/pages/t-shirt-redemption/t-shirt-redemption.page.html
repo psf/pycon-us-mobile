@@ -49,19 +49,17 @@
 </ion-content>
 
 <ion-footer>
-  <ion-card *ngIf="last_scan">
-    <ion-item>
+  <ion-card class="scanErrorCard">
+    <ion-item [hidden]="scanError === false">
       <ion-label>
         <ion-grid>
           <ion-row>
             <ion-col>
               <h1>
                 <ion-icon
-                  [color]="(last_scan.status)? 'success' : 'danger'"
-                  [name]="(last_scan.status)? 'checkmark-circle-outline' : 'alert-circle-outline'">
-                </ion-icon>
-                <ion-text *ngIf="last_scan.status"> All good attendee has access!<br><small><code>{{ last_scan.code }}</code></small></ion-text>
-                <ion-text *ngIf="!last_scan.status"> Entry not permitted.<br><small><code>{{ last_scan.code }}</code></small></ion-text>
+                  [color]="'danger'"
+                  [name]="'alert-circle-outline'">
+                </ion-icon>&nbsp;<ion-text>Invalid QR Code!</ion-text>
               </h1>
             </ion-col>
           </ion-row>
