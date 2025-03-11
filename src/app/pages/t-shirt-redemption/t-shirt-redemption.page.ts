@@ -23,6 +23,7 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
 
   last_scan: any = null;
   last_scan_timeout: ReturnType<typeof setTimeout> = null;
+  scanError: boolean = false;
   scan_timeout: ReturnType<typeof setTimeout> = null;
   ignore_scans: boolean = false;
 
@@ -105,20 +106,53 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
     }
   }
 
+  clearError = async () => {
+    this.scanError = false;
+    this.detectorRef.detectChanges();
+  }
+
   clearLastScan = async () => {
     this.last_scan = null;
     this.detectorRef.detectChanges();
   }
 
+  addListeners = async () => {
+    console.log(this.scanError);
+    const listener = await BarcodeScanner.addListener(
+      'barcodesScanned',
+      async result => {
+        this.handleScan(result)
+      },
+    );
+  }
+
+  removeListeners = async () => {
+    await BarcodeScanner.removeAllListeners();
+  }
+
   handleScan = async (result: any) => {  // Should be type ScanResult or BarcodeScannedEvent???
     if (result.barcodes && !this.ignore_scans) {
+      await this.removeListeners();
       clearTimeout(this.last_scan_timeout);
-      await this.pycon.fetchAttendeeProducts(result.barcodes[0].rawValue.split(':')[0], this.category, this.mode).then((data) => {
-        data.subscribe(redemptionData => {
-          console.log(redemptionData);
-          this.openRedemptionModal(redemptionData)
-        })
-      })
+      await this.pycon.fetchAttendeeProducts(
+        result.barcodes[0].rawValue.split(':')[0], this.category, this.mode
+      ).then((data) => {
+        data.subscribe(
+          redemptionData => {
+            if (redemptionData) {
+              console.log(redemptionData);
+              this.openRedemptionModal(redemptionData)
+            }
+          },
+          error => {
+            this.scanError = true;
+            this.detectorRef.detectChanges();
+          }
+        )
+      }
+      ).then(
+        () => {setTimeout(this.addListeners, 250); setTimeout(this.clearError, 1000);}
+      );
     }
   }
 
@@ -132,12 +166,7 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
     this.content_visibility = 'hidden';
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
-    const listener = await BarcodeScanner.addListener(
-      'barcodesScanned',
-      async result => {
-        this.handleScan(result)
-      },
-    );
+    await this.addListeners();
     BarcodeScanner.startScan({
       formats: [BarcodeFormat.QrCode],
       lensFacing: LensFacing.Back
@@ -147,7 +176,7 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
   stopScan = async () => {
     this.last_scan = null;
     clearTimeout(this.scan_timeout);
-    await BarcodeScanner.removeAllListeners();
+    await this.removeListeners();
     await BarcodeScanner.stopScan()
     this.scan_stop_button_visibility = 'hidden';
     this.scan_start_button_visibility = '';
