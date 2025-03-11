@@ -22,34 +22,6 @@
         View all your scans and the captured data on your dashboard at us.pycon.org.<br>
       </ion-text>
     </ion-item>
-    <ion-item *ngFor="let scan of sortScans()">
-      <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <h1>
-                <ion-icon
-                  [color]="(scan.status === 'captured')? 'success' : 'default'"
-                  [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
-                </ion-icon>
-                {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
-              </h1>
-              <p>Scanned {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status === 'captured'">Captured {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status === 'pending'">Pending capture when online...</p>
-            </ion-col>
-            <ion-col>
-              <div class="ion-float-end ion-float-top">
-                <ion-button (click)="openNoteModal(scan.access_code, scan)" size="75%" fill="clear">
-                  <ion-icon [name]="scan.note? 'document-text': 'document-outline'"></ion-icon>
-                  <ion-text size="small">Note</ion-text>
-                </ion-button>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-    </ion-item>
     <ion-item *ngIf="show_permissions_error">
       <ion-card>
         <ion-card-header>
@@ -66,6 +38,35 @@
           </ion-text>
         </ion-card-content>
       </ion-card>
+    </ion-item>
+    <ion-item *ngFor="let scan of sortScans()">
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="auto">
+              <h1>
+                <ion-icon
+                  [color]="(scan.status === 'captured')? 'success' : (scan.status === 'failed')? 'danger' : 'default'"
+                  [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
+                </ion-icon>
+                {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
+              </h1>
+              <p>Scanned {{scan.scanned_at|dateAgo}}</p>
+              <p *ngIf="scan.status === 'captured'">Captured {{scan.scanned_at|dateAgo}}</p>
+              <p *ngIf="scan.status === 'pending'">Pending capture when online...</p>
+              <p *ngIf="scan.status === 'failed'">Invalid code.</p>
+            </ion-col>
+            <ion-col>
+              <div class="ion-float-end ion-float-top">
+                <ion-button (click)="openNoteModal(scan.access_code, scan)" size="75%" fill="clear">
+                  <ion-icon [name]="scan.note? 'document-text': 'document-outline'"></ion-icon>
+                  <ion-text size="small">Note</ion-text>
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

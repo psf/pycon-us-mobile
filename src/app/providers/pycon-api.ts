@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage-angular';
 import { createHash } from 'sha1-uint8array';
 import { of } from 'rxjs';
 import { timeout, catchError } from 'rxjs/operators';
+import { Network } from '@capacitor/network';
 
 import { UserData } from './user-data';
 
@@ -160,7 +161,23 @@ export class PyConAPI {
       console.log('Unable to fetch mobile state, ' + error)
         throw error;
       })
-    );  
+    );
+  }
+
+  async fetchAttendeeProductsForProducts(accessCode: string, productIdList: Array<number>, mode: string) {
+    const method = "GET"
+    const url = '/2025/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&product_pk_list=' + productIdList.join(',') + '&mode=' + mode;
+    const body = '';
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error);
+      throw error;
+      })
+    );
   }
 
   async redeemProducts(payload) {
@@ -210,12 +227,19 @@ export class PyConAPI {
       console.log('Unable to sync missing ' + accessCode);
     }
 
+    const status = await Network.getStatus();
+    console.log(status);
+    if (!status.connected) {
+      console.log('Skipping until network resumes');
+      return;
+    }
+
     const scanData = pending.scanData.split(":");
     const _accessCode = scanData[0];
     const _validator = scanData[scanData.length - 1];
 
     const method = 'GET';
-    const url = '/2025/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + accessCode + "&badge_validator=" + _validator;
+    const url = '/2025/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + encodeURIComponent(accessCode) + "&badge_validator=" + encodeURIComponent(_validator);
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -225,6 +249,18 @@ export class PyConAPI {
       {headers: authHeaders}
     ).pipe(timeout(2000), catchError(error => {
       console.log('Unable to capture lead, ' + error)
+        if (pending.tries == null ) {
+            pending.tries = 1;
+        } else {
+            pending.tries = pending.tries + 1;
+        }
+        if (pending.tries > 10) {
+            this.storage.set('failed-scan-' + accessCode, {...pending}).then((value) => {
+                this.storage.remove('pending-scan-' + accessCode).then((value) => {});
+            });
+        } else {
+            this.storage.set('pending-scan-' + accessCode, {...pending});
+        }
         throw error;
       })
     ).subscribe({

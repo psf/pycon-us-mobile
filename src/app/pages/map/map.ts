@@ -1,7 +1,7 @@
 import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { Config, Platform } from '@ionic/angular';
-import { BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
+import { StartScanOptions, BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
 import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
 
@@ -66,6 +66,13 @@ export class MapPage implements OnInit, OnDestroy {
           "first_name": value.data.first_name,
           "note": value.note,
         })
+      } else if (key.startsWith("failed-scan-")) {
+        allScans.push({
+          "status": "failed",
+          "scanned_at": value.scannedAt,
+          "access_code": value.scanData.split(":")[0],
+          "note": value.note,
+        })
       }
     });
     this.scan_presentation = allScans;
@@ -123,10 +130,7 @@ export class MapPage implements OnInit, OnDestroy {
   checkPermission = async () => {
     try {
       const status = await BarcodeScanner.checkPermissions();
-      if (status) {
-        return true;
-      }
-      return false;
+      return status.camera === "granted";
     } catch(e) {
       console.log(e);
     }
@@ -165,14 +169,28 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   handleScan = async (result: any) => {  // should be ScanResult or BarcodeScannedEvent
+    const firstBarcode = result.barcodes[0];
+    if (!firstBarcode) {
+      return;
+    }
+    BarcodeScanner.removeAllListeners();
     if (result.barcodes && !this.ignore_scans) {
       clearTimeout(this.last_scan_timeout);
-      this.updateLastScan(result.barcodes[0].rawValue.split(':')[0], 0);
-      this.pycon.storeScan(result.barcodes[0].rawValue.split(':')[0], result.barcodes[0].rawValue).then(() => {
-        console.log(result.barcodes[0].rawValue); // log the raw scanned content
-        clearTimeout(this.scan_timeout);
+      this.updateLastScan(firstBarcode.rawValue.split(':')[0], 0);
+      this.pycon.storeScan(firstBarcode.rawValue.split(':')[0], firstBarcode.rawValue).then(() => {
+        console.log(firstBarcode.rawValue); // log the raw scanned content
       });
     }
+    setTimeout(this.setupListeners, 500);
+  }
+
+  setupListeners = async () => {
+    const listener = await BarcodeScanner.addListener(
+      'barcodesScanned',
+      async result => {
+        this.handleScan(result)
+      },
+    );
   }
 
   startScan = async () => {
@@ -181,20 +199,18 @@ export class MapPage implements OnInit, OnDestroy {
       this.show_permissions_error = true;
       return;
     }
+
     this.show_permissions_error = false;
     this.content_visibility = 'hidden';
     this.scan_start_button_visibility = 'hidden';
     this.scan_stop_button_visibility = '';
-    const listener = await BarcodeScanner.addListener(
-      'barcodesScanned',
-      async result => {
-        this.handleScan(result)
-      },
-    );
-    BarcodeScanner.startScan({
+
+    const options: StartScanOptions = {
       formats: [BarcodeFormat.QrCode],
-      lensFacing: LensFacing.Back
-    });
+      lensFacing: LensFacing.Back,
+    }
+    await this.setupListeners();
+    await BarcodeScanner.startScan(options);
   };
 
   stopScan = async () => {
@@ -213,6 +229,7 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    BarcodeScanner.removeAllListeners();
     this.ios = this.config.get('mode') === `ios`;
     this.refresh_presentation();
     setTimeout(this.syncAllPending, 60000);
