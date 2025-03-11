@@ -8,7 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "capsync": "ng build && appflow live-update generate-manifest --build-dir=www && npx ionic cap sync --no-build",
+    "capsync": "ng build --configuration production && appflow live-update generate-manifest --build-dir=www && npx ionic cap sync --no-build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "npx webdriver-manager update --standalone false --gecko false --versions.chrome=109.0.5414.120 && ng e2e --no-webdriver-update",

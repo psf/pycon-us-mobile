@@ -44,3 +44,11 @@ See [CONTRIBUTING.md](https://github.com/ionic-team/ionic-conference-app/blob/ma
 ### iOS
 
 1. Run `ionic cordova run ios --prod`
+
+
+## Building for deployment
+
+1. Bump versions and build numbers in [android/app/build.gradle](android/app/build.gradle) and (ios/App/App.xcodeproj/project.pbxproj)[ios/App/App.xcodeproj/project.pbxproj] like [this](https://github.com/psf/pycon-us-mobile/commit/d2080c14ff04f5f443981f46a4ce3a8f22173413).
+1. Run `npm run capsync` to build production application bundle, generate a live updates manifest, and sync ios/android workspaces
+1. Run `npx cap open ios` to open XCode, Product > Archive to build the image, Distribute App > App Store Connect to upload
+1. Run `npx cap open android` to open Android Studio, Build > Generate Signed App Bundle / APK, Android App Bundle > Next, Select Key > Next, choose release variant > Next, locate app bundle, login to Play Console to upload
