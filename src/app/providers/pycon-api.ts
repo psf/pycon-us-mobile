@@ -161,7 +161,23 @@ export class PyConAPI {
       console.log('Unable to fetch mobile state, ' + error)
         throw error;
       })
-    );  
+    );
+  }
+
+  async fetchAttendeeProductsForProducts(accessCode: string, productIdList: Array<number>, mode: string) {
+    const method = "GET"
+    const url = '/2025/api/v1/check_in/fetch_products/?attendee_access_code=' + accessCode + '&product_pk_list=' + productIdList.join(',') + '&mode=' + mode;
+    const body = '';
+
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(2000), catchError(error => {
+      console.log('Unable to fetch mobile state, ' + error);
+      throw error;
+      })
+    );
   }
 
   async redeemProducts(payload) {
