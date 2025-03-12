@@ -14,7 +14,7 @@ install:
 	npm install
 
 serve:
-	ionic serve
+	npx ionic serve
 
 build:
 	ng build
