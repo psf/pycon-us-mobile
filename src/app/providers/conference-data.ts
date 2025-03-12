@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import markdownToTxt from 'markdown-to-txt';
 
 import { UserData } from './user-data';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class ConferenceData {
       return of(this.data);
     } else {
       return this.http
-        .get('https://us.pycon.org/2025/schedule/conference.json')
+        .get(`${environment.baseUrl}/2025/schedule/conference.json`)
         .pipe(timeout(10000), catchError(error => {
           console.log('Unable to load latest from remote, ' + error)
           return this.storage.get('schedule-cache').then((data) => {
