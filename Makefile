@@ -15,7 +15,7 @@ install:
 
 serve:
 	@echo "Starting server in development mode..."
-	npx ionic serve
+	npx ionic serve --configuration=development
 
 build:
 	npx ng build
