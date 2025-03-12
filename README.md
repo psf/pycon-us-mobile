@@ -20,8 +20,9 @@ and Staff!
 * Run `make install` from the project root.
 * Run `make serve` in a terminal from the project root.
 > [!Note]
-> By default we serve the production URLs. You can run `npx ionic serve --configuration=development` to run against your local dev sites' data.
-> See [environment.ts](src/environments/environment.ts) and [environment.prod.ts](src/environments/environment.prod.ts) to adjust the URLs manually.
+> The `make serve` command runs with the development configuration, which uses local development URLs.
+> If you want to run against production URLs, you can use `npx ionic serve`.
+> See [environment.ts](src/environments/environment.ts), [environment.dev.ts](src/environments/environment.dev.ts) and [environment.prod.ts](src/environments/environment.prod.ts) to view or adjust the URLs.
 * Profit. :tada:
 
 > [!Note]
