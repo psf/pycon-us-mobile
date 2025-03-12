@@ -9,6 +9,7 @@ import * as crypto from 'crypto-js';
 import { UserData } from '../../providers/user-data';
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-about-pycon',
@@ -18,6 +19,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 export class AboutPyconPage implements OnInit {
   content: any = "";
   loggedIn: boolean = false;
+  environmentUrl: string = environment.baseUrl;
 
   constructor(
     private loadingCtrl: LoadingController,
