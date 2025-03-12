@@ -20,7 +20,7 @@ build:
 	npx ng build
 
 capsync:
-	npx ng build && appflow live-update generate-manifest --build-dir=www && npx ionic cap sync --no-build
+	npm run capsync
 
 lint:
 	npm run lint
