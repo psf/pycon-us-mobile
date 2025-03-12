@@ -14,6 +14,7 @@ install:
 	npm install
 
 serve:
+	@echo "Starting server in development mode..."
 	npx ionic serve
 
 build:
@@ -45,11 +46,11 @@ ios:
 
 # Live reload development on devices
 ios-live:
-	echo "Make sure you have Xcode installed!"
+	@echo "Make sure you have Xcode installed!"
 	npx ionic cap run ios --livereload --external
 
 android-live:
-	echo "Make sure you have Android Studio installed!"
+	@echo "Make sure you have Android Studio installed!"
 	npx ionic cap run android --livereload --external
 
 clean:
