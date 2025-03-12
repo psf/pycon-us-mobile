@@ -17,10 +17,10 @@ serve:
 	npx ionic serve
 
 build:
-	ng build
+	npx ng build
 
 capsync:
-	ng build && appflow live-update generate-manifest --build-dir=www && npx ionic cap sync --no-build
+	npx ng build && appflow live-update generate-manifest --build-dir=www && npx ionic cap sync --no-build
 
 lint:
 	npm run lint
@@ -35,13 +35,13 @@ check: test lint
 
 # Deployment targets
 pwa:
-	ionic build --prod
+	npx ionic build --prod
 
 android:
-	ionic cap run android --prod
+	npx ionic cap run android --prod
 
 ios:
-	ionic cap run ios --prod
+	npx ionic cap run ios --prod
 
 # Live reload development on devices
 ios-live:
@@ -50,8 +50,7 @@ ios-live:
 
 android-live:
 	echo "Make sure you have Android Studio installed!"
-	npx ionic cap sync android
-	npx ionic cap open android
+	npx ionic cap run android --livereload --external
 
 clean:
 	rm -rf www/
