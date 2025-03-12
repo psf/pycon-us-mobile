@@ -38,10 +38,10 @@ pwa:
 	ionic build --prod
 
 android:
-	ionic cordova run android --prod
+	ionic cap run android --prod
 
 ios:
-	ionic cordova run ios --prod
+	ionic cap run ios --prod
 
 # Live reload development on devices
 ios-live:
