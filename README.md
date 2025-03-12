@@ -19,6 +19,9 @@ and Staff!
 * Clone this repository: `git clone https://github.com/psf/pycon-us-mobile.git`.
 * Run `make install` from the project root.
 * Run `make serve` in a terminal from the project root.
+> [!Note]
+> By default we serve the local development URLs. You can run `ionic serve --configuration=production` to run against the production sites' data.
+> See [environment.ts](src/environments/environment.ts) and [environment.prod.ts](src/environments/environment.prod.ts) to adjust the URLs manually.
 * Profit. :tada:
 
 > [!Note]
