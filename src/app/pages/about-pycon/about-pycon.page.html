@@ -31,7 +31,10 @@
       <br>
       <ion-col>
         <ion-text>App Version: {{liveUpdateService.build}}</ion-text>
+        <br>
         <ion-button *ngIf="loggedIn" (click)="shareDebug()">Share Debug Info with PyCon Staff</ion-button>
+        <br>
+        <ion-text>Environment: {{environmentUrl}}</ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>

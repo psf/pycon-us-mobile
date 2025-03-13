@@ -9,7 +9,7 @@ import { timeout, catchError } from 'rxjs/operators';
 import { UserData } from '../../providers/user-data';
 import { UserOptions } from '../../interfaces/user-options';
 import { LiveUpdateService } from '../../providers/live-update.service';
-
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -18,7 +18,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
-  authUrl = 'https://us.pycon.org/2025/api/v1/authenticate/';
+  authUrl = `${environment.baseUrl}/2025/api/v1/authenticate/`;
   login: UserOptions = { email: '', password: '' };
   submitted = false;
 
