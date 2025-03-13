@@ -80,30 +80,36 @@ export class UserData {
   addFavorite(sessionId: string): void {
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;
-    });
-    this.favorites.push(String(sessionId));
-    this.isLoggedIn().then((loggedIn) => {
-      if (loggedIn) {
-        this.pycon.patchUserData({favorites: this.favorites});
+
+      if (this.favorites.indexOf(String(sessionId)) === -1) {
+        this.favorites.push(String(sessionId));
+        this.isLoggedIn().then((loggedIn) => {
+          if (loggedIn) {
+            this.pycon.patchUserData({favorites: this.favorites});
+          }
+        });
+        this.storage.set('favorite_sessions', this.favorites).then(() => {});
       }
     });
-    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   removeFavorite(sessionId: string): void {
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;
-    });
-    const index = this.favorites.indexOf(String(sessionId));
-    if (index > -1) {
-      this.favorites.splice(index, 1);
-    }
-    this.isLoggedIn().then((loggedIn) => {
-      if (loggedIn) {
-        this.pycon.patchUserData({favorites: this.favorites});
+
+      const index = this.favorites.indexOf(String(sessionId));
+      if (index > -1) {
+        this.favorites.splice(index, 1);
+
+        this.storage.set('favorite_sessions', this.favorites).then(() => {
+          this.isLoggedIn().then((loggedIn) => {
+            if (loggedIn) {
+              this.pycon.patchUserData({favorites: this.favorites});
+            }
+          });
+        });
       }
     });
-    this.storage.set('favorite_sessions', this.favorites).then(() => {});
   }
 
   login(data: any): Promise<any> {
