@@ -20,7 +20,7 @@ export class UserData {
     private pycon: PyConAPI,
   ) {
     this.storage.create();
-    this.storage.get('favorite_sessions').then((data) => {
+    this.storage.get('favorite_sessions-2025').then((data) => {
       this.favorites = (data === null)? [] : data;
     });
   }
@@ -51,7 +51,7 @@ export class UserData {
           if (userPrefs?.favorites) {
             console.log(userPrefs)
             this.favorites = userPrefs.favorites;
-            this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
+            this.storage.set('favorite_sessions-2025', userPrefs.favorites).then(() => {});
           }
         })
       })
@@ -71,14 +71,14 @@ export class UserData {
   }
 
   hasFavorite(sessionId: string): boolean {
-    this.storage.get('favorite_sessions').then((data) => {
+    this.storage.get('favorite_sessions-2025').then((data) => {
       this.favorites = (data === null)? [] : data;
     });
     return (this.favorites.indexOf(String(sessionId)) > -1);
   }
 
   addFavorite(sessionId: string): void {
-    this.storage.get('favorite_sessions').then((data) => {
+    this.storage.get('favorite_sessions-2025').then((data) => {
       this.favorites = (data === null)? [] : data;
 
       if (this.favorites.indexOf(String(sessionId)) === -1) {
@@ -88,20 +88,20 @@ export class UserData {
             this.pycon.patchUserData({favorites: this.favorites});
           }
         });
-        this.storage.set('favorite_sessions', this.favorites).then(() => {});
+        this.storage.set('favorite_sessions-2025', this.favorites).then(() => {});
       }
     });
   }
 
   removeFavorite(sessionId: string): void {
-    this.storage.get('favorite_sessions').then((data) => {
+    this.storage.get('favorite_sessions-2025').then((data) => {
       this.favorites = (data === null)? [] : data;
 
       const index = this.favorites.indexOf(String(sessionId));
       if (index > -1) {
         this.favorites.splice(index, 1);
 
-        this.storage.set('favorite_sessions', this.favorites).then(() => {
+        this.storage.set('favorite_sessions-2025', this.favorites).then(() => {
           this.isLoggedIn().then((loggedIn) => {
             if (loggedIn) {
               this.pycon.patchUserData({favorites: this.favorites});
@@ -129,7 +129,7 @@ export class UserData {
 
   logout(): Promise<any> {
     return this.storage.remove(this.HAS_LOGGED_IN).then(() => {
-      this.storage.remove('favorite_sessions');
+      this.storage.remove('favorite_sessions-2025');
       this.storage.remove('email');
       this.storage.remove('nickname');
       this.storage.remove('key');
