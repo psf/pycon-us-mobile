@@ -8,12 +8,43 @@ import { PyConAPI } from '../providers/pycon-api';
   providedIn: 'root'
 })
 export class UserData {
+  private KEY_PREFIX = '2025_';
   favorites: string[] = [];
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
   HAS_DOOR_CHECK = 'hasDoorCheck';
   HAS_MASK_VIOLATION = 'hasMaskViolation';
+
+  /**
+   * Grabs the yearly prefix and combines it with the key passed in
+   * to ensure unique keys per year, to resolve
+   * https://github.com/psf/pycon-us-mobile/pull/91#issuecomment-2722776260
+   */
+  private prefixKey(key: string): string {
+    return this.KEY_PREFIX + key;
+  }
+
+  /**
+   * Get the value for a key in storage with the yearly KEY_PREFIX
+   */
+  private getKeyFromStorage(key: string): Promise<any> {
+    return this.storage.get(this.prefixKey(key));
+  }
+
+  /**
+   * Set the value for a key in storage with the yearly KEY_PREFIX
+   */
+  private addKeyToStorage(key: string, value: any): Promise<any> {
+    return this.storage.set(this.prefixKey(key), value);
+  }
+
+  /**
+   * Remove the value for a key in storage with the yearly KEY_PREFIX
+   */
+  private removeKeyFromStorage(key: string): Promise<any> {
+    return this.storage.remove(this.prefixKey(key));
+  }
 
   constructor(
     public storage: Storage,
