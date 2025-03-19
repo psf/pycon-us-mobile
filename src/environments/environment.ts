@@ -5,7 +5,7 @@
 export const environment = {
   name: 'base',
   production: false,
-  baseUrl: 'https://us.pycon.org'
+  baseUrl: 'https://us.pycon.org',
   storageKey: '__pycon_us_mobile_base_2025'
 };
 
