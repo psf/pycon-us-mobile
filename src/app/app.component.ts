@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 
 import { SplashScreen } from '@capacitor/splash-screen';
+import { PushNotifications, PushNotificationSchema } from '@capacitor/push-notifications';
 
 import { Storage } from '@ionic/storage-angular';
 
@@ -64,10 +65,36 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.loadTheme();
     this.checkLoginStatus();
+    this.checkNotifications();
     this.listenForLoginEvents();
     this.fetchFeatures();
     this.liveUpdateService.checkForUpdate();
     await this.storage.create();
+  }
+
+  checkNotifications() {
+    PushNotifications.addListener('registration', token => {
+      console.info('Registration token: ', token.value);
+    });
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
+        PushNotifications.register();
+      }
+    });
+    PushNotifications.addListener(
+      'pushNotificationReceived',
+      async (notification: PushNotificationSchema) => {
+        this.toastCtrl.create({
+          message: `${notification.title}: ${notification.body}`,
+          position: 'top',
+          buttons: [{
+            icon: 'close',
+            side: 'end',
+            role: 'cancel'
+          }]
+        }).then(toast => toast.present());
+      }
+    );
   }
 
   initializeApp() {
