@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "328295262241",
+    "project_id": "pycon-us-2023-mobile",
+    "storage_bucket": "pycon-us-2023-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328295262241:android:ab454eef74ff3acc151b60",
+        "android_client_info": {
+          "package_name": "org.pycon.us"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328295262241-lc5h3ifur5c66ljfosjcqcho72ur5jg2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbRzLAAkUjScXYBsSa0etL0bKkjxPtqRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328295262241-lc5h3ifur5c66ljfosjcqcho72ur5jg2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328295262241-hlud5r0olfstvc9dl2tp86i3n2s3p87n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.pycon.us.2023.onsite",
+                "app_store_id": "6446810296"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

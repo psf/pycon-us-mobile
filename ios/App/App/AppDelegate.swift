@@ -1,4 +1,8 @@
 import UIKit
+
+import FirebaseCore
+import FirebaseMessaging
+
 import Capacitor
 
 @UIApplicationMain
@@ -18,7 +22,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
           }
         #endif
+
+        FirebaseApp.configure()
+
         return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+      let deviceTokenString = deviceToken.reduce("", { $0 + String(format: "%02X", $1) })
+      print("deviceToken:\(deviceTokenString)")
+      Messaging.messaging().apnsToken = deviceToken
+      Messaging.messaging().token(completion: { (token, error) in
+        if let error = error {
+            NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
+        } else if let token = token {
+            NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications, object: token)
+        }
+      })
+      Messaging.messaging().token { token, error in
+        if let error = error {
+          print("Error fetching FCM registration token: \(error)")
+        } else if let token = token {
+          print("FCM registration token: \(token)")
+        }
+      }
+    }
+
+  func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+      print("Firebase registration token: \(String(describing: fcmToken))")
+      let dataDict: [String: String] = ["token": fcmToken ?? ""]
+      NotificationCenter.default.post(
+        name: Notification.Name("FCMToken"),
+        object: nil,
+        userInfo: dataDict
+      )
+    }
+
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+      NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications, object: error)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
