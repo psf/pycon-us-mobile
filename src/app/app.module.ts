@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
+import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +23,9 @@ import { RedemptionModalComponent } from './redemption-modal/redemption-modal.co
     HttpClientModule,
     FormsModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: environment.storageKey
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     })
