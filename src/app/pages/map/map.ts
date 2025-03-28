@@ -130,7 +130,10 @@ export class MapPage implements OnInit, OnDestroy {
   checkPermission = async () => {
     try {
       const status = await BarcodeScanner.checkPermissions();
-      return status.camera === "granted";
+      if (status) {
+        return true;
+      }
+      return false;
     } catch(e) {
       console.log(e);
     }
