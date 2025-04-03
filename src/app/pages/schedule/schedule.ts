@@ -1,6 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonContent, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
@@ -12,7 +13,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: 'schedule.html',
   styleUrls: ['./schedule.scss'],
 })
-export class SchedulePage implements OnInit {
+export class SchedulePage implements OnInit, OnDestroy {
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
   // Get a reference to the search bar
@@ -31,6 +32,7 @@ export class SchedulePage implements OnInit {
   confDate: string;
   showSearchbar: boolean;
   currentTime: Date;
+  private favoritesSubscription: Subscription;
 
   constructor(
     public alertCtrl: AlertController,
@@ -52,6 +54,11 @@ export class SchedulePage implements OnInit {
       this.excludeTracks = filters;
     });
 
+    // Subscribe to favorites changes via an RxJS Subscription
+    this.favoritesSubscription = this.user.favoritesChanged$.subscribe(() => {
+      this.updateSchedule();
+    });
+
     this.currentTime = new Date();
     this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
       console.log(data)
@@ -67,6 +74,12 @@ export class SchedulePage implements OnInit {
     this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
     })
+  }
+
+  ngOnDestroy() {
+    if (this.favoritesSubscription) {
+      this.favoritesSubscription.unsubscribe();
+    }
   }
 
   ionViewDidEnter() {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { Subject } from 'rxjs';
 
 import { PyConAPI } from '../providers/pycon-api';
 
@@ -9,6 +10,10 @@ import { PyConAPI } from '../providers/pycon-api';
 })
 export class UserData {
   favorites: string[] = [];
+  // Intialize our RxJS subject to know when the favorites have changed
+  // BehaviorSubject may be more appropriate here?
+  private favoritesSubject = new Subject<void>();
+  favoritesChanged$ = this.favoritesSubject.asObservable();
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
@@ -51,7 +56,9 @@ export class UserData {
           if (userPrefs?.favorites) {
             console.log(userPrefs)
             this.favorites = userPrefs.favorites;
-            this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {});
+            this.storage.set('favorite_sessions', userPrefs.favorites).then(() => {
+              this.favoritesSubject.next();
+            });
           }
         })
       })
@@ -88,7 +95,9 @@ export class UserData {
             this.pycon.patchUserData({favorites: this.favorites});
           }
         });
-        this.storage.set('favorite_sessions', this.favorites).then(() => {});
+        this.storage.set('favorite_sessions', this.favorites).then(() => {
+          this.favoritesSubject.next();
+        });
       }
     });
   }
@@ -107,6 +116,7 @@ export class UserData {
               this.pycon.patchUserData({favorites: this.favorites});
             }
           });
+          this.favoritesSubject.next();
         });
       }
     });
