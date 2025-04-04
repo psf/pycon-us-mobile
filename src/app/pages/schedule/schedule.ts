@@ -1,6 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonContent, IonList, IonRouterOutlet, LoadingController, ModalController, ToastController, Config } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
@@ -12,7 +13,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: 'schedule.html',
   styleUrls: ['./schedule.scss'],
 })
-export class SchedulePage implements OnInit {
+export class SchedulePage implements OnInit, OnDestroy {
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
   // Get a reference to the search bar
@@ -31,6 +32,7 @@ export class SchedulePage implements OnInit {
   confDate: string;
   showSearchbar: boolean;
   currentTime: Date;
+  private favoritesSubscription: Subscription;
 
   constructor(
     public alertCtrl: AlertController,
@@ -44,12 +46,19 @@ export class SchedulePage implements OnInit {
     public user: UserData,
     public config: Config,
     public liveUpdateService: LiveUpdateService,
+    public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';
     this.user.getScheduleFilters().then(filters => {
       this.excludeTracks = filters;
+    });
+
+    // Subscribe to favorites changes via an RxJS Subscription
+    this.favoritesSubscription = this.user.favoritesChanged$.subscribe(() => {
+      this.updateSchedule();
+      this.changeDetectorRef.detectChanges();
     });
 
     this.currentTime = new Date();
@@ -67,6 +76,12 @@ export class SchedulePage implements OnInit {
     this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
     })
+  }
+
+  ngOnDestroy() {
+    if (this.favoritesSubscription) {
+      this.favoritesSubscription.unsubscribe();
+    }
   }
 
   ionViewDidEnter() {
@@ -100,6 +115,8 @@ export class SchedulePage implements OnInit {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
     });
+
+    this.changeDetectorRef.detectChanges();
   }
 
   async reloadSchedule() {
@@ -149,61 +166,45 @@ export class SchedulePage implements OnInit {
   }
 
   async addFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
-    if (this.user.hasFavorite(sessionData.id)) {
-      // Prompt to remove favorite
-      this.removeFavorite(slidingItem, sessionData, 'Favorite already added');
-    } else {
-      // Add as a favorite
-      this.user.addFavorite(sessionData.id);
-      this.updateSchedule();
+    // Add as a favorite
+    this.user.addFavorite(sessionData.id);
 
-      // Close the open item
-      slidingItem.close();
+    // Close the open item
+    slidingItem.close();
 
-      // Create a toast
-      const toast = await this.toastCtrl.create({
-        header: `${sessionData.name} was successfully added as a favorite.`,
-        duration: 3000,
-        buttons: [{
-          text: 'Close',
-          role: 'cancel'
-        }]
-      });
+    // Create a toast
+    const toast = await this.toastCtrl.create({
+      header: `${sessionData.name} was successfully added as a favorite.`,
+      duration: 3000,
+      buttons: [{
+        text: 'Close',
+        role: 'cancel'
+      }]
+    });
 
-      // Present the toast at the bottom of the page
-      await toast.present();
-    }
-
+    // Present the toast at the bottom of the page
+    await toast.present();
   }
 
-  async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      message: 'Would you like to remove this session from your favorites?',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => {
-            // they clicked the cancel button, do not remove the session
-            // close the sliding item and hide the option buttons
-            slidingItem.close();
-          }
-        },
-        {
-          text: 'Remove',
-          handler: () => {
-            // they want to remove this session from their favorites
-            this.user.removeFavorite(sessionData.id);
-            this.updateSchedule();
+  async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any) {
+    // Remove from favorites
+    this.user.removeFavorite(sessionData.id);
 
-            // close the sliding item and hide the option buttons
-            slidingItem.close();
-          }
-        }
-      ]
+    // Close the open item
+    slidingItem.close();
+
+    // Create a toast
+    const toast = await this.toastCtrl.create({
+      header: `${sessionData.name} was successfully removed from favorites.`,
+      duration: 3000,
+      buttons: [{
+        text: 'Close',
+        role: 'cancel'
+      }]
     });
-    // now present the alert on top of all other content
-    await alert.present();
+
+    // Present the toast at the bottom of the page
+    await toast.present();
   }
 
   async openSocial(network: string, fab: HTMLIonFabElement) {
