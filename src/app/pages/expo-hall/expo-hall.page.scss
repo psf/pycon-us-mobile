@@ -10,8 +10,8 @@ ion-content{
 
 .expo-hall-map {
   height: 100%;
-  aspect-ratio: 4096/3429;
-  background-image:url(/assets/img/pycon-us-2024-floorplan.png);
+  aspect-ratio: 4096/2885;
+  background-image:url(/assets/img/pycon-us-2025-floorplan.png);
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;
@@ -39,13 +39,14 @@ ion-content{
 }
 
 .tall-booth .booth-img {
-  margin-top: 50%;
+  margin-top: 80%;
 }
 
 .sq-booth .booth-img {
-  margin-top: 25%;
+  margin-top: 20%;
+  max-height: 50%;
 }
 
 .xtall-booth .booth-img {
-  margin-top: 66%
+  margin-top: 50%
 }
