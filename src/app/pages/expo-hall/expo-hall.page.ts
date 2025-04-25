@@ -58,7 +58,11 @@ export class ExpoHallPage implements OnInit, AfterViewChecked {
           for(const [index, sponsor] of Object.entries(sponsorss)) {
             if (sponsor.booth_number !== null) {
                 let elem = document.getElementById("booth"+sponsor.booth_number);
-                elem.innerHTML = "<img class=\"booth-img\" src=\"" + sponsor.logo_url+ "\">";
+                if (elem) {
+                  elem.innerHTML = "<img class=\"booth-img\" src=\"" + sponsor.logo_url+ "\">";
+                } else {
+                    console.log('No booth: ' + sponsor.booth_number);
+                }
             }
           }
         }
