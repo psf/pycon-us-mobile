@@ -342,9 +342,28 @@ export class ConferenceData {
           }
         });
 
+        if (sessions.length > 0 && sessions[0].track === "Open Space") {
+          const dayPriority = { "Fri": 0, "Sat": 1, "Sun": 2 };
+          sessions.sort((a, b) => {
+            const dayDiff = (dayPriority[a.day] || 0) - (dayPriority[b.day] || 0);
+            return dayDiff || this.parseTime(a.timeStart) - this.parseTime(b.timeStart);
+          });
+        }
+
         return sessions;
       })
     );
+  }
+
+  parseTime(timeString) {
+    const [time, period] = timeString.trim().toLowerCase().split(/([ap]m)/);
+    let [hours, minutes] = time.split(':').map(Number);
+    if ((period||'').includes('p') && hours < 12) {
+      hours += 12;
+    } else if ((period||'').includes('a') && hours === 12) {
+             hours = 0;
+           }
+    return hours * 60 + (minutes || 0);
   }
 
   filterSession(
