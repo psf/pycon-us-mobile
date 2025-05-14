@@ -26,7 +26,10 @@ export class ScheduleListPage implements OnInit {
 
   sessions: any[] = [];
   displaySessions: any[] = [];
+  sessionsByDay: any = {};
+  dayOrder = ['Fri', 'Sat', 'Sun'];
   sessionQueryText = '';
+  isOpenSpaceView = false;
 
   ios: boolean;
   showSearchbar: boolean;
@@ -55,6 +58,7 @@ export class ScheduleListPage implements OnInit {
     this.displaySessions = [];
     this.confData.getSessions(this.sessionQueryText, this.excludeTracks).subscribe((sessions: any[]) => {
       this.displaySessions = sessions;
+      this.organizeSessionsByDay();
     });
   }
 
@@ -64,7 +68,21 @@ export class ScheduleListPage implements OnInit {
     this.sessionQueryText = "";
     this.sessions = [];
     this.displaySessions = [];
+    this.sessionsByDay = {};
     this.reloadSessions();
+  }
+
+  organizeSessionsByDay() {
+    if (!this.isOpenSpaceView) return;
+    
+    this.sessionsByDay = {};
+    this.dayOrder.forEach(day => this.sessionsByDay[day] = []);
+    
+    this.displaySessions.forEach(session => {
+      if (this.sessionsByDay[session.day]) {
+        this.sessionsByDay[session.day].push(session);
+      }
+    });
   }
 
   async generateSessions() {
@@ -77,6 +95,7 @@ export class ScheduleListPage implements OnInit {
         this.page += 1;
         this.scrolling = true;
       }
+      this.organizeSessionsByDay();
     }
   }
 
@@ -117,6 +136,8 @@ export class ScheduleListPage implements OnInit {
     this.trackSlug = slug
     this.trackName = ""
     this.excludeTracks = []
+    this.isOpenSpaceView = slug === 'open-spaces';
+    
     this.confData.load().subscribe((data: any) => {
       if (data.sessions) {
         this.confData.getTracks().subscribe((tracks: any[]) => {
