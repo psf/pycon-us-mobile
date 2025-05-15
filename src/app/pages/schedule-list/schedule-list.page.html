@@ -78,12 +78,21 @@
                   </ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-chip *ngFor="let speaker of session.speakers">
-                    <ion-avatar>
-                      <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
-                    </ion-avatar>
-                    <ion-label>{{ speaker.name }}</ion-label>
-                  </ion-chip>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col size="12" [size]="session.imageUrl ? '8' : '12'">
+                        <ion-chip *ngFor="let speaker of session.speakers">
+                          <ion-avatar>
+                            <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
+                          </ion-avatar>
+                          <ion-label>{{ speaker.name }}</ion-label>
+                        </ion-chip>
+                      </ion-col>
+                      <ion-col *ngIf="session.imageUrl" size="4" class="ion-text-end">
+                        <img [src]="session.imageUrl" class="open-space-image">
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
                 </ion-card-content>
               </ion-card>
             </ion-item>
