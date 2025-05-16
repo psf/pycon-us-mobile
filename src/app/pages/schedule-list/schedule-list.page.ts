@@ -26,7 +26,10 @@ export class ScheduleListPage implements OnInit {
 
   sessions: any[] = [];
   displaySessions: any[] = [];
+  sessionsByDay: any = {};
+  dayOrder = ['Fri', 'Sat', 'Sun'];
   sessionQueryText = '';
+  isOpenSpaceView = false;
 
   ios: boolean;
   showSearchbar: boolean;
@@ -55,6 +58,7 @@ export class ScheduleListPage implements OnInit {
     this.displaySessions = [];
     this.confData.getSessions(this.sessionQueryText, this.excludeTracks).subscribe((sessions: any[]) => {
       this.displaySessions = sessions;
+      this.organizeSessionsByDay();
     });
   }
 
@@ -64,7 +68,21 @@ export class ScheduleListPage implements OnInit {
     this.sessionQueryText = "";
     this.sessions = [];
     this.displaySessions = [];
+    this.sessionsByDay = {};
     this.reloadSessions();
+  }
+
+  organizeSessionsByDay() {
+    if (!this.isOpenSpaceView) return;
+
+    this.sessionsByDay = {};
+    this.dayOrder.forEach(day => this.sessionsByDay[day] = []);
+
+    this.displaySessions.forEach(session => {
+      if (this.sessionsByDay[session.day]) {
+        this.sessionsByDay[session.day].push(session);
+      }
+    });
   }
 
   async generateSessions() {
@@ -77,6 +95,7 @@ export class ScheduleListPage implements OnInit {
         this.page += 1;
         this.scrolling = true;
       }
+      this.organizeSessionsByDay();
     }
   }
 
@@ -117,16 +136,37 @@ export class ScheduleListPage implements OnInit {
     this.trackSlug = slug
     this.trackName = ""
     this.excludeTracks = []
+    this.isOpenSpaceView = slug === 'open-spaces';
+
     this.confData.load().subscribe((data: any) => {
       if (data.sessions) {
         this.confData.getTracks().subscribe((tracks: any[]) => {
           tracks.forEach((track, index, arr) => {
-            if (slugify(track.name+'s') !== this.trackSlug) {
-              this.excludeTracks.push(track.name);
+            const trackNameToCompare = typeof track === 'string' ? track : track.name;
+            if (slugify(trackNameToCompare + (typeof track === 'string' ? '' : 's')) !== this.trackSlug) {
+              this.excludeTracks.push(trackNameToCompare);
             } else {
-              this.trackName = track.name + 's';
+              this.trackName = trackNameToCompare + (typeof track === 'string' ? '' : 's');
             }
           })
+          if (slug !== 'open-spaces') {
+            if (!this.excludeTracks.includes('open-space')) {
+              this.excludeTracks.push('open-space');
+            }
+            const openSpaceDisplayNameIndex = this.excludeTracks.indexOf('Open Space');
+            if (openSpaceDisplayNameIndex > -1 && this.excludeTracks.includes('open-space')) {
+              this.excludeTracks.splice(openSpaceDisplayNameIndex, 1);
+            }
+          } else {
+            const openSpaceTrackIndex = this.excludeTracks.indexOf('open-space');
+            if (openSpaceTrackIndex > -1) {
+              this.excludeTracks.splice(openSpaceTrackIndex, 1);
+            }
+            const openSpaceDisplayNameIndex = this.excludeTracks.indexOf('Open Space');
+            if (openSpaceDisplayNameIndex > -1) {
+                this.excludeTracks.splice(openSpaceDisplayNameIndex, 1);
+            }
+          }
         });
         this.resetSessions();
       }

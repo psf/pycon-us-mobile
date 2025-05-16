@@ -21,6 +21,7 @@ export class ConferenceData {
     summit: 'light',
     break: 'light',
     informational: 'medium',
+    openSpace: 'light',
   };
 
   constructor(
@@ -71,10 +72,34 @@ export class ConferenceData {
     this.data = {
       "schedule": [],
       "speakers": [],
-      "tracks": [],
+      "tracks": ["open-spaces"],
       "sessions": [],
-      "conference": data.conference
+      "conference": data.conference,
+      "open-spaces": [],
     };
+
+    data['open-spaces'].forEach((openSpace: any) => {
+      var start = new Date(openSpace.start);
+      var end = new Date(openSpace.end);
+      var session = {
+        "name": openSpace.title,
+        "color": 'light',
+        "preRegistered": false,
+        "listRender": true,
+        "section": "open-spaces",
+        "location": openSpace.room_display,
+        "description": openSpace.description,
+        "speakers": [],
+        "speakerNames": [],
+        "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "track": "Open Space",
+        "tracks": ["open-space"],
+        "id": openSpace.conf_key,
+        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+      }
+      this.data.sessions.push(session);
+    });
 
     data.schedule.forEach((slot: any) => {
       if (["blank"].includes(slot.kind)) {
@@ -317,9 +342,28 @@ export class ConferenceData {
           }
         });
 
+        if (sessions.length > 0 && sessions[0].track === "Open Space") {
+          const dayPriority = { "Fri": 0, "Sat": 1, "Sun": 2 };
+          sessions.sort((a, b) => {
+            const dayDiff = (dayPriority[a.day] || 0) - (dayPriority[b.day] || 0);
+            return dayDiff || this.parseTime(a.timeStart) - this.parseTime(b.timeStart);
+          });
+        }
+
         return sessions;
       })
     );
+  }
+
+  parseTime(timeString) {
+    const [time, period] = timeString.trim().toLowerCase().split(/([ap]m)/);
+    let [hours, minutes] = time.split(':').map(Number);
+    if ((period||'').includes('p') && hours < 12) {
+      hours += 12;
+    } else if ((period||'').includes('a') && hours === 12) {
+             hours = 0;
+           }
+    return hours * 60 + (minutes || 0);
   }
 
   filterSession(

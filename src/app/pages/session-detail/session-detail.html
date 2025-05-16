@@ -23,6 +23,11 @@
       <br /> {{session.location}}
       <p *ngIf="session.preRegistered">Pre-registration required to attend this event.</p>
     </ion-text>
+
+    <div *ngIf="session.imageUrl" class="session-image-container">
+      <img [src]="session.imageUrl" class="session-image">
+    </div>
+
     <div *ngIf="session.speakers.length > 0">
       <h3>Presented by</h3>
       <ion-grid fixed>
