@@ -131,9 +131,8 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
   }
 
   handleScan = async (result: any) => {  // Should be type ScanResult or BarcodeScannedEvent???
-    await this.removeListeners();
-    
     if (result.barcodes && !this.ignore_scans) {
+      await this.removeListeners();
       clearTimeout(this.last_scan_timeout);
       await this.pycon.fetchAttendeeProducts(
         result.barcodes[0].rawValue.split(':')[0], this.category, this.mode
@@ -154,8 +153,6 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
       ).then(
         () => {setTimeout(this.addListeners, 250); setTimeout(this.clearError, 1000);}
       );
-    } else {
-      setTimeout(() => this.addListeners(), 250);
     }
   }
 
