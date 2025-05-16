@@ -96,7 +96,8 @@ export class ConferenceData {
         "track": "Open Space",
         "tracks": ["open-space"],
         "id": openSpace.conf_key,
-        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'}),
+        "imageUrl": openSpace.image_url,
       }
       this.data.sessions.push(session);
     });
