@@ -95,7 +95,7 @@ export class ConferenceData {
         "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
         "track": "Open Space",
         "tracks": ["open-space"],
-        "id": openSpace.conf_key,
+        "id": openSpace.conf_key + 9000,
         "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'}),
         "imageUrl": openSpace.image_url,
       }
