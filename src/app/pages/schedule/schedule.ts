@@ -68,6 +68,7 @@ export class SchedulePage implements OnInit, OnDestroy {
       console.log(currDay)
       if (currDay.length > 0) {
         this.dayIndex = currDay[0].index;
+        this.reloadSchedule();
       }
     });
 
