@@ -43,24 +43,25 @@ jobs:
           bundler-cache: true
           working-directory: fastlane
 
-      - uses: maierj/fastlane-action@v3.1.0
-        env:
-          APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
-          BUNDLE_IDENTIFIER: ${{ secrets.BUNDLE_IDENTIFIER }}
-          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
-          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
-          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
-          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
-          APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
-          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
-          APPLE_PROFILE_NAME: ${{ secrets.APPLE_PROFILE_NAME }}
-        with:
-          lane: ios beta
-          subdirectory: fastlane
+      # Commented out - not ready to push to App Store yet
+      # - uses: maierj/fastlane-action@v3.1.0
+      #   env:
+      #     APP_STORE_CONNECT_TEAM_ID: ${{ secrets.APP_STORE_CONNECT_TEAM_ID }}
+      #     BUNDLE_IDENTIFIER: ${{ secrets.BUNDLE_IDENTIFIER }}
+      #     BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+      #     BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+      #     APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+      #     APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+      #     APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
+      #     P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+      #     APPLE_PROFILE_NAME: ${{ secrets.APPLE_PROFILE_NAME }}
+      #   with:
+      #     lane: ios beta
+      #     subdirectory: fastlane
 
-      - name: Upload release bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios-release
-          path: ./App.ipa
-          retention-days: 10
+      # - name: Upload release bundle
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ios-release
+      #     path: ./App.ipa
+      #     retention-days: 10
