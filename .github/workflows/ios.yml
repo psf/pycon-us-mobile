@@ -27,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: Build
-        id: build_code
+        id: build_mobile
         run: npm run mobile
 
       - uses: actions/cache@v3
