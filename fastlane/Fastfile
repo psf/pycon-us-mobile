@@ -103,7 +103,7 @@ platform :ios do
     )
     build_app(
       workspace: "./ios/App/App.xcworkspace",
-      scheme: "App",
+      scheme: "PyCon US",
       configuration: "Release",
       export_method: "app-store",
       output_name: "App.ipa",

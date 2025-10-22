@@ -41,6 +41,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: fastlane
 
       - uses: maierj/fastlane-action@v3.1.0
         env:
@@ -55,6 +56,7 @@ jobs:
           APPLE_PROFILE_NAME: ${{ secrets.APPLE_PROFILE_NAME }}
         with:
           lane: ios beta
+          subdirectory: fastlane
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v4
