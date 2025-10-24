@@ -49,6 +49,7 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: fastlane
 
       - name: Run Fastlane
         uses: maierj/fastlane-action@v3.1.0
@@ -61,6 +62,7 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
         with:
           lane: android beta
+          subdirectory: fastlane
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
