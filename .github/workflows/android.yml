@@ -64,7 +64,7 @@ jobs:
 #           lane: android beta
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: android-release
           path: ./android/app/build/outputs/bundle/release/app-release.aab
