@@ -137,3 +137,61 @@ platform :ios do
 #     )
 #   end
 end
+
+KEYSTORE_KEY_ALIAS = ENV["KEYSTORE_KEY_ALIAS"]
+KEYSTORE_KEY_PASSWORD = ENV["KEYSTORE_KEY_PASSWORD"]
+KEYSTORE_STORE_PASSWORD = ENV["KEYSTORE_STORE_PASSWORD"]
+
+platform :android do
+  desc "Deploy a beta version to the Google Play"
+
+  private_lane :verify_changelog_exists do |version_code:|
+    changelog_path = "android/metadata/en-US/changelogs/#{version_code}.txt"
+    UI.user_error!("Missing changelog file at #{changelog_path}") unless File.exist?(changelog_path)
+    UI.message("Changelog exists for version code #{version_code}")
+  end
+
+  private_lane :verify_upload_to_staging do |version_name:|
+    UI.message "Skipping staging verification step"
+  end
+
+  lane :beta do
+    keystore_path = "#{Dir.tmpdir}/build_keystore.keystore"
+    File.write(keystore_path, Base64.decode64(ENV['ANDROID_KEYSTORE_FILE']))
+    json_key_data = Base64.decode64(ENV['PLAY_CONFIG_JSON'])
+
+    # Get previous build number and increment
+    previous_build_number = google_play_track_version_codes(
+      package_name: ENV['DEVELOPER_PACKAGE_NAME'],
+      track: "internal",
+      json_key_data: json_key_data,
+    )[0]
+    current_build_number = previous_build_number + 1
+    sh("export NEW_BUILD_NUMBER=#{current_build_number}")
+
+    # Build the app
+    gradle(
+      task: "clean bundleRelease",
+      project_dir: 'android/',
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => "#{keystore_path}",
+        "android.injected.signing.store.password" => "#{KEYSTORE_STORE_PASSWORD}",
+        "android.injected.signing.key.alias" => "#{KEYSTORE_KEY_ALIAS}",
+        "android.injected.signing.key.password" => "#{KEYSTORE_KEY_PASSWORD}",
+        'versionCode' => current_build_number
+      })
+
+    # Upload to Play Store
+#     upload_to_play_store(
+#       package_name: ENV['DEVELOPER_PACKAGE_NAME'],
+#       json_key_data: json_key_data,
+#       track: 'internal',
+#       release_status: 'completed',
+#       skip_upload_metadata: true,
+#       skip_upload_changelogs: true,
+#       skip_upload_images: true,
+#       skip_upload_screenshots: true,
+#     )
+  end
+end
