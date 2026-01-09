@@ -48,7 +48,7 @@ export class ConferenceData {
       return of(this.data);
     } else {
       return this.http
-        .get(`${environment.baseUrl}/2025/schedule/conference.json`)
+        .get(`${environment.baseUrl}/2026/schedule/conference.json`)
         .pipe(timeout(10000), catchError(error => {
           console.log('Unable to load latest from remote, ' + error)
           return this.storage.get('schedule-cache').then((data) => {

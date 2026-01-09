@@ -18,7 +18,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.scss'],
 })
 export class LoginPage {
-  authUrl = `${environment.baseUrl}/2025/api/v1/authenticate/`;
+  authUrl = `${environment.baseUrl}/2026/api/v1/authenticate/`;
   login: UserOptions = { email: '', password: '' };
   submitted = false;
 
