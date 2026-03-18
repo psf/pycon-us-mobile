@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'org.pycon.us',
+  appId: 'org.pycon.us.2023.onsite',
   appName: 'PyCon US',
   webDir: 'www',
   bundledWebRuntime: false,
