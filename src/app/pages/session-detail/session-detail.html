@@ -21,7 +21,7 @@
     </span>
     <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
     <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
-    <div [innerHtml]="session?.description">
+    <div [innerHtml]="session?.description" (click)="onDescriptionClick($event)">
     </div>
     <ion-text color="medium">
       {{session.day}} {{session.date}} - {{session.timeStart}} &ndash; {{session.timeEnd}}
