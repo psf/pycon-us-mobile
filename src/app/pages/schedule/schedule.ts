@@ -7,6 +7,7 @@ import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'page-schedule',
@@ -33,6 +34,8 @@ export class SchedulePage implements OnInit, OnDestroy {
   showSearchbar: boolean;
   searchedAllDays: boolean = false;
   currentTime: Date;
+  todayIndex: string = null;
+  jumpBtnCollapsed: boolean = false;
   private favoritesSubscription: Subscription;
 
   constructor(
@@ -63,20 +66,18 @@ export class SchedulePage implements OnInit, OnDestroy {
     });
 
     this.currentTime = new Date();
+    this.dayIndex = "0";
     this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
-      console.log(data)
-      var currDay = data.filter(d => d.date === this.currentTime.toISOString().split("T")[0]);
-      console.log(currDay)
+      const offset = environment.utcOffset;
+      const localDate = new Date(this.currentTime.getTime() + (offset * 3600 * 1000));
+      const todayISO = localDate.toISOString().split('T')[0];
+      var currDay = data.filter(d => d.date === todayISO);
       if (currDay.length > 0) {
         this.dayIndex = currDay[0].index;
+        this.todayIndex = currDay[0].index;
       }
-    });
-
-    this.dayIndex = "0";
-
-    this.route.params.subscribe(routeParams => {
       this.reloadSchedule();
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -86,12 +87,32 @@ export class SchedulePage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    //const id = document.getElementsByClassName("future")[0] as HTMLElement
-    //console.log(id)
-    //console.log(this.content)
-    //console.log(id.offsetTop);
-    //this.content.scrollToBottom();
-    //this.content.scrollToPoint(0, id.offsetTop-60, 500)
+    this.jumpBtnCollapsed = false;
+    setTimeout(() => { this.jumpBtnCollapsed = true; }, 3000);
+    if (this.dayIndex === this.todayIndex) {
+      this.scrollToCurrentTime();
+    }
+  }
+
+  jumpToNow() {
+    if (this.dayIndex !== this.todayIndex) {
+      this.dayIndex = this.todayIndex;
+      this.updateSchedule();
+    }
+    setTimeout(() => this.scrollToCurrentTime(), 300);
+  }
+
+  scrollToCurrentTime() {
+    setTimeout(() => {
+      const futureEl = document.querySelector('.future') as HTMLElement;
+      if (futureEl && this.content) {
+        const rect = futureEl.getBoundingClientRect();
+        this.content.getScrollElement().then((scrollEl) => {
+          const scrollTop = scrollEl.scrollTop + rect.top - 100;
+          this.content.scrollToPoint(0, scrollTop, 500);
+        });
+      }
+    }, 500);
   }
 
   async handleRefresh(event) {
