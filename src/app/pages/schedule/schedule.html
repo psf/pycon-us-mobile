@@ -70,6 +70,14 @@
     <ion-item>
       <ion-text color="medium">No sessions found that match your current filters</ion-text>
     </ion-item>
+    <ion-item *ngIf="queryText" lines="none" class="ion-text-center">
+      <ion-label>
+        <button class="search-all-btn" [class.exhausted]="searchedAllDays" [disabled]="searchedAllDays" (click)="searchAllDays()">
+          {{ searchedAllDays ? 'No results on any day' : 'Search all days' }}
+          <ion-icon [name]="searchedAllDays ? 'close-circle-outline' : 'calendar-outline'"></ion-icon>
+        </button>
+      </ion-label>
+    </ion-item>
   </ion-list>
 
   <ion-list #scheduleList [hidden]="shownSessions === 0">
