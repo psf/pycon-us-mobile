@@ -14,35 +14,33 @@ ion-toolbar ion-menu-button {
 
 .speaker-background {
   position: relative;
-
   display: flex;
-
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-
-  flex-direction: column;
-
-  height: 250px;
+  overflow: visible;
+  background-color: #4535E3;
 }
 
-img.rounded {
-  object-fit: cover;
-  border-radius: 50%;
-  aspect-ratio: 1;
+.speaker-banner {
+  width: 100%;
+  display: block;
 }
 
 .speaker-image {
   position: absolute;
-  width: 45%;
-  max-width: 12.5em;
-  z-index: -1;
+  bottom: -50%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 163px;
+  max-height: 163px;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 2;
 }
 
-.speaker-backbackground {
-  position: absolute;
-  width: 57%;
-  max-width: 15em;
-  z-index: -2;
+.speaker-name {
+  padding-top: 80px;
+  text-align: center;
 }
 
 .speaker-background h2 {
