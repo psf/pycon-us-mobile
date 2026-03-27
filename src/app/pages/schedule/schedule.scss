@@ -60,6 +60,11 @@ $tracks: (
   &[data-track='sponsor presentation'] { background-color: #B8860B; }
   &[data-track='open space'] { background-color: #6FCF97; color: #1a1a1a; }
 
+  &.spanish-badge {
+    background-color: #DD04D2;
+    color: #ffffff;
+  }
+
   &.prereg-badge {
     background-color: transparent;
     color: var(--ion-color-danger, #eb445a);
