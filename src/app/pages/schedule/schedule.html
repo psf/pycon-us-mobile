@@ -1,54 +1,22 @@
 <ion-header translucent="true">
-  <ion-toolbar>
-    <ion-buttons *ngIf="!showSearchbar" slot="start">
+  <ion-toolbar class="schedule-toolbar">
+    <ion-buttons slot="start">
       <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-segment *ngIf="ios" [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
+    <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()" class="day-segment">
+      <ion-segment-button *ngFor="let day of days" value="{{day.index}}" [class.today-tab]="day.index === todayIndex">
+        {{day.day}}
       </ion-segment-button>
     </ion-segment>
-    <ion-title *ngIf="!ios && !showSearchbar">Schedule</ion-title>
-    <ion-searchbar #search *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updateSchedule()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
-      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
+      <ion-button (click)="toggleFavorites()" class="header-action">
+        <ion-icon slot="icon-only" [name]="segment === 'favorites' ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
-        <span *ngIf="ios">Filter</span>
-        <span *ngIf="!ios">
-          <ion-icon slot="icon-only" name="options"></ion-icon>
-        </span>
+      <ion-button (click)="presentFilter()" class="header-action">
+        <ion-icon slot="icon-only" name="funnel-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-toolbar>
-  <ion-toolbar *ngIf="ios">
-    <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
-      <ion-segment-button *ngFor="let day of days" value="{{day.index}}" [class.today-tab]="day.index === todayIndex">
-        {{day.day}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-  <ion-toolbar *ngIf="!ios">
-    <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule()">
-      <ion-segment-button value="all">
-        All
-      </ion-segment-button>
-      <ion-segment-button value="favorites">
-        Favorites
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-  <ion-toolbar *ngIf="!ios">
-    <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
-      <ion-segment-button *ngFor="let day of days" value="{{day.index}}" [class.today-tab]="day.index === todayIndex">
-        {{day.day}}
-      </ion-segment-button>
-    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
@@ -57,14 +25,10 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Schedule</ion-title>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search sessions"></ion-searchbar>
+  </ion-toolbar>
+
 
   <ion-list #scheduleList [hidden]="shownSessions !== 0">
     <ion-item>
