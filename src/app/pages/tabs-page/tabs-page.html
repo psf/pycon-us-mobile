@@ -4,20 +4,40 @@
     <span style="padding-left: 1em; font-size: smaller;"> {{BannerSponsor.name}} is a {{BannerSponsor.level}}<br> Sponsor of PyCon US 2026</span>
   </ion-tab-bar>
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="schedule">
-      <ion-icon name="calendar"></ion-icon>
-      <ion-label>Schedule</ion-label>
-    </ion-tab-button>
-
+  <ion-tab-bar slot="bottom" class="pycon-tab-bar">
     <ion-tab-button tab="speakers">
       <ion-icon name="people"></ion-icon>
       <ion-label>Speakers</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="hasLeadRetrieval" tab="lead-retrieval">
+    <ion-tab-button tab="conference-map">
+      <ion-icon name="map"></ion-icon>
+      <ion-label>Map</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="schedule">
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Schedule</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button *ngIf="hasDoorCheck" (click)="openStaffTools($event)">
+      <ion-icon name="scan"></ion-icon>
+      <ion-label>Scanner</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button *ngIf="hasLeadRetrieval && !hasDoorCheck" tab="lead-retrieval">
       <ion-icon name="qr-code"></ion-icon>
       <ion-label>Scanner</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button *ngIf="loggedIn" tab="account">
+      <ion-icon name="person-circle"></ion-icon>
+      <ion-label>Account</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button *ngIf="!loggedIn" tab="login">
+      <ion-icon name="log-in"></ion-icon>
+      <ion-label>Login</ion-label>
     </ion-tab-button>
 
   </ion-tab-bar>
