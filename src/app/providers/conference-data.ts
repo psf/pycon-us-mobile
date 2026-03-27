@@ -192,15 +192,37 @@ export class ConferenceData {
         slot.name = slot.name.split(', pre-registration')[0];
       }
 
+      // For plenary-like slots, extract room from parentheses in the title
+      // and strip redundant track prefix (e.g., "Keynote — " since the badge shows it)
+      var sessionLocation = slot.room;
+      const plenaryKinds = ['plenary', 'keynote', 'lightning-talks', 'event'];
+      if (plenaryKinds.includes(slot.kind)) {
+        const roomMatch = slot.name.match(/\s*\(([^)]+)\)\s*$/);
+        if (roomMatch) {
+          sessionLocation = roomMatch[1];
+          slot.name = slot.name.replace(roomMatch[0], '').trim();
+        }
+        // Strip track prefix like "Keynote — ", "Keynote: " from name since badge shows it
+        const trackPrefix = new RegExp('^' + slot.kind.replace(/-/g, '[- ]') + '\\s*[—:\\-–]\\s*', 'i');
+        slot.name = slot.name.replace(trackPrefix, '').trim();
+      }
+
+      // Flag Spanish-language sessions and strip "En Español" from title
+      var isSpanish = slot.kind === 'charla' || /en espa[ñn]ol/i.test(slot.name);
+      if (/,?\s*en espa[ñn]ol/i.test(slot.name)) {
+        slot.name = slot.name.replace(/,?\s*en espa[ñn]ol/i, '').trim();
+      }
+
       var start = new Date(slot.start);
       var end = new Date(slot.end);
       var session = {
           "name": slot.name,
           "color": this.slotColors[slot.kind],
           "preRegistered": slot.preRegistered,
+          "isSpanish": isSpanish,
           "listRender": slot.list_render,
           "section": slot.section,
-          "location": slot.room,
+          "location": sessionLocation,
           "description": slot.description,
           "speakers": [],
           "speakerNames": slot.authors,
