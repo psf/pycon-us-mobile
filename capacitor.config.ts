@@ -16,6 +16,13 @@ const config: CapacitorConfig = {
   }
 
   plugins: {
+    SplashScreen: {
+      launchAutoHide: true,
+      launchShowDuration: 1500,
+      launchFadeOutDuration: 500,
+      backgroundColor: '#680579',
+      showSpinner: false,
+    },
     LiveUpdates: {
       appId: 'e8e09c7a',
       channel: 'Production',

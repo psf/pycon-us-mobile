@@ -12,11 +12,22 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" id="KGU-D8-HBg">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </imageView>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="KGU-D8-HBg">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40784313725490196" green="0.0196078431372549" blue="0.47058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="KGU-D8-HBg" firstAttribute="centerX" secondItem="Ze5-6b-2t4" secondAttribute="centerX" id="cX2-2a-2a2"/>
+                            <constraint firstItem="KGU-D8-HBg" firstAttribute="centerY" secondItem="Ze5-6b-2t4" secondAttribute="centerY" id="cY2-2a-2a2"/>
+                            <constraint firstItem="KGU-D8-HBg" firstAttribute="width" secondItem="Ze5-6b-2t4" secondAttribute="width" id="w2-2a-2a2"/>
+                            <constraint firstItem="KGU-D8-HBg" firstAttribute="height" secondItem="Ze5-6b-2t4" secondAttribute="height" id="h2-2a-2a2"/>
+                        </constraints>
+                    </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -25,8 +36,5 @@
     </scenes>
     <resources>
         <image name="Splash" width="1667" height="1667"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
