@@ -28,7 +28,7 @@
   </ion-toolbar>
   <ion-toolbar *ngIf="ios">
     <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
-      <ion-segment-button *ngFor="let day of days" value="{{day.index}}">
+      <ion-segment-button *ngFor="let day of days" value="{{day.index}}" [class.today-tab]="day.index === todayIndex">
         {{day.day}}
       </ion-segment-button>
     </ion-segment>
@@ -45,7 +45,7 @@
   </ion-toolbar>
   <ion-toolbar *ngIf="!ios">
     <ion-segment [(ngModel)]="dayIndex" (ionChange)="updateSchedule()">
-      <ion-segment-button *ngFor="let day of days" value="{{day.index}}">
+      <ion-segment-button *ngFor="let day of days" value="{{day.index}}" [class.today-tab]="day.index === todayIndex">
         {{day.day}}
       </ion-segment-button>
     </ion-segment>
@@ -122,5 +122,12 @@
   <ion-list-header [hidden]="hasData">
     Schedule not loaded, if this persists check your network.
   </ion-list-header>
+
+  <div *ngIf="todayIndex !== null" slot="fixed" class="jump-now-wrapper">
+    <button class="jump-now-btn" [class.collapsed]="jumpBtnCollapsed" (click)="jumpToNow()">
+      <ion-icon name="time-outline"></ion-icon>
+      <span class="jump-now-label">Jump to Now</span>
+    </button>
+  </div>
 
 </ion-content>
