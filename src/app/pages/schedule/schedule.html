@@ -26,7 +26,7 @@
   </ion-refresher>
 
   <ion-toolbar class="search-toolbar">
-    <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search sessions"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" showCancelButton="focus" inputmode="search" placeholder="Search sessions"></ion-searchbar>
   </ion-toolbar>
 
 
