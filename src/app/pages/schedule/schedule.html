@@ -98,8 +98,12 @@
             <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
             <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
             <span *ngIf="session.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
-            <p>
-              {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> &mdash; {{session.timeEnd}}</span>: {{session.location}}<span *ngIf="session?.speakerNames?.length"> &mdash; {{session.speakerNames.join(', ')}}</span>
+            <p class="session-meta">
+              <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+            </p>
+            <p *ngIf="session?.speakerNames?.length" class="session-speakers">
+              <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
             </p>
           </ion-label>
         </ion-item>
