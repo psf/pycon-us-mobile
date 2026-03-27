@@ -1,3 +1,7 @@
+:host {
+  --ion-background-color: #680579;
+}
+
 ion-toolbar {
   --background: transparent;
   --border-color: transparent;
@@ -5,6 +9,7 @@ ion-toolbar {
 
 .slide-title {
   margin-top: 2.8rem;
+  color: #ffffff;
 }
 
 .slide-container {
@@ -16,13 +21,35 @@ ion-toolbar {
 
 .slide-image {
   max-height: 50% !important;
-  max-width: 80% !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 5vh 0;
   pointer-events: none;
 }
 
 b {
   font-weight: 500;
+}
+
+.continue-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  padding: 0.75em 1.5em;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0.5em;
+  background-color: #ffffff;
+  color: #101136;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0px 0px 18px 0px rgba(255, 192, 203, 0.5);
+  transition: all 0.2s;
+
+  ion-icon {
+    font-size: 1.1em;
+  }
 }
 
 p {
