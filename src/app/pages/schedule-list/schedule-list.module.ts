@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ScheduleListPageRoutingModule } from './schedule-list-routing.module';
 
 import { ScheduleListPage } from './schedule-list.page';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ScheduleListPageRoutingModule
+    ScheduleListPageRoutingModule,
+    PipesModule
   ],
   declarations: [ScheduleListPage]
 })

@@ -21,7 +21,7 @@
 
     <ion-item *ngFor="let track of tracks" [attr.track]="track.name | lowercase">
       <ion-icon *ngIf="ios" slot="start" [name]="track.icon" color="medium"></ion-icon>
-      <ion-label>{{track.name}}</ion-label>
+      <ion-label>{{track.name | trackName}}</ion-label>
       <ion-checkbox [(ngModel)]="track.isChecked"></ion-checkbox>
     </ion-item>
 
