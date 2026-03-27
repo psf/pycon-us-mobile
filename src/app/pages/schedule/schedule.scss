@@ -36,47 +36,6 @@ $tracks: (
   }
 }
 
-.track-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  margin-right: 6px;
-  border-radius: 99px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #ffffff;
-  background-color: var(--ion-color-medium, #92949c);
-
-  &[data-track='talk'] { background-color: #5833E9; }
-  &[data-track='tutorial'] { background-color: #DD04D2; }
-  &[data-track='keynote'] { background-color: #680579; }
-  &[data-track='plenary'] { background-color: #630675; }
-  &[data-track='break'] { background-color: #3A3A3A; }
-  &[data-track='lightning-talks'] { background-color: #C05CA0; }
-  &[data-track='security'] { background-color: #F19C0B; }
-  &[data-track='ai'] { background-color: #10B57F; }
-  &[data-track='charla'] { background-color: #527CB2; }
-  &[data-track='poster'] { background-color: #D47454; }
-  &[data-track='sponsor presentation'] { background-color: #B8860B; }
-  &[data-track='open space'] { background-color: #6FCF97; color: #1a1a1a; }
-
-  &.spanish-badge {
-    background-color: #DD04D2;
-    color: #ffffff;
-  }
-
-  &.prereg-badge {
-    background-color: transparent;
-    color: var(--ion-color-danger, #eb445a);
-    border: 1px solid var(--ion-color-danger, #eb445a);
-  }
-}
-
-p .pre-registerd {
-  font-size: smaller;
-  font-style: italic;
-}
-
 ion-segment-button {
   min-width: auto;
 }
