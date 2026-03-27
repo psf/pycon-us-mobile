@@ -125,8 +125,8 @@ export class ConferenceData {
     const collapsedGroups = new Map<string, any>();
     data.schedule.filter((s: any) => collapseKinds.includes(s.kind)).forEach((slot: any) => {
       const day = new Date(slot.start).toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'});
-      const startTime = new Date(slot.start).toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase();
-      const key = `${slot.kind}-${day}-${startTime}`;
+      const slotName = markdownToTxt(slot.name);
+      const key = `${slot.kind}-${day}-${slotName}`;
       if (!collapsedGroups.has(key)) {
         // Rename lunchtime breaks
         let name = slot.kind === 'poster' ? 'Posters' : markdownToTxt(slot.name);
@@ -136,7 +136,17 @@ export class ConferenceData {
             name = 'Lunch';
           }
         }
-        collapsedGroups.set(key, { ...slot, name, endSlot: slot });
+        // Extract room from parentheses in name (e.g., "Lunch (Hall C)" → room="Hall C")
+        // For breaks without parenthesized room, just use first room from comma-separated list
+        let room = slot.room;
+        const roomMatch = name.match(/\s*\(([^)]+)\)\s*$/);
+        if (roomMatch) {
+          room = roomMatch[1];
+          name = name.replace(roomMatch[0], '').trim();
+        } else if (slot.kind === 'break' && room && room.includes(',')) {
+          room = '';
+        }
+        collapsedGroups.set(key, { ...slot, name, room, endSlot: slot });
       } else {
         const group = collapsedGroups.get(key);
         if (new Date(slot.end) > new Date(group.endSlot.end)) {
@@ -146,9 +156,12 @@ export class ConferenceData {
         if (new Date(slot.start) < new Date(group.start)) {
           group.start = slot.start;
         }
-        // Merge room names
-        if (slot.room && !group.room.includes(slot.room)) {
-          group.room = group.room + ', ' + slot.room;
+        // If current group has no/empty room but this slot has a parenthesized one, use it
+        if (!group.room || group.room === '') {
+          const laterRoom = markdownToTxt(slot.name).match(/\s*\(([^)]+)\)\s*$/);
+          if (laterRoom) {
+            group.room = laterRoom[1];
+          }
         }
       }
     });
@@ -391,6 +404,14 @@ export class ConferenceData {
       } else {
         this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session], "startTime": start}]});
       }
+    });
+
+    // Sort groups within each day by start time
+    this.data.schedule.forEach((day: any) => {
+      day.groups.sort((a: any, b: any) => {
+        if (!a.startTime || !b.startTime) return 0;
+        return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
+      });
     });
 
     return this.data;

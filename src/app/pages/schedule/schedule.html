@@ -99,7 +99,7 @@
             <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
             <span *ngIf="session.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
             <p>
-              {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> &mdash; {{session.timeEnd}}</span>: {{session.location}} <span *ngIf="session?.speakerNames">&mdash; {{session.speakerNames?.join(', ')}}</span>
+              {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> &mdash; {{session.timeEnd}}</span>: {{session.location}}<span *ngIf="session?.speakerNames?.length"> &mdash; {{session.speakerNames.join(', ')}}</span>
             </p>
           </ion-label>
         </ion-item>
