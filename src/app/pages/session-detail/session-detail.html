@@ -6,55 +6,55 @@
     <ion-buttons slot="end">
       <ion-button (click)="toggleFavorite()">
         <ion-icon *ngIf="!isFavorite" slot="icon-only" name="star-outline"></ion-icon>
-        <ion-icon *ngIf="isFavorite" slot="icon-only" name="star"></ion-icon>
+        <ion-icon *ngIf="isFavorite" slot="icon-only" name="star" color="warning"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="session" class="ion-padding">
-    <h1>{{session.name}}</h1>
-    <span *ngFor="let track of session?.tracks" class="track-badge" [attr.data-track]="track | lowercase">{{track | trackName : 'long'}}</span>
-    <span *ngFor="let track of session?.tracks">
-      <span *ngIf="(track | lowercase) === 'ai' || (track | lowercase) === 'security'" class="track-badge new-badge">New track!</span>
-    </span>
-    <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
-    <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
-    <div [innerHtml]="session?.description" (click)="onDescriptionClick($event)">
+  <div *ngIf="session" class="session-detail-content">
+    <h1 class="session-title">{{session.name}}</h1>
+
+    <div class="session-badges">
+      <span *ngFor="let track of session?.tracks" class="track-badge" [attr.data-track]="track | lowercase">{{track | trackName : 'long'}}</span>
+      <span *ngFor="let track of session?.tracks">
+        <span *ngIf="(track | lowercase) === 'ai' || (track | lowercase) === 'security'" class="track-badge new-badge">New track!</span>
+      </span>
+      <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
+      <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
     </div>
-    <ion-text color="medium">
-      {{session.day}} {{session.date}} - {{session.timeStart}} &ndash; {{session.timeEnd}}
-      <br /> {{session.location}}
-      <p *ngIf="session.preRegistered">Pre-registration required to attend this event.</p>
-    </ion-text>
+
+    <div class="session-meta-card">
+      <div class="meta-row">
+        <ion-icon name="time-outline"></ion-icon>
+        <span>{{session.day}} {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+      </div>
+      <div *ngIf="session.location" class="meta-row">
+        <ion-icon name="location-outline"></ion-icon>
+        <span>{{session.location}}</span>
+      </div>
+    </div>
+
+    <div *ngIf="session.speakers?.length > 0" class="session-speakers-section">
+      <ion-item *ngFor="let speaker of session.speakers" lines="none" detail="true" class="speaker-item"
+        [routerLink]="['/app/tabs/speakers/speaker-details', speaker.id]"
+        [queryParams]="{ prevUrl: location.path() }">
+        <ion-avatar slot="start">
+          <img [src]="speaker.profilePic" [alt]="speaker.name">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{speaker.name}}</h2>
+          <p>Speaker</p>
+        </ion-label>
+      </ion-item>
+    </div>
 
     <div *ngIf="session.imageUrl" class="session-image-container">
       <img [src]="session.imageUrl" class="session-image">
     </div>
 
-    <div *ngIf="session.speakers.length > 0">
-      <h3>Presented by</h3>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col size="12" size-md="6" *ngFor="let speaker of session.speakers">
-            <ion-card class="speaker-card">
-              <ion-card-header>
-                <ion-item detail="false" lines="none" class="speaker-item" [routerLink]="['/app/tabs/speakers/speaker-details', speaker.id]"
-                [queryParams]="{ prevUrl: location.path() }">
-                  <ion-avatar slot="start">
-                    <img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'">
-                  </ion-avatar>
-                  <ion-label>
-                    <h2>{{speaker.name}}</h2>
-
-                  </ion-label>
-                </ion-item>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <div class="session-description" [innerHtml]="session?.description" (click)="onDescriptionClick($event)">
     </div>
   </div>
 </ion-content>

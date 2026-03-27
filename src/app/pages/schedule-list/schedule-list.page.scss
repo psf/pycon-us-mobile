@@ -34,14 +34,82 @@
   margin-right: 12px;
 }
 
-.session-card {
-  width: 100%;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+$tracks: (
+  talk: #5833E9,
+  tutorial: #DD04D2,
+  keynote: #680579,
+  plenary: #630675,
+  break: #3A3A3A,
+  lightning-talks: #C05CA0,
+  security: #F19C0B,
+  ai: #10B57F,
+  charla: #527CB2,
+  poster: #D47454,
+  sponsor\ presentation: #FFD779,
+  open\ space: #6FCF97,
+);
+
+@each $track, $color in $tracks {
+  ion-item[track='#{$track}'] ion-label {
+    border-left: 3px solid $color;
+    padding-left: 10px;
+  }
 }
 
-.session-card-title {
-  font-size: 1.1em;
+.session-list-item {
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+
+.session-name {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.session-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.session-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  font-size: 0.85em;
+  color: var(--ion-text-color);
+  margin: 4px 0 2px;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+
+  ion-icon {
+    font-size: 0.95em;
+  }
+}
+
+.speaker-avatars {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.speaker-avatar-small {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+}
+
+.speaker-names {
+  font-size: 0.8rem;
+  color: var(--ion-color-step-500, #808080);
 }
 
 .day-header {
