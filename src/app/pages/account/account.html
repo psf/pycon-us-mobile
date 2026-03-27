@@ -14,6 +14,13 @@
     <h2>Signed in as {{nickname}}</h2>
     <p><code>{{email}}</code></p>
 
+    <ion-button *ngIf="isSpeaker" color="tertiary" (click)="openDiscord()">
+      <ion-icon slot="start" name="logo-discord"></ion-icon>
+      Speaker Discord
+    </ion-button>
+
+    <br *ngIf="isSpeaker">
+
     <ion-button (click)="logout()">Logout</ion-button>
 
   </div>
