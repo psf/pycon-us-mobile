@@ -20,6 +20,11 @@
       <ion-label>Schedule</ion-label>
     </ion-tab-button>
 
+    <ion-tab-button tab="now">
+      <ion-icon name="radio"></ion-icon>
+      <ion-label>Now</ion-label>
+    </ion-tab-button>
+
     <ion-tab-button *ngIf="hasDoorCheck" (click)="openStaffTools($event)">
       <ion-icon name="scan"></ion-icon>
       <ion-label>Scanner</ion-label>

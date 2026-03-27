@@ -130,6 +130,10 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'now',
+        loadChildren: () => import('../now/now.module').then(m => m.NowPageModule)
+      },
+      {
         path: 'account',
         loadChildren: () => import('../account/account.module').then(m => m.AccountModule)
       },
