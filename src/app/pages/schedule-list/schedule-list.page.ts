@@ -146,7 +146,7 @@ export class ScheduleListPage implements OnInit {
             if (slugify(trackNameToCompare + (typeof track === 'string' ? '' : 's')) !== this.trackSlug) {
               this.excludeTracks.push(trackNameToCompare);
             } else {
-              this.trackName = trackNameToCompare + (typeof track === 'string' ? '' : 's');
+              this.trackName = trackNameToCompare;
             }
           })
           if (slug !== 'open-spaces') {
