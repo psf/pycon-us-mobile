@@ -86,7 +86,12 @@ export class SchedulePage implements OnInit, OnDestroy {
     }
   }
 
+  ionViewWillEnter() {
+    this.updateSchedule();
+  }
+
   ionViewDidEnter() {
+    this.changeDetectorRef.detectChanges();
     this.jumpBtnCollapsed = false;
     setTimeout(() => { this.jumpBtnCollapsed = true; }, 3000);
     if (this.dayIndex === this.todayIndex) {
