@@ -15,7 +15,7 @@
 
 <ion-content fullscreen="true">
   <ion-toolbar class="search-toolbar">
-    <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 
   <!-- Regular sessions display -->
