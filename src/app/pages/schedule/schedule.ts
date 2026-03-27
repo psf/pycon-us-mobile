@@ -168,6 +168,11 @@ export class SchedulePage implements OnInit, OnDestroy {
     });
   }
 
+  toggleFavorites() {
+    this.segment = this.segment === 'favorites' ? 'all' : 'favorites';
+    this.updateSchedule();
+  }
+
   searchAllDays() {
     let found = false;
     let checked = 0;

@@ -36,18 +36,62 @@ $tracks: (
   }
 }
 
-ion-segment-button {
-  min-width: auto;
+:host {
+  --pycon-accent: #680579;
 }
 
-ion-segment-button.today-tab {
-  --indicator-color: #680579;
-  --color: #680579;
-  --color-checked: #ffffff;
-  --background-checked: #680579;
+:host-context(.dark-theme) {
+  --pycon-accent: #DD04D2;
+}
+
+.schedule-toolbar {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.day-segment {
+  --background: transparent;
+}
+
+.day-segment ion-segment-button {
+  --indicator-height: 3px;
+  --indicator-color: var(--pycon-accent, #680579);
+  --color: var(--ion-color-step-500, #808080);
+  --color-checked: var(--pycon-accent, #680579);
+  min-width: auto;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.day-segment ion-segment-button.today-tab {
+  --color: var(--pycon-accent, #680579);
   font-weight: 700;
-  border-radius: 8px;
-  border-bottom: 3px solid #680579;
+}
+
+.header-action {
+  --color: var(--ion-color-step-500, #808080);
+  font-size: 1.1rem;
+
+  &:active {
+    --color: #680579;
+  }
+}
+
+.search-toolbar {
+  --background: transparent;
+  --border-width: 0;
+  padding: 0 8px 4px;
+}
+
+.search-toolbar ion-searchbar {
+  --border-radius: 10px;
+  --box-shadow: none;
+  --background: var(--ion-color-step-50, #f2f2f2);
+  font-size: 0.9rem;
+  padding: 0;
+  height: 36px;
 }
 
 .jump-now-wrapper {
