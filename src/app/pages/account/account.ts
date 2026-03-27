@@ -2,10 +2,12 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NavController, AlertController } from '@ionic/angular';
+import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 
 import { AppComponent } from '../../app.component';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -16,6 +18,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 export class AccountPage implements OnInit, AfterViewInit {
   email: string;
   nickname: string;
+  isSpeaker: boolean = false;
 
   constructor(
     public app: AppComponent,
@@ -33,6 +36,7 @@ export class AccountPage implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.getEmail();
     this.getNickname();
+    this.checkIsSpeaker();
   }
 
   getEmail() {
@@ -47,6 +51,19 @@ export class AccountPage implements OnInit, AfterViewInit {
         this.router.navigate(['/login'], { replaceUrl: true });
       }
       this.nickname = nickname;
+    });
+  }
+
+  checkIsSpeaker() {
+    this.userData.checkIsSpeaker().then((isSpeaker) => {
+      this.isSpeaker = !!isSpeaker;
+    });
+  }
+
+  openSpeakerDiscord() {
+    InAppBrowser.openInWebView({
+      url: environment.baseUrl + '/2026/speaker/join_discord/',
+      options: DefaultWebViewOptions,
     });
   }
 
