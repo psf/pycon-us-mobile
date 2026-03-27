@@ -14,23 +14,56 @@ ion-fab-button {
   --background-activated: var(--ion-color-step-250, #d9d9d9);
 }
 
-$categories: (
-  ionic: var(--ion-color-primary),
-  angular: #ac282b,
-  communication: #8e8d93,
-  tooling: #fe4c52,
-  services: #fd8b2d,
-  design: #fed035,
-  workshop: #69bb7b,
-  food: #3bc7c4,
-  documentation: #b16be3,
-  navigation: #6600cc
+$tracks: (
+  talk: #5833E9,
+  tutorial: #DD04D2,
+  keynote: #680579,
+  plenary: #630675,
+  break: #3A3A3A,
+  lightning-talks: #C05CA0,
+  security: #F19C0B,
+  ai: #10B57F,
+  charla: #527CB2,
+  poster: #D47454,
+  sponsor\ presentation: #FFD779,
+  open\ space: #6FCF97,
 );
 
-@each $track, $value in map-remove($categories) {
+@each $track, $color in $tracks {
   ion-item-sliding[track='#{$track}'] ion-label {
-    border-left: 2px solid $value;
+    border-left: 3px solid $color;
     padding-left: 10px;
+  }
+}
+
+.track-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-right: 6px;
+  border-radius: 99px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #ffffff;
+  background-color: var(--ion-color-medium, #92949c);
+
+  &[data-track='talk'] { background-color: #5833E9; }
+  &[data-track='tutorial'] { background-color: #DD04D2; }
+  &[data-track='keynote'] { background-color: #680579; }
+  &[data-track='plenary'] { background-color: #630675; }
+  &[data-track='break'] { background-color: #3A3A3A; }
+  &[data-track='lightning-talks'] { background-color: #C05CA0; }
+  &[data-track='security'] { background-color: #F19C0B; }
+  &[data-track='ai'] { background-color: #10B57F; }
+  &[data-track='charla'] { background-color: #527CB2; }
+  &[data-track='poster'] { background-color: #D47454; }
+  &[data-track='sponsor presentation'] { background-color: #B8860B; }
+  &[data-track='open space'] { background-color: #6FCF97; color: #1a1a1a; }
+
+  &.prereg-badge {
+    background-color: transparent;
+    color: var(--ion-color-danger, #eb445a);
+    border: 1px solid var(--ion-color-danger, #eb445a);
   }
 }
 
