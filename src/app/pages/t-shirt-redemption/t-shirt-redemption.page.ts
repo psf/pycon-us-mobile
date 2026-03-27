@@ -192,7 +192,9 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
     this.pycon.fetchCheckInProducts().then((data) => {
       data.subscribe(redeemable => {
         this.redeemable_products = redeemable?.redeemable_products;
-        this.redeemable_categories = redeemable?.redeemable_categories;
+        this.redeemable_categories = redeemable?.redeemable_categories?.filter(
+          (cat: any) => cat.name?.toLowerCase().includes('shirt') || cat.name?.toLowerCase().includes('swag') || cat.name?.toLowerCase().includes('merch')
+        );
       })
     })
   }
