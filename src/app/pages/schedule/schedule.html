@@ -31,17 +31,25 @@
 
 
   <ion-list #scheduleList [hidden]="shownSessions !== 0">
-    <ion-item>
-      <ion-text color="medium">No sessions found that match your current filters</ion-text>
-    </ion-item>
-    <ion-item *ngIf="queryText" lines="none" class="ion-text-center">
-      <ion-label>
-        <button class="search-all-btn" [class.exhausted]="searchedAllDays" [disabled]="searchedAllDays" (click)="searchAllDays()">
-          {{ searchedAllDays ? 'No results on any day' : 'Search all days' }}
-          <ion-icon [name]="searchedAllDays ? 'close-circle-outline' : 'calendar-outline'"></ion-icon>
-        </button>
-      </ion-label>
-    </ion-item>
+    <div *ngIf="segment === 'favorites'" class="ion-padding ion-text-center empty-favorites">
+      <ion-icon name="star-outline" class="empty-icon"></ion-icon>
+      <h2>No favorites yet</h2>
+      <p>Browse the schedule and tap the <ion-icon name="star-outline" style="font-size: 1em; vertical-align: middle;"></ion-icon> on sessions you're interested in to build your personal schedule.</p>
+      <ion-button fill="clear" size="small" (click)="toggleFavorites()">Show all sessions</ion-button>
+    </div>
+    <div *ngIf="segment !== 'favorites'">
+      <ion-item>
+        <ion-text color="medium">No sessions found that match your current filters</ion-text>
+      </ion-item>
+      <ion-item *ngIf="queryText" lines="none" class="ion-text-center">
+        <ion-label>
+          <button class="search-all-btn" [class.exhausted]="searchedAllDays" [disabled]="searchedAllDays" (click)="searchAllDays()">
+            {{ searchedAllDays ? 'No results on any day' : 'Search all days' }}
+            <ion-icon [name]="searchedAllDays ? 'close-circle-outline' : 'calendar-outline'"></ion-icon>
+          </button>
+        </ion-label>
+      </ion-item>
+    </div>
   </ion-list>
 
   <ion-list #scheduleList [hidden]="shownSessions === 0">
