@@ -120,11 +120,34 @@ export class ConferenceData {
       this.data.sessions.push(session);
     });
 
+    // Collapse poster slots into single entries per day/location
+    const posterSlots = data.schedule.filter((s: any) => s.kind === 'poster');
+    const posterGroups = new Map<string, any>();
+    posterSlots.forEach((slot: any) => {
+      const day = new Date(slot.start).toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'});
+      const key = `${day}-${slot.room}`;
+      if (!posterGroups.has(key)) {
+        posterGroups.set(key, { ...slot, name: 'Posters', endSlot: slot });
+      } else {
+        const group = posterGroups.get(key);
+        if (new Date(slot.end) > new Date(group.endSlot.end)) {
+          group.endSlot = slot;
+          group.end = slot.end;
+        }
+        if (new Date(slot.start) < new Date(group.start)) {
+          group.start = slot.start;
+        }
+      }
+    });
+
     data.schedule.forEach((slot: any) => {
       if (["blank"].includes(slot.kind)) {
         return;
       }
       if (slot.name == "Slot") {
+        return;
+      }
+      if (slot.kind === 'poster') {
         return;
       }
       if (slot.kind == "sponsor-workshop") {
@@ -285,6 +308,51 @@ export class ConferenceData {
         this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session]}]})
       }
 
+    });
+
+    // Add collapsed poster sessions
+    posterGroups.forEach((slot: any) => {
+      var start = new Date(slot.start);
+      var end = new Date(slot.end);
+      var session = {
+        "name": "Posters",
+        "color": this.slotColors['poster'],
+        "preRegistered": false,
+        "listRender": false,
+        "section": "",
+        "location": slot.room,
+        "description": "",
+        "speakers": [],
+        "speakerNames": [],
+        "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "track": "Poster",
+        "tracks": ["Poster"],
+        "id": "poster-" + slot.room + "-" + slot.start,
+        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+      };
+
+      const track = this.data.tracks.find((t: any) => t.name === 'Poster');
+      if (!track) {
+        this.data.tracks.push({"name": "Poster", "icon": this.getTrackIcon("Poster")});
+      }
+
+      this.data.sessions.push(session);
+
+      const offset = -4;
+      var estDate = new Date(start.getTime() + (offset * 3600 * 1000));
+      var day = estDate.toISOString().split('T')[0];
+      var group = start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
+
+      const scheduleDay = this.data.schedule.find((d: any) => d.date === day);
+      if (scheduleDay) {
+        const scheduleDayGroup = scheduleDay.groups.find((g: any) => g.time === group);
+        if (scheduleDayGroup) {
+          scheduleDayGroup.sessions.push(session);
+        } else {
+          scheduleDay.groups.push({"time": group, "sessions": [session], "startTime": start});
+        }
+      }
     });
 
     return this.data;
