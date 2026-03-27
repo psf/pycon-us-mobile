@@ -48,7 +48,7 @@ export class AccountPage implements OnInit, AfterViewInit {
   getNickname() {
     this.userData.getNickname().then((nickname) => {
       if (nickname === null) {
-        this.router.navigate(['/login'], { replaceUrl: true });
+        this.router.navigate(['/app/tabs/login'], { replaceUrl: true });
       }
       this.nickname = nickname;
     });
