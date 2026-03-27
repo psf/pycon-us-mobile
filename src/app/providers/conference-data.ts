@@ -24,6 +24,24 @@ export class ConferenceData {
     openSpace: 'light',
   };
 
+  trackIcons: Record<string, string> = {
+    'Break': 'cafe-outline',
+    'Lightning-talks': 'flash-outline',
+    'Tutorial': 'book-outline',
+    'Plenary': 'megaphone-outline',
+    'Keynote': 'star-outline',
+    'Sponsor Presentation': 'briefcase-outline',
+    'Poster': 'easel-outline',
+    'Talk': 'mic-outline',
+    'Security': 'shield-checkmark-outline',
+    'Charla': 'chatbubbles-outline',
+    'Ai': 'hardware-chip-outline',
+  };
+
+  getTrackIcon(trackName: string): string {
+    return this.trackIcons[trackName] || 'mic-outline';
+  }
+
   constructor(
     public http: HttpClient,
     public user: UserData,
@@ -162,7 +180,7 @@ export class ConferenceData {
         (t: any) => t.name === slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)
       )
       if (!(track)) {
-        this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": "mic-outline"})
+        this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": this.getTrackIcon(slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1))})
       }
 
       if (slot.speakers) {
@@ -226,7 +244,7 @@ export class ConferenceData {
             (t: any) => t.name === slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)
           )
           if (!(track)) {
-            this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": "mic-outline"})
+            this.data.tracks.push({"name": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1), "icon": this.getTrackIcon(slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1))})
           }
 
           if (shared_session.speakers) {
