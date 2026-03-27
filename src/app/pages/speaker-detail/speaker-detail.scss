@@ -3,20 +3,13 @@
  */
 
 ion-toolbar {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-  right: 0;
-
   --background: transparent;
-  --color: white;
 }
 
 ion-toolbar ion-button,
 ion-toolbar ion-back-button,
 ion-toolbar ion-menu-button {
-  --color: white;
+  --color: var(--ion-color-primary);
 }
 
 .speaker-background {
@@ -24,15 +17,12 @@ ion-toolbar ion-menu-button {
 
   display: flex;
 
-  padding-top: var(--ion-safe-area-top);
-
   align-items: center;
   justify-content: center;
 
   flex-direction: column;
 
-  height: calc(250px + var(--ion-safe-area-top));
-  z-index: -3;
+  height: 250px;
 }
 
 img.rounded {
@@ -45,7 +35,6 @@ img.rounded {
   position: absolute;
   width: 45%;
   max-width: 12.5em;
-  margin-top: calc(-.5 * var(--ion-safe-area-top));
   z-index: -1;
 }
 
@@ -53,7 +42,6 @@ img.rounded {
   position: absolute;
   width: 57%;
   max-width: 15em;
-  margin-top: calc(-.5 * var(--ion-safe-area-top));
   z-index: -2;
 }
 
