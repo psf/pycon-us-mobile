@@ -15,7 +15,12 @@
 <ion-content>
   <div *ngIf="session" class="ion-padding">
     <h1>{{session.name}}</h1>
-    <span *ngFor="let track of session?.tracks" [class]="'session-track-'+track.toLowerCase()">{{track}}</span>
+    <span *ngFor="let track of session?.tracks" class="track-badge" [attr.data-track]="track | lowercase">{{track | trackName : 'long'}}</span>
+    <span *ngFor="let track of session?.tracks">
+      <span *ngIf="(track | lowercase) === 'ai' || (track | lowercase) === 'security'" class="track-badge new-badge">New track!</span>
+    </span>
+    <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
+    <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
     <div [innerHtml]="session?.description">
     </div>
     <ion-text color="medium">

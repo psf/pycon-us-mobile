@@ -37,7 +37,8 @@
                   {{session.name}}
               </ion-card-title>
               <ion-card-subtitle>
-                  <b>{{session.track | trackName}}</b>: {{session.day}} {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
+                  <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+                  {{session.day}} {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
               </ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
