@@ -1,3 +1,39 @@
+::ng-deep ion-title.track-title {
+  font-size: 0.95rem;
+
+  .title-default {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+  }
+
+  div {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+  }
+}
+
+.search-toolbar {
+  --background: transparent;
+  --border-width: 0;
+  padding: 0 8px 4px;
+}
+
+.search-toolbar ion-searchbar {
+  --border-radius: 10px;
+  --box-shadow: none;
+  --background: var(--ion-color-step-50, #f2f2f2);
+  font-size: 0.9rem;
+  padding: 0;
+  height: 36px;
+}
+
+.toolbar-new-badge {
+  font-size: 0.75rem;
+  margin-right: 12px;
+}
+
 .session-card {
   width: 100%;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);

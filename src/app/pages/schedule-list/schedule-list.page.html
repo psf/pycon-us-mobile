@@ -4,26 +4,19 @@
       <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title *ngIf="!ios && !showSearchbar">{{trackName | trackName}}</ion-title>
-    <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="sessionQueryText" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
+    <ion-title *ngIf="!showSearchbar" class="track-title">
+      {{trackName | trackName : 'plural'}}
+    </ion-title>
+    <ion-buttons *ngIf="(trackName | lowercase) === 'ai' || (trackName | lowercase) === 'security'" slot="end">
+      <span class="track-badge new-badge toolbar-new-badge">New track!</span>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{trackName | trackName}}</ion-title>
-    </ion-toolbar>
-
-    <ion-toolbar>
-      <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
-    </ion-toolbar>
-  </ion-header>
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
 
   <!-- Regular sessions display -->
   <ion-grid *ngIf="!isOpenSpaceView">
