@@ -34,6 +34,8 @@ export class DoorCheckPage implements OnInit, OnDestroy {
   redeemable_products: any = null;
   redeemable_categories: any = null;
   display_products: any = null;
+  filtered_products: any = null;
+  productSearch: string = '';
 
   product_attendees: Map<string, number>|null = null;
   inventory: Map<string, Map<number, number>>|null = null;
@@ -62,7 +64,24 @@ export class DoorCheckPage implements OnInit, OnDestroy {
   }
 
   refreshProducts() {
-    this.display_products = this.filterProducts().sort(function(a, b){if (a.name < b.name) return -1; if (a.name < b.name) return 1; return 0;});
+    this.display_products = this.filterProducts().sort(function(a, b){if (a.name < b.name) return -1; if (a.name > b.name) return 1; return 0;});
+    this.filtered_products = this.display_products;
+    this.productSearch = '';
+    this.product = null;
+    this.detectorRef.detectChanges();
+  }
+
+  filterProductList() {
+    if (!this.productSearch || !this.productSearch.trim()) {
+      this.filtered_products = this.display_products;
+    } else {
+      const q = this.productSearch.toLowerCase();
+      this.filtered_products = this.display_products.filter(p => p.name.toLowerCase().includes(q));
+    }
+  }
+
+  selectProduct(productId: any) {
+    this.product = productId;
     this.detectorRef.detectChanges();
   }
 

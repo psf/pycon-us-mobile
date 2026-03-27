@@ -33,13 +33,21 @@
       </ion-select>
     </ion-item>
 
-    <ion-item *ngIf="!dirty">
-      <ion-select [(ngModel)]="product" interface="popover" [interfaceOptions]="{'cssClass': 'mycomponent-wider-popover'}" aria-label="products"  label="Product" placeholder="Product">
-        <div *ngFor="let product of display_products">
-          <ion-select-option [value]="product.id">{{product.name}}</ion-select-option>
-        </div>
-        <ion-select-option value="all">ALL</ion-select-option>
-      </ion-select>
+    <ion-item *ngIf="!dirty && display_products">
+      <ion-searchbar [(ngModel)]="productSearch" (ionInput)="filterProductList()" placeholder="Search sessions..." debounce="150"></ion-searchbar>
+    </ion-item>
+
+    <ion-item *ngIf="!dirty && display_products" lines="none" class="ion-no-padding">
+      <ion-list class="product-list">
+        <ion-item button (click)="selectProduct('all')" [color]="product === 'all' ? 'primary' : ''">
+          <ion-label><strong>ALL</strong></ion-label>
+          <ion-icon *ngIf="product === 'all'" slot="end" name="checkmark"></ion-icon>
+        </ion-item>
+        <ion-item *ngFor="let p of filtered_products" button (click)="selectProduct(p.id)" [color]="product === p.id ? 'primary' : ''">
+          <ion-label class="ion-text-wrap">{{p.name}}</ion-label>
+          <ion-icon *ngIf="product === p.id" slot="end" name="checkmark"></ion-icon>
+        </ion-item>
+      </ion-list>
     </ion-item>
 
     <ion-item *ngIf="category || product">
@@ -54,8 +62,8 @@
       </ion-card>
     </ion-item>
 
-    <ion-item *ngIf="!product">
-      <ion-text>Select a product to start scanning!</ion-text>
+    <ion-item *ngIf="!product && category">
+      <ion-text>Select a session to start scanning!</ion-text>
     </ion-item>
 
   </ion-list>
