@@ -4,7 +4,7 @@
       <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title *ngIf="!ios && !showSearchbar">{{trackName}}</ion-title>
+    <ion-title *ngIf="!ios && !showSearchbar">{{trackName | trackName}}</ion-title>
     <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="sessionQueryText" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
@@ -17,7 +17,7 @@
 <ion-content fullscreen="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{trackName}}</ion-title>
+      <ion-title size="large">{{trackName | trackName}}</ion-title>
     </ion-toolbar>
 
     <ion-toolbar>
