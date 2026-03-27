@@ -19,6 +19,7 @@ export class UserData {
   HAS_LEAD_RETRIEVAL = 'hasLeadRetrieval';
   HAS_DOOR_CHECK = 'hasDoorCheck';
   HAS_MASK_VIOLATION = 'hasMaskViolation';
+  IS_SPEAKER = 'isSpeaker';
 
   constructor(
     public storage: Storage,
@@ -132,6 +133,7 @@ export class UserData {
       this.setHasLeadRetrieval(data.features?.lead_retrieval);
       this.setHasDoorCheck(data.features?.door_check_in);
       this.setHasMaskViolation(data.features?.mask_violation);
+      this.setIsSpeaker(data.features?.is_speaker);
     }).then(() => {
       return window.dispatchEvent(new CustomEvent('user:login'));
     });
@@ -147,6 +149,7 @@ export class UserData {
       this.storage.remove(this.HAS_LEAD_RETRIEVAL);
       this.storage.remove(this.HAS_DOOR_CHECK);
       this.storage.remove(this.HAS_MASK_VIOLATION);
+      this.storage.remove(this.IS_SPEAKER);
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -230,6 +233,16 @@ export class UserData {
 
   checkHasMaskViolation(): Promise<boolean> {
     return this.storage.get(this.HAS_MASK_VIOLATION).then((value) => {
+      return value;
+    });
+  }
+
+  setIsSpeaker(value: boolean): Promise<any> {
+    return this.storage.set(this.IS_SPEAKER, value);
+  }
+
+  checkIsSpeaker(): Promise<boolean> {
+    return this.storage.get(this.IS_SPEAKER).then((value) => {
       return value;
     });
   }
