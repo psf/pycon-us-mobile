@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActionSheetController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
@@ -12,17 +14,61 @@ export class TabsPage implements OnInit {
   currentBannerSponsor: any;
   hasLeadRetrieval: boolean = false;
   hasDoorCheck: boolean = false;
+  loggedIn: boolean = false;
 
   constructor(
     private userData: UserData,
     private confData: ConferenceData,
+    private actionSheetCtrl: ActionSheetController,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
     this.reloadSponsors();
     this.checkHasLeadRetrieval();
+    this.checkHasDoorCheck();
+    this.checkLoggedIn();
     this.listenForLoginEvents();
     setInterval(this.showSponsorBanner, 30000);
+  }
+
+  checkLoggedIn() {
+    this.userData.isLoggedIn().then(loggedIn => {
+      this.loggedIn = loggedIn;
+    });
+  }
+
+  async openStaffTools(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const buttons = [];
+    if (this.hasDoorCheck) {
+      buttons.push({
+        text: 'Door Check',
+        icon: 'checkbox-outline',
+        handler: () => { this.router.navigateByUrl('/app/tabs/door-check'); }
+      });
+      buttons.push({
+        text: 'Swag Pickup',
+        icon: 'gift-outline',
+        handler: () => { this.router.navigateByUrl('/app/tabs/t-shirt-redemption'); }
+      });
+    }
+    if (this.hasLeadRetrieval) {
+      buttons.push({
+        text: 'Lead Retrieval',
+        icon: 'qr-code-outline',
+        handler: () => { this.router.navigateByUrl('/app/tabs/lead-retrieval'); }
+      });
+    }
+    buttons.push({ text: 'Cancel', role: 'cancel', icon: 'close' });
+
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Staff Tools',
+      buttons
+    });
+    await actionSheet.present();
   }
 
   showSponsorBanner() {
@@ -78,15 +124,21 @@ export class TabsPage implements OnInit {
     }, 200)
   }
 
+  goTo(path: string) {
+    this.router.navigateByUrl(path);
+  }
+
   listenForLoginEvents() {
     window.addEventListener('user:login', () => {
       this.checkHasLeadRetrieval();
       this.checkHasDoorCheck();
+      this.checkLoggedIn();
     });
 
     window.addEventListener('user:logout', () => {
       this.checkHasLeadRetrieval();
       this.checkHasDoorCheck();
+      this.checkLoggedIn();
     });
   }
 }
