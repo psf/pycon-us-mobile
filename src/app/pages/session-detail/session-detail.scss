@@ -1,88 +1,72 @@
-.session-track-ionic {
-  color: var(--ion-color-primary);
+.session-detail-content {
+  padding: 20px 16px;
 }
 
-.session-track-angular {
-  color: var(--ion-color-angular);
+.session-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 12px;
 }
 
-.session-track-communication {
-  color: var(--ion-color-communication);
+.session-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
-.session-track-tooling {
-  color: var(--ion-color-tooling);
+.session-meta-card {
+  background: var(--ion-color-step-50, #f5f5f5);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.session-track-services {
-  color: var(--ion-color-services);
+:host-context(.dark-theme) .session-meta-card {
+  background: var(--ion-color-step-100, #1a1a1a);
 }
 
-.session-track-design {
-  color: var(--ion-color-design);
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+
+  ion-icon {
+    font-size: 1.2em;
+    color: var(--ion-color-step-500, #808080);
+    flex-shrink: 0;
+  }
 }
 
-.session-track-workshop {
-  color: var(--ion-color-workshop);
-}
+.session-speakers-section {
+  margin-bottom: 20px;
 
-.session-track-food {
-  color: var(--ion-color-food);
-}
+  .speaker-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
 
-.session-track-documentation {
-  color: var(--ion-color-documentation);
-}
+    ion-avatar {
+      width: 44px;
+      height: 44px;
+      margin-right: 12px;
+    }
 
-.session-track-navigation {
-  color: var(--ion-color-navigation);
-}
+    h2 {
+      font-weight: 600;
+      font-size: 1rem;
+    }
 
-/* Favorite Icon
- * --------------------------------------------------------
- */
-
-.show-favorite {
-  position: relative;
-}
-
-.icon-heart-empty,
-.icon-heart {
-  --border-radius: 50%;
-  --padding-start: 0;
-  --padding-end: 0;
-
-  position: absolute;
-
-  top: 5px;
-  right: 5px;
-
-  width: 48px;
-  height: 48px;
-
-  font-size: 16px;
-
-  transition: transform 300ms ease;
-}
-
-.icon-heart-empty {
-  transform: scale(1);
-}
-
-.icon-heart {
-  transform: scale(0);
-}
-
-.show-favorite .icon-heart {
-  transform: scale(1);
-}
-
-.show-favorite .icon-heart-empty {
-  transform: scale(0);
-}
-
-h1 {
-  margin: 0;
+    p {
+      font-size: 0.8rem;
+      color: var(--ion-color-step-500, #808080);
+    }
+  }
 }
 
 .session-image-container {
@@ -93,6 +77,21 @@ h1 {
 .session-image {
   max-width: 100%;
   max-height: 300px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.session-description {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ion-text-color);
+
+  p {
+    margin: 0 0 12px;
+  }
+
+  a {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+  }
 }
