@@ -31,6 +31,7 @@ export class SchedulePage implements OnInit, OnDestroy {
   groups: any = [];
   confDate: string;
   showSearchbar: boolean;
+  searchedAllDays: boolean = false;
   currentTime: Date;
   private favoritesSubscription: Subscription;
 
@@ -102,6 +103,8 @@ export class SchedulePage implements OnInit, OnDestroy {
   }
 
   updateSchedule() {
+    this.searchedAllDays = false;
+
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
@@ -142,6 +145,28 @@ export class SchedulePage implements OnInit, OnDestroy {
         loader.dismiss();
       });
     });
+  }
+
+  searchAllDays() {
+    let found = false;
+    let checked = 0;
+    for (let i = 0; i < this.days.length; i++) {
+      this.confData.getTimeline(String(i), this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+        checked++;
+        if (data.shownSessions > 0 && !found) {
+          found = true;
+          this.dayIndex = String(i);
+          this.shownSessions = data.shownSessions;
+          this.groups = data.groups;
+          this.searchedAllDays = false;
+          this.changeDetectorRef.detectChanges();
+        }
+        if (checked === this.days.length && !found) {
+          this.searchedAllDays = true;
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+    }
   }
 
   async focusButton() {
