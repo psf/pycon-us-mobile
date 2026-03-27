@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { Location } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'page-session-detail',
@@ -55,6 +57,22 @@ export class SessionDetailPage {
     } else {
       this.userProvider.addFavorite(String(this.session.id));
       this.isFavorite = true;
+    }
+  }
+
+  onDescriptionClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const anchor = target.closest('a') as HTMLAnchorElement;
+    if (anchor) {
+      event.preventDefault();
+      let href = anchor.getAttribute('href');
+      if (href) {
+        // Resolve relative URLs against us.pycon.org
+        if (href.startsWith('/')) {
+          href = environment.baseUrl + href;
+        }
+        InAppBrowser.openInWebView({ url: href, options: DefaultWebViewOptions });
+      }
     }
   }
 
