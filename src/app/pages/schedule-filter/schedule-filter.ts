@@ -31,7 +31,7 @@ export class ScheduleFilterPage {
     const excludedTrackNames = await this.userData.getScheduleFilters();
 
     this.confData.getTracks().subscribe((tracks: any[]) => {
-      tracks.forEach(track => {
+      tracks.filter(track => track.name && track.name.trim()).forEach(track => {
         this.tracks.push({
           name: track.name,
           icon: track.icon,
