@@ -2,5 +2,7 @@ export const environment = {
   name: 'production',
   production: true,
   baseUrl: 'https://us.pycon.org',
-  storageKey: '__pycon_us_mobile_2026'
+  storageKey: '__pycon_us_mobile_2026',
+  timezone: 'America/Los_Angeles',
+  utcOffset: -7,
 };

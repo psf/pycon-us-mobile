@@ -109,33 +109,46 @@ export class ConferenceData {
         "description": openSpace.description,
         "speakers": [],
         "speakerNames": [],
-        "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-        "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "timeStart": start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "timeEnd": end.toLocaleString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
         "track": "Open Space",
         "tracks": ["open-space"],
         "id": openSpace.conf_key + 9000,
-        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'}),
+        "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'}),
         "imageUrl": openSpace.image_url,
       }
       this.data.sessions.push(session);
     });
 
-    // Collapse poster slots into single entries per day/location
-    const posterSlots = data.schedule.filter((s: any) => s.kind === 'poster');
-    const posterGroups = new Map<string, any>();
-    posterSlots.forEach((slot: any) => {
-      const day = new Date(slot.start).toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'});
-      const key = `${day}-${slot.room}`;
-      if (!posterGroups.has(key)) {
-        posterGroups.set(key, { ...slot, name: 'Posters', endSlot: slot });
+    // Collapse repeating slots (posters, breaks) into single entries per day/time
+    const collapseKinds = ['poster', 'break'];
+    const collapsedGroups = new Map<string, any>();
+    data.schedule.filter((s: any) => collapseKinds.includes(s.kind)).forEach((slot: any) => {
+      const day = new Date(slot.start).toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'});
+      const startTime = new Date(slot.start).toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase();
+      const key = `${slot.kind}-${day}-${startTime}`;
+      if (!collapsedGroups.has(key)) {
+        // Rename lunchtime breaks
+        let name = slot.kind === 'poster' ? 'Posters' : markdownToTxt(slot.name);
+        if (slot.kind === 'break' && (name === 'Break' || name === 'break')) {
+          const slotHour = parseInt(new Date(slot.start).toLocaleTimeString([], {timeZone: environment.timezone, hour12: false, hour: 'numeric'}));
+          if (['Fri', 'Sat', 'Sun'].includes(day) && slotHour >= 12 && slotHour < 14) {
+            name = 'Lunch';
+          }
+        }
+        collapsedGroups.set(key, { ...slot, name, endSlot: slot });
       } else {
-        const group = posterGroups.get(key);
+        const group = collapsedGroups.get(key);
         if (new Date(slot.end) > new Date(group.endSlot.end)) {
           group.endSlot = slot;
           group.end = slot.end;
         }
         if (new Date(slot.start) < new Date(group.start)) {
           group.start = slot.start;
+        }
+        // Merge room names
+        if (slot.room && !group.room.includes(slot.room)) {
+          group.room = group.room + ', ' + slot.room;
         }
       }
     });
@@ -147,7 +160,7 @@ export class ConferenceData {
       if (slot.name == "Slot") {
         return;
       }
-      if (slot.kind === 'poster') {
+      if (collapseKinds.includes(slot.kind)) {
         return;
       }
       if (slot.kind == "sponsor-workshop") {
@@ -191,12 +204,12 @@ export class ConferenceData {
           "description": slot.description,
           "speakers": [],
           "speakerNames": slot.authors,
-          "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-          "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeStart": start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeEnd": end.toLocaleString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
           "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
           "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
           "id": slot.conf_key,
-          "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+          "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'})
       }
 
       const track = this.data.tracks.find(
@@ -254,13 +267,13 @@ export class ConferenceData {
               "description": shared_session.description,
               "speakers": [],
               "speakerNames": shared_session.authors,
-              "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-              "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+              "timeStart": start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+              "timeEnd": end.toLocaleString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
               "trackSlug": slot.kind + 's',
               "track": slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1),
               "tracks": [slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1)],
               "id": shared_session.conf_key,
-              "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+              "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'})
           }
 
           const track = this.data.tracks.find(
@@ -287,10 +300,10 @@ export class ConferenceData {
         })
       }
 
-      const offset = -4; // Hardcode offset for Eastern
+      const offset = environment.utcOffset;
       var estDate= new Date(start.getTime() + (offset*3600*1000))
       var day = estDate.toISOString().split('T')[0];
-      var group = start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
+      var group = start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find(
         (d: any) => d.date === day
@@ -310,13 +323,14 @@ export class ConferenceData {
 
     });
 
-    // Add collapsed poster sessions
-    posterGroups.forEach((slot: any) => {
+    // Add collapsed sessions (posters, breaks, lunch)
+    collapsedGroups.forEach((slot: any) => {
       var start = new Date(slot.start);
       var end = new Date(slot.end);
+      var trackName = slot.kind.charAt(0).toUpperCase() + slot.kind.slice(1);
       var session = {
-        "name": "Posters",
-        "color": this.slotColors['poster'],
+        "name": slot.name,
+        "color": this.slotColors[slot.kind],
         "preRegistered": false,
         "listRender": false,
         "section": "",
@@ -324,25 +338,25 @@ export class ConferenceData {
         "description": "",
         "speakers": [],
         "speakerNames": [],
-        "timeStart": start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-        "timeEnd": end.toLocaleString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase(),
-        "track": "Poster",
-        "tracks": ["Poster"],
-        "id": "poster-" + slot.room + "-" + slot.start,
-        "day": start.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})
+        "timeStart": start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "timeEnd": end.toLocaleString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+        "track": trackName,
+        "tracks": [trackName],
+        "id": slot.kind + "-" + slot.room + "-" + slot.start,
+        "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'})
       };
 
-      const track = this.data.tracks.find((t: any) => t.name === 'Poster');
+      const track = this.data.tracks.find((t: any) => t.name === trackName);
       if (!track) {
-        this.data.tracks.push({"name": "Poster", "icon": this.getTrackIcon("Poster")});
+        this.data.tracks.push({"name": trackName, "icon": this.getTrackIcon(trackName)});
       }
 
       this.data.sessions.push(session);
 
-      const offset = -4;
+      const offset = environment.utcOffset;
       var estDate = new Date(start.getTime() + (offset * 3600 * 1000));
       var day = estDate.toISOString().split('T')[0];
-      var group = start.toLocaleTimeString([], {timeZone: "EST5EDT", hour: 'numeric', minute:'2-digit'}).toLowerCase();
+      var group = start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase();
 
       const scheduleDay = this.data.schedule.find((d: any) => d.date === day);
       if (scheduleDay) {
@@ -352,6 +366,8 @@ export class ConferenceData {
         } else {
           scheduleDay.groups.push({"time": group, "sessions": [session], "startTime": start});
         }
+      } else {
+        this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session], "startTime": start}]});
       }
     });
 
@@ -368,7 +384,7 @@ export class ConferenceData {
         var index = 0;
         data.schedule.sort(function(a, b){var x = a.date; var y = b.date; return ((x < y) ? -1 : ((x > y) ? 1 : 0));}).forEach((day: any) => {
           var dateObj = new Date(day.date+"T00:00:00.000-12:00");
-          days.push({"index": index.toString(), "date": day.date, "day": dateObj.toLocaleDateString('en-us', {timeZone: "EST5EDT", weekday: 'short'})});
+          days.push({"index": index.toString(), "date": day.date, "day": dateObj.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'})});
           index += 1;
         })
         return days;
