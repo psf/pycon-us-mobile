@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button color="medium"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Now</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh(); $event.target.complete()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="noConference" class="ion-padding ion-text-center">
+    <ion-icon name="calendar-outline" style="font-size: 64px; color: var(--ion-color-medium);"></ion-icon>
+    <h2>No sessions today</h2>
+    <p>Check the schedule for upcoming conference days.</p>
+  </div>
+
+  <div *ngIf="!noConference">
+    <!-- Now -->
+    <div *ngIf="nowSessions.length > 0" class="section">
+      <h2 class="section-header now-header">
+        <ion-icon name="pulse"></ion-icon> Happening Now
+      </h2>
+      <ion-list>
+        <ion-item *ngFor="let session of nowSessions" [routerLink]="'/app/tabs/schedule/session/' + session.id" [attr.track]="session.track | lowercase">
+          <ion-label>
+            <h3>{{session.name}}</h3>
+            <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+            <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
+            <p class="session-meta">
+              <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+            </p>
+            <p *ngIf="session?.speakerNames?.length" class="session-speakers">
+              <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngIf="nowSessions.length === 0 && nextSessions.length === 0" class="ion-padding ion-text-center">
+      <ion-icon name="moon-outline" style="font-size: 64px; color: var(--ion-color-medium);"></ion-icon>
+      <h2>Nothing happening right now</h2>
+      <p>Check back during conference hours.</p>
+    </div>
+
+    <!-- Up Next -->
+    <div *ngIf="nextSessions.length > 0" class="section">
+      <h2 class="section-header next-header">
+        <ion-icon name="arrow-forward-circle"></ion-icon> Up Next — {{nextTime}}
+      </h2>
+      <ion-list>
+        <ion-item *ngFor="let session of nextSessions" [routerLink]="'/app/tabs/schedule/session/' + session.id" [attr.track]="session.track | lowercase">
+          <ion-label>
+            <h3>{{session.name}}</h3>
+            <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+            <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
+            <p class="session-meta">
+              <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+            </p>
+            <p *ngIf="session?.speakerNames?.length" class="session-speakers">
+              <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-content>
