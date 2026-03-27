@@ -24,10 +24,14 @@ export class AppComponent implements OnInit {
   ]
   presentationPages = [
     { title: 'Talks',     group: 'presentations', url: '/app/tabs/tracks/talks',     icon: 'mic-outline'},
-    { title: 'Charlas',   group: 'presentations', url: '/app/tabs/tracks/charlas',   icon: 'mic-outline'},
-    { title: 'Tutorials', group: 'presentations', url: '/app/tabs/tracks/tutorials', icon: 'laptop-outline'},
-    { title: 'Posters',   group: 'presentations', url: '/app/tabs/tracks/posters',   icon: 'reader-outline'},
-    { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'mic-outline'},
+    { title: 'Keynotes',  group: 'presentations', url: '/app/tabs/tracks/keynotes',  icon: 'star-outline'},
+    { title: 'AI',        group: 'presentations', url: '/app/tabs/tracks/ais',       icon: 'hardware-chip-outline'},
+    { title: 'Security',  group: 'presentations', url: '/app/tabs/tracks/securitys', icon: 'shield-checkmark-outline'},
+    { title: 'Charlas',   group: 'presentations', url: '/app/tabs/tracks/charlas',   icon: 'chatbubbles-outline'},
+    { title: 'Lightning Talks', group: 'presentations', url: '/app/tabs/tracks/lightning-talkss', icon: 'flash-outline'},
+    { title: 'Tutorials', group: 'presentations', url: '/app/tabs/tracks/tutorials', icon: 'book-outline'},
+    { title: 'Posters',   group: 'presentations', url: '/app/tabs/tracks/posters',   icon: 'easel-outline'},
+    { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'briefcase-outline'},
   ]
   appPages = [
     { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
