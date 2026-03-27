@@ -85,7 +85,7 @@
           <ion-label>
             <h3>
               <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
-              {{session.track}}: {{session.name}}
+              {{session.track | trackName}}: {{session.name}}
             </h3>
             <ion-text *ngIf="session.preRegistered" color="medium" ><p class="pre-registerd">Pre-registration required</p></ion-text>
             <p>
