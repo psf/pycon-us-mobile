@@ -1,4 +1,5 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
 
 @Directive({
@@ -6,17 +7,36 @@ import { Capacitor } from '@capacitor/core';
 })
 export class AutofillDirective implements OnInit {
 
-  constructor(private el: ElementRef) {
-  }
+  constructor(
+    private el: ElementRef,
+    private ngControl: NgControl,
+  ) {}
 
   ngOnInit(): void {
-    if (Capacitor.getPlatform() !== 'ios') { return; };
-    setTimeout(() => {
+    if (Capacitor.getPlatform() !== 'ios') { return; }
+
+    // Wait for ion-input to render its native input
+    setTimeout(async () => {
       try {
-        this.el.nativeElement.children[0].addEventListener('change', (e) => {
-          this.el.nativeElement.value = (e.target as any).value;
-        });
+        // Ionic 8: use getInputElement() to get the native input from shadow DOM
+        const ionInput = this.el.nativeElement;
+        const nativeInput = ionInput.getInputElement
+          ? await ionInput.getInputElement()
+          : ionInput.querySelector('input');
+
+        if (!nativeInput) { return; }
+
+        // Listen for both change and input events (iOS autofill fires change)
+        const handler = () => {
+          if (nativeInput.value && this.ngControl?.control) {
+            this.ngControl.control.setValue(nativeInput.value);
+            this.ngControl.control.markAsDirty();
+          }
+        };
+
+        nativeInput.addEventListener('change', handler);
+        nativeInput.addEventListener('input', handler);
       } catch { }
-    }, 100); // Need some time for the ion-input to create the input element
+    }, 300);
   }
 }
