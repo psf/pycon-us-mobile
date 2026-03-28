@@ -2,7 +2,10 @@ import { Component, ChangeDetectorRef, ViewChild, OnInit } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
+import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { UserData } from '../../providers/user-data';
+import { environment } from '../../../environments/environment';
 
 const slugify = str =>
   str
@@ -39,10 +42,11 @@ export class ScheduleListPage implements OnInit {
   constructor(
     public confData: ConferenceData,
     public config: Config,
-    private changeDetection: ChangeDetectorRef,
+    private changeDetectorRef: ChangeDetectorRef,
     private loadingCtrl: LoadingController,
     private route: ActivatedRoute,
     public liveUpdateService: LiveUpdateService,
+    private userData: UserData,
   ) { }
 
 
@@ -70,6 +74,14 @@ export class ScheduleListPage implements OnInit {
     this.displaySessions = [];
     this.sessionsByDay = {};
     this.reloadSessions();
+  }
+
+  favoriteAll() {
+    const sessions = this.displaySessions?.filter(s => !s.hide && s.id) || [];
+    sessions.forEach(s => {
+      this.userData.addFavorite(String(s.id));
+    });
+    this.changeDetectorRef.detectChanges();
   }
 
   organizeSessionsByDay() {

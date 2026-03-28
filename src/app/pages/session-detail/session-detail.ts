@@ -60,6 +60,13 @@ export class SessionDetailPage {
     }
   }
 
+  addToCalendar() {
+    if (this.session?.id) {
+      const url = environment.baseUrl + '/2026/schedule/presentation/' + this.session.id + '/ical/';
+      InAppBrowser.openInWebView({ url, options: DefaultWebViewOptions });
+    }
+  }
+
   onDescriptionClick(event: Event) {
     const target = event.target as HTMLElement;
     const anchor = target.closest('a') as HTMLAnchorElement;
