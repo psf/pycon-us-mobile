@@ -18,6 +18,13 @@
     <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 
+  <div *ngIf="displaySessions?.length > 0 && !isOpenSpaceView" class="ion-padding-horizontal ion-padding-bottom">
+    <ion-button fill="outline" size="small" expand="block" (click)="favoriteAll()">
+      <ion-icon slot="start" name="star-outline"></ion-icon>
+      Favorite all {{trackName | trackName : 'plural'}}
+    </ion-button>
+  </div>
+
   <!-- Regular sessions display -->
   <ion-list *ngIf="!isOpenSpaceView">
     <ion-item *ngFor="let session of displaySessions" [hidden]="session.hide" detail="true" routerLink="/app/tabs/schedule/session/{{session.id}}" [attr.track]="session.track | lowercase" class="session-list-item">

@@ -103,6 +103,24 @@ export class UserData {
     });
   }
 
+  async addFavorites(sessionIds: string[]): Promise<void> {
+    const data = await this.storage.get('favorite_sessions');
+    this.favorites = (data === null) ? [] : data;
+
+    const ids = sessionIds.map(String);
+    const newIds = ids.filter(id => this.favorites.indexOf(id) === -1);
+    if (newIds.length === 0) return;
+
+    this.favorites.push(...newIds);
+    await this.storage.set('favorite_sessions', this.favorites);
+    this.isLoggedIn().then((loggedIn) => {
+      if (loggedIn) {
+        this.pycon.patchUserData({ favorites: this.favorites });
+      }
+    });
+    this.favoritesSubject.next();
+  }
+
   removeFavorite(sessionId: string): void {
     this.storage.get('favorite_sessions').then((data) => {
       this.favorites = (data === null)? [] : data;

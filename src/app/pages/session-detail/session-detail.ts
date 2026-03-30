@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
-
+import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
@@ -58,6 +58,25 @@ export class SessionDetailPage {
       this.userProvider.addFavorite(String(this.session.id));
       this.isFavorite = true;
     }
+  }
+
+  async addToCalendar() {
+    if (!this.session) return;
+
+    await CapacitorCalendar.requestWriteOnlyCalendarAccess();
+
+    const speakers = this.session.speakers?.map((s: any) => s.name).join(', ') || '';
+    const description = speakers ? `Speakers: ${speakers}` : '';
+
+    await CapacitorCalendar.createEventWithPrompt({
+      title: this.session.name,
+      location: this.session.location || '',
+      description,
+      startDate: new Date(this.session.startUtc).getTime(),
+      endDate: new Date(this.session.endUtc).getTime(),
+      isAllDay: false,
+      url: environment.baseUrl + '/2026/schedule/presentation/' + this.session.id + '/',
+    });
   }
 
   onDescriptionClick(event: Event) {

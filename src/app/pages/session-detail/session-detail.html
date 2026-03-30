@@ -4,6 +4,9 @@
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-button (click)="addToCalendar()">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="toggleFavorite()">
         <ion-icon *ngIf="!isFavorite" slot="icon-only" name="star-outline"></ion-icon>
         <ion-icon *ngIf="isFavorite" slot="icon-only" name="star" color="warning"></ion-icon>
