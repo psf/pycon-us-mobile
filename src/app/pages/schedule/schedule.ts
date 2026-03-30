@@ -36,6 +36,8 @@ export class SchedulePage implements OnInit, OnDestroy {
   currentTime: Date;
   todayIndex: string = null;
   jumpBtnCollapsed: boolean = false;
+  hasFavoritesOnOtherDays: boolean = false;
+  allDaysMode: boolean = false;
   private favoritesSubscription: Subscription;
 
   constructor(
@@ -130,6 +132,7 @@ export class SchedulePage implements OnInit, OnDestroy {
 
   updateSchedule() {
     this.searchedAllDays = false;
+    this.allDaysMode = false;
 
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
@@ -143,6 +146,12 @@ export class SchedulePage implements OnInit, OnDestroy {
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
+
+      if (this.segment === 'favorites' && this.shownSessions === 0) {
+        this.checkFavoritesOnOtherDays();
+      } else {
+        this.hasFavoritesOnOtherDays = false;
+      }
     });
 
     this.changeDetectorRef.detectChanges();
@@ -176,6 +185,29 @@ export class SchedulePage implements OnInit, OnDestroy {
   toggleFavorites() {
     this.segment = this.segment === 'favorites' ? 'all' : 'favorites';
     this.updateSchedule();
+  }
+
+  checkFavoritesOnOtherDays() {
+    this.hasFavoritesOnOtherDays = false;
+    for (let i = 0; i < this.days.length; i++) {
+      if (String(i) === this.dayIndex) continue;
+      this.confData.getTimeline(String(i), '', this.excludeTracks, 'favorites').subscribe((data: any) => {
+        if (data.shownSessions > 0) {
+          this.hasFavoritesOnOtherDays = true;
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+    }
+  }
+
+  showAllFavorites() {
+    this.allDaysMode = true;
+    this.confData.getAllDaysTimeline(this.queryText, this.excludeTracks, 'favorites').subscribe((data: any) => {
+      this.shownSessions = data.shownSessions;
+      this.groups = data.groups;
+      this.hasFavoritesOnOtherDays = false;
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
   searchAllDays() {

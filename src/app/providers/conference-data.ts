@@ -477,6 +477,47 @@ export class ConferenceData {
     );
   }
 
+  getAllDaysTimeline(
+    queryText = '',
+    excludeTracks: any[] = [],
+    segment = 'all'
+  ) {
+    return this.load().pipe(
+      map((data: any) => {
+        const schedule = data.schedule.sort(function(a, b){var x = a.date; var y = b.date; return ((x < y) ? -1 : ((x > y) ? 1 : 0));});
+        let shownSessions = 0;
+        const allGroups = [];
+
+        queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
+        const queryWords = queryText.split(' ').filter(w => !!w.trim().length);
+
+        schedule.forEach((day: any) => {
+          const dateObj = new Date(day.date + "T00:00:00.000-12:00");
+          const dayLabel = dateObj.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'});
+
+          day.groups.forEach((group: any) => {
+            group.hide = true;
+            group.dayLabel = dayLabel;
+
+            group.sessions.forEach((session: any) => {
+              this.filterSession(session, queryWords, excludeTracks, segment);
+              if (!session.hide) {
+                group.hide = false;
+                shownSessions++;
+              }
+            });
+
+            if (!group.hide) {
+              allGroups.push(group);
+            }
+          });
+        });
+
+        return { shownSessions, groups: allGroups };
+      })
+    );
+  }
+
   getSessions(
     queryText = '',
     excludeTracks: any[] = [],
