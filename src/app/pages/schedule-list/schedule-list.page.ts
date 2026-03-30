@@ -76,11 +76,10 @@ export class ScheduleListPage implements OnInit {
     this.reloadSessions();
   }
 
-  favoriteAll() {
+  async favoriteAll() {
     const sessions = this.displaySessions?.filter(s => !s.hide && s.id) || [];
-    sessions.forEach(s => {
-      this.userData.addFavorite(String(s.id));
-    });
+    const ids = sessions.map(s => String(s.id));
+    await this.userData.addFavorites(ids);
     this.changeDetectorRef.detectChanges();
   }
 
