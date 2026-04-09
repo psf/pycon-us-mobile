@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { map, timeout, catchError } from 'rxjs/operators';
 import { Storage } from '@ionic/storage-angular';
 import { ToastController } from '@ionic/angular';
@@ -65,20 +65,54 @@ export class ConferenceData {
     if (this.data) {
       return of(this.data);
     } else {
-      return this.http
-        .get(`${environment.baseUrl}/2026/schedule/conference.json`)
-        .pipe(timeout(10000), catchError(error => {
-          console.log('Unable to load latest from remote, ' + error)
-          return this.storage.get('schedule-cache').then((data) => {
-            if (data !== null) {
-              return of(data);
-            }
-            throw new Error('No offline cache available!');
-          }).catch((error) => {
-            this.presentMessage('Unable to load schedule, no offline cache available');
-          });
-        }))
-        .pipe(map(this.processData, this));
+      return new Observable(observer => {
+        // Try cache first for instant render
+        this.storage.get('schedule-cache').then((cached) => {
+          if (cached) {
+            this.processData(cached);
+            observer.next(this.data);
+          }
+
+          // Then fetch from network
+          this.http
+            .get(`${environment.baseUrl}/2026/schedule/conference.json`)
+            .pipe(timeout(10000))
+            .subscribe({
+              next: (freshData) => {
+                this.data = null; // reset to reprocess
+                this.processData(freshData);
+                observer.next(this.data);
+                observer.complete();
+              },
+              error: (error) => {
+                console.log('Unable to load latest from remote, ' + error);
+                if (this.data) {
+                  // Already served cache, just complete
+                  observer.complete();
+                } else {
+                  this.presentMessage('Unable to load schedule, no offline cache available');
+                  observer.error(error);
+                }
+              }
+            });
+        }).catch(() => {
+          // No cache, go straight to network
+          this.http
+            .get(`${environment.baseUrl}/2026/schedule/conference.json`)
+            .pipe(timeout(10000))
+            .subscribe({
+              next: (freshData) => {
+                this.processData(freshData);
+                observer.next(this.data);
+                observer.complete();
+              },
+              error: (error) => {
+                this.presentMessage('Unable to load schedule, no offline cache available');
+                observer.error(error);
+              }
+            });
+        });
+      });
     }
   }
 

@@ -2,14 +2,23 @@
  * Speaker Background
  */
 
+ion-header {
+  background: #5833E9;
+
+  &::after {
+    display: none;  // remove the border/shadow line
+  }
+}
+
 ion-toolbar {
   --background: transparent;
+  --border-color: transparent;
 }
 
 ion-toolbar ion-button,
 ion-toolbar ion-back-button,
 ion-toolbar ion-menu-button {
-  --color: var(--ion-color-primary);
+  --color: #ffffff;
 }
 
 .speaker-background {
@@ -18,7 +27,7 @@ ion-toolbar ion-menu-button {
   align-items: flex-end;
   justify-content: center;
   overflow: visible;
-  background-color: #4535E3;
+  background-color: #5833E9;
 }
 
 .speaker-banner {
@@ -28,18 +37,18 @@ ion-toolbar ion-menu-button {
 
 .speaker-image {
   position: absolute;
-  bottom: -50%;
-  width: 40vw;
-  height: 40vw;
-  max-width: 163px;
-  max-height: 163px;
+  bottom: 0;
+  transform: translateY(50%);
+  width: clamp(163px, 25vw, 300px);
+  height: clamp(163px, 25vw, 300px);
   object-fit: cover;
   border-radius: 50%;
+  border: 4px solid goldenrod;
   z-index: 2;
 }
 
 .speaker-name {
-  padding-top: 80px;
+  padding-top: clamp(100px, 14vw, 180px);
   text-align: center;
 }
 

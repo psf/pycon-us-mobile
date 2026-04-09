@@ -123,7 +123,7 @@ export class SchedulePage implements OnInit, OnDestroy {
   }
 
   async handleRefresh(event) {
-    this.reloadSchedule().then(() => {
+    this.reloadSchedule(true).then(() => {
       setTimeout(() => {
         event.target.complete();
       }, 250);
@@ -157,28 +157,34 @@ export class SchedulePage implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
-  async reloadSchedule() {
+  async reloadSchedule(showLoader = false) {
     console.log('fetching schedule');
-    this.loadingCtrl.create({
-      message: 'Fetching latest schedule...',
-      duration: 10000,
-    }).then((loader) => {
-      loader.present();
-      // Close any open sliding items when the schedule updates
-      if (this.scheduleList) {
-        this.scheduleList.closeSlidingItems();
-      }
 
-      this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
-        this.days = data;
+    // Close any open sliding items when the schedule updates
+    if (this.scheduleList) {
+      this.scheduleList.closeSlidingItems();
+    }
+
+    let loader;
+    if (showLoader) {
+      loader = await this.loadingCtrl.create({
+        message: 'Fetching latest schedule...',
+        duration: 10000,
       });
+      await loader.present();
+    }
 
-      this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
-        this.shownSessions = data.shownSessions;
-        this.groups = data.groups;
-        this.hasData = true;
+    this.confData.getDays(this.excludeTracks, this.segment).subscribe((data: any) => {
+      this.days = data;
+    });
+
+    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+      this.shownSessions = data.shownSessions;
+      this.groups = data.groups;
+      this.hasData = true;
+      if (loader) {
         loader.dismiss();
-      });
+      }
     });
   }
 

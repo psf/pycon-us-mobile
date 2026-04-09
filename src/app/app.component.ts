@@ -70,11 +70,14 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.loadTheme();
     this.checkLoginStatus();
-    this.checkNotifications();
     this.listenForLoginEvents();
     this.fetchFeatures();
-    this.liveUpdateService.checkForUpdate();
-    await this.storage.create();
+
+    // Defer non-critical work until after first render
+    setTimeout(() => {
+      this.checkNotifications();
+      this.liveUpdateService.checkForUpdate();
+    }, 5000);
   }
 
   checkNotifications() {
@@ -103,10 +106,17 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
-    this.confData.load();
-    this.platform.ready().then(() => {
-      if (this.platform.is('hybrid')) {
-        SplashScreen.hide();
+    this.confData.load().subscribe({
+      next: () => {
+        if (this.platform.is('hybrid')) {
+          SplashScreen.hide();
+        }
+      },
+      error: () => {
+        // Hide splash even on error so user isn't stuck
+        if (this.platform.is('hybrid')) {
+          SplashScreen.hide();
+        }
       }
     });
   }
