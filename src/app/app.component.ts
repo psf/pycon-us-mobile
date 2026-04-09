@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
     { title: 'Conference Map', url: '/app/tabs/conference-map', icon:'map-outline' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Open Spaces', url: '/app/tabs/tracks/open-spaces', icon: 'people-circle-outline' },
+    { title: 'Sprints', url: '/app/tabs/sprints', icon: 'rocket-outline' },
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
     { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
   ]
