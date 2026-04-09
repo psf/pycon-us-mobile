@@ -10,6 +10,8 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 })
 export class ConferenceMapPage {
 
+  mapView: 'floor-plans' | '3d-tour' = 'floor-plans';
+
   constructor(
     public liveUpdateService: LiveUpdateService,
   ) { }
