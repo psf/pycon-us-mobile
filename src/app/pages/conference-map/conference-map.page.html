@@ -6,19 +6,41 @@
     </ion-buttons>
     <ion-title>Conference Center</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="mapView" value="floor-plans">
+      <ion-segment-button value="floor-plans">
+        <ion-label>Floor Plans</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="3d-tour">
+        <ion-label>3D Tour</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" scrollX="true" scrollY="true" scrollEvents="true">
+<ion-content fullscreen="true" [scrollX]="mapView === 'floor-plans'" [scrollY]="mapView === 'floor-plans'" scrollEvents="true">
 
-<pinch-zoom>
+  <ng-container *ngIf="mapView === 'floor-plans'">
+    <pinch-zoom>
+      <div>
+        <ion-img class="floor-img" src="assets/img/floor-two.png"></ion-img>
+        <ion-img class="floor-img" src="assets/img/floor-three.png"></ion-img>
+        <ion-img class="floor-img" src="assets/img/floor-four.png"></ion-img>
+      </div>
+    </pinch-zoom>
+  </ng-container>
 
-<div>
-  <ion-img class="floor-img" src="assets/img/floor-two.png"></ion-img>
-  <ion-img class="floor-img" src="assets/img/floor-three.png"></ion-img>
-  <ion-img class="floor-img" src="assets/img/floor-four.png"></ion-img>
-</div>
-
-</pinch-zoom>
-
+  <iframe
+    *ngIf="mapView === '3d-tour'"
+    id="map_frame"
+    width="100%"
+    height="100%"
+    src="https://map.concept3d.com/?id=1802"
+    frameborder="0"
+    scrolling="no"
+    allow="geolocation"
+    title="PyCon US Venue 3D Map"
+    style="border: 0; min-height: 100%;">
+  </iframe>
 
 </ion-content>
