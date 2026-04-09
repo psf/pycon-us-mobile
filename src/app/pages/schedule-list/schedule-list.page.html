@@ -52,7 +52,26 @@
     </ion-item>
   </ion-list>
 
-  <!-- Open sapces display with day headers -->
+  <div *ngIf="isOpenSpaceView" class="ion-padding-horizontal">
+    <p>
+      Open Spaces are informal, participant-driven sessions where anyone can
+      host a discussion, demo, or collaboration on any topic.
+    </p>
+    <ion-button *ngIf="loggedIn" fill="outline" size="small" expand="block" (click)="submitOpenSpace()">
+      <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+      Submit an Open Space
+    </ion-button>
+    <ion-button *ngIf="!loggedIn" fill="outline" size="small" expand="block" routerLink="/app/tabs/login">
+      <ion-icon slot="start" name="log-in-outline"></ion-icon>
+      Log in to submit an Open Space
+    </ion-button>
+  </div>
+
+  <div *ngIf="isOpenSpaceView && displaySessions?.length === 0 && !scrolling" class="ion-padding-horizontal">
+    <p>No open spaces have been posted yet. Check back closer to the conference!</p>
+  </div>
+
+  <!-- Open spaces display with day headers -->
   <div *ngIf="isOpenSpaceView">
     <div *ngFor="let day of dayOrder">
       <ion-item-divider *ngIf="sessionsByDay[day]?.length > 0" class="day-header">
