@@ -12,7 +12,9 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./sprints.page.scss'],
 })
 export class SprintsPage implements OnInit {
+  allSprints: any[] = [];
   sprints: any[] = [];
+  searchText: string = '';
   loggedIn: boolean = false;
 
   constructor(
@@ -30,7 +32,8 @@ export class SprintsPage implements OnInit {
     }).then((loader) => {
       loader.present();
       this.confData.getSprints().subscribe((sprints: any[]) => {
-        this.sprints = sprints;
+        this.allSprints = sprints;
+        this.filterSprints();
         this.changeDetection.detectChanges();
         setTimeout(() => {loader.dismiss()}, 100);
       });
@@ -38,6 +41,23 @@ export class SprintsPage implements OnInit {
     this.userData.isLoggedIn().then((resp) => {
       this.loggedIn = resp;
     });
+  }
+
+  filterSprints() {
+    if (!this.searchText.trim()) {
+      this.sprints = this.allSprints;
+      return;
+    }
+    const words = this.searchText.toLowerCase().replace(/,|\.|-/g, ' ').split(' ').filter(w => w.trim().length);
+    this.sprints = this.allSprints.filter(sprint => {
+      const haystack = `${sprint.name} ${sprint.submitter || ''} ${sprint.description_html || ''}`.toLowerCase();
+      return words.every(word => haystack.includes(word));
+    });
+  }
+
+  resetSearch() {
+    this.searchText = '';
+    this.sprints = this.allSprints;
   }
 
   submitSprint() {
