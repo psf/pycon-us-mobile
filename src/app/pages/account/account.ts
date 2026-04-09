@@ -67,6 +67,10 @@ export class AccountPage implements OnInit, AfterViewInit {
     });
   }
 
+  openUrl(url: string) {
+    window.open(url, '_system', 'location=yes');
+  }
+
   logout() {
     this.userData.logout();
     this.nav.navigateRoot('/');

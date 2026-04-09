@@ -198,4 +198,8 @@ export class AppComponent implements OnInit {
   toggleDarkTheme() {
     this.userData.toggleDarkTheme();
   }
+
+  openUrl(url: string) {
+    window.open(url, '_system', 'location=yes');
+  }
 }

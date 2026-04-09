@@ -24,4 +24,24 @@
     <ion-button (click)="logout()">Logout</ion-button>
 
   </div>
+
+  <ion-list class="ion-margin-top">
+    <ion-list-header>
+      <ion-label>Report an Issue</ion-label>
+    </ion-list-header>
+    <ion-item button="true" (click)="openUrl('https://github.com/PyCon/pycon-us-mobile/issues/new')" detail="true">
+      <ion-icon slot="start" name="phone-portrait-outline"></ion-icon>
+      <ion-label>
+        <h3>Mobile App Issue</h3>
+        <p>Report a bug or suggest a feature for the app</p>
+      </ion-label>
+    </ion-item>
+    <ion-item button="true" (click)="openUrl('https://github.com/PyCon/pycon-site-public/issues/new')" detail="true">
+      <ion-icon slot="start" name="globe-outline"></ion-icon>
+      <ion-label>
+        <h3>Website Issue</h3>
+        <p>Report an issue with us.pycon.org</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
