@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Open Spaces', url: '/app/tabs/tracks/open-spaces', icon: 'people-circle-outline' },
     { title: 'Sprints', url: '/app/tabs/sprints', icon: 'rocket-outline' },
+    { title: 'Job Listings', url: '/app/tabs/job-listings', icon: 'briefcase-outline' },
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
     { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
   ]
