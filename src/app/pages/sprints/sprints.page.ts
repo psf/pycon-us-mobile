@@ -66,5 +66,13 @@ export class SprintsPage implements OnInit {
 
   ngOnInit() {
     this.reloadContent();
+    window.addEventListener('user:login', () => {
+      this.loggedIn = true;
+      this.changeDetection.detectChanges();
+    });
+    window.addEventListener('user:logout', () => {
+      this.loggedIn = false;
+      this.changeDetection.detectChanges();
+    });
   }
 }

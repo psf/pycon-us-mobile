@@ -194,6 +194,14 @@ export class ScheduleListPage implements OnInit {
     this.userData.isLoggedIn().then((resp) => {
       this.loggedIn = resp;
     });
+    window.addEventListener('user:login', () => {
+      this.loggedIn = true;
+      this.changeDetectorRef.detectChanges();
+    });
+    window.addEventListener('user:logout', () => {
+      this.loggedIn = false;
+      this.changeDetectorRef.detectChanges();
+    });
 
     this.route.params.subscribe(routeParams => {
       console.log(routeParams);
