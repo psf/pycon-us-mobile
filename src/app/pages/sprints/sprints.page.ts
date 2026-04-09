@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
@@ -18,28 +17,33 @@ export class SprintsPage implements OnInit {
   loggedIn: boolean = false;
 
   constructor(
-    private loadingCtrl: LoadingController,
     private confData: ConferenceData,
     private userData: UserData,
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {}
 
-  reloadContent() {
-    this.loadingCtrl.create({
-      message: 'Fetching latest...',
-      duration: 10000,
-    }).then((loader) => {
-      loader.present();
-      this.confData.getSprints().subscribe((sprints: any[]) => {
+  loadSprints() {
+    this.confData.getSprints().subscribe((sprints: any[]) => {
+      if (sprints.length > 0 || this.allSprints.length === 0) {
         this.allSprints = sprints;
         this.filterSprints();
         this.changeDetection.detectChanges();
-        setTimeout(() => {loader.dismiss()}, 100);
-      });
+      }
     });
-    this.userData.isLoggedIn().then((resp) => {
-      this.loggedIn = resp;
+  }
+
+  doRefresh(event: any) {
+    this.confData.invalidateCache();
+    this.confData.getSprints().subscribe({
+      next: (sprints: any[]) => {
+        this.allSprints = sprints;
+        this.filterSprints();
+        this.changeDetection.detectChanges();
+      },
+      complete: () => {
+        event.target.complete();
+      }
     });
   }
 
@@ -65,7 +69,10 @@ export class SprintsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.reloadContent();
+    this.loadSprints();
+    this.userData.isLoggedIn().then((resp) => {
+      this.loggedIn = resp;
+    });
     window.addEventListener('user:login', () => {
       this.loggedIn = true;
       this.changeDetection.detectChanges();

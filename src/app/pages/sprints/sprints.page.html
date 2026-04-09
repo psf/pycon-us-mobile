@@ -9,6 +9,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-toolbar *ngIf="allSprints.length > 0" class="search-toolbar">
     <ion-searchbar [(ngModel)]="searchText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="filterSprints()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
@@ -26,13 +30,9 @@
 
     <ion-row class="ion-padding-bottom">
       <ion-col>
-        <ion-button *ngIf="loggedIn" fill="outline" expand="block" (click)="submitSprint()">
+        <ion-button fill="outline" expand="block" (click)="submitSprint()">
           <ion-icon slot="start" name="add-circle-outline"></ion-icon>
           Submit a Sprint Project
-        </ion-button>
-        <ion-button *ngIf="!loggedIn" fill="outline" expand="block" routerLink="/app/tabs/login">
-          <ion-icon slot="start" name="log-in-outline"></ion-icon>
-          Log in to submit a Sprint Project
         </ion-button>
       </ion-col>
     </ion-row>
