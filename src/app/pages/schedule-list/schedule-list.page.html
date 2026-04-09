@@ -57,13 +57,9 @@
       Open Spaces are informal, participant-driven sessions where anyone can
       host a discussion, demo, or collaboration on any topic.
     </p>
-    <ion-button *ngIf="loggedIn" fill="outline" expand="block" (click)="submitOpenSpace()">
+    <ion-button fill="outline" expand="block" (click)="submitOpenSpace()">
       <ion-icon slot="start" name="add-circle-outline"></ion-icon>
       Submit an Open Space
-    </ion-button>
-    <ion-button *ngIf="!loggedIn" fill="outline" expand="block" routerLink="/app/tabs/login">
-      <ion-icon slot="start" name="log-in-outline"></ion-icon>
-      Log in to submit an Open Space
     </ion-button>
   </div>
 
