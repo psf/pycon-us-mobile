@@ -130,6 +130,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'sprints',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../sprints/sprints.module').then(m => m.SprintsPageModule)
+          }
+        ]
+      },
+      {
         path: 'now',
         loadChildren: () => import('../now/now.module').then(m => m.NowPageModule)
       },

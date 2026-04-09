@@ -34,6 +34,7 @@ export class ScheduleListPage implements OnInit {
   sessionQueryText = '';
   isOpenSpaceView = false;
 
+  loggedIn: boolean = false;
   ios: boolean;
   showSearchbar: boolean;
   page: number = 0;
@@ -184,8 +185,23 @@ export class ScheduleListPage implements OnInit {
     });
   }
 
+  submitOpenSpace() {
+    window.open(`${environment.baseUrl}/2026/signup/open-space/`, '_system', 'location=yes');
+  }
+
   ngOnInit() {
     this.ios = this.config.get('mode') === 'ios';
+    this.userData.isLoggedIn().then((resp) => {
+      this.loggedIn = resp;
+    });
+    window.addEventListener('user:login', () => {
+      this.loggedIn = true;
+      this.changeDetectorRef.detectChanges();
+    });
+    window.addEventListener('user:logout', () => {
+      this.loggedIn = false;
+      this.changeDetectorRef.detectChanges();
+    });
 
     this.route.params.subscribe(routeParams => {
       console.log(routeParams);
