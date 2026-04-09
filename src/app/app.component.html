@@ -101,45 +101,35 @@
 
         </ion-list>
 
-        <ion-list *ngIf="loggedIn" lines="none">
+        <ion-list lines="none">
           <ion-list-header>
             Account
           </ion-list-header>
 
-          <ion-menu-toggle autoHide="false">
+          <ion-menu-toggle *ngIf="loggedIn" autoHide="false">
             <ion-item routerLink="/app/tabs/account" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="person"></ion-icon>
-              <ion-label>
-                Account
-              </ion-label>
+              <ion-label>Account</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
-        </ion-list>
-
-        <ion-list *ngIf="!loggedIn" lines="none">
-          <ion-list-header>
-            Account
-          </ion-list-header>
-
-          <ion-menu-toggle autoHide="false">
+          <ion-menu-toggle *ngIf="!loggedIn" autoHide="false">
             <ion-item routerLink="/app/tabs/login" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="log-in"></ion-icon>
-              <ion-label>
-                Login
-              </ion-label>
+              <ion-label>Login</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
-        </ion-list>
-
-        <ion-list lines="none">
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/app/tabs/help" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+              <ion-label>Help & Safety</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
           <ion-item>
             <ion-icon slot="start" name="moon-outline"></ion-icon>
-            <ion-label>
-              Dark Mode
-            </ion-label>
+            <ion-label>Dark Mode</ion-label>
             <ion-toggle [(ngModel)]="dark" (ngModelChange)="toggleDarkTheme()"></ion-toggle>
           </ion-item>
         </ion-list>

@@ -152,6 +152,15 @@ const routes: Routes = [
         loadChildren: () => import('../now/now.module').then(m => m.NowPageModule)
       },
       {
+        path: 'help',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../help/help.module').then(m => m.HelpPageModule)
+          }
+        ]
+      },
+      {
         path: 'account',
         loadChildren: () => import('../account/account.module').then(m => m.AccountModule)
       },
