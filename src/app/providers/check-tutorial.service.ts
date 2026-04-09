@@ -9,21 +9,20 @@ import { UserData } from './user-data';
 export class CheckTutorial  {
   constructor(private storage: Storage, private router: Router, private userData: UserData) {}
 
-  canLoad() {
-    this.storage.create();
-    return this.storage.get('ion_did_tutorial').then(res => {
-      this.userData.checkHasLeadRetrieval().then(hasLead => {
-        if (hasLead) {
-          this.router.navigate(['/app', 'tabs', 'lead-retrieval']);
-          return false;
-        }
-      })
-      if (res) {
-        this.router.navigate(['/app', 'tabs', 'schedule']);
-        return false;
+  async canLoad() {
+    await this.storage.create();
+    const didTutorial = await this.storage.get('ion_did_tutorial');
+
+    if (didTutorial) {
+      const hasLead = await this.userData.checkHasLeadRetrieval();
+      if (hasLead) {
+        this.router.navigate(['/app', 'tabs', 'lead-retrieval']);
       } else {
-        return true;
+        this.router.navigate(['/app', 'tabs', 'schedule']);
       }
-    });
+      return false;
+    }
+
+    return true;
   }
 }
