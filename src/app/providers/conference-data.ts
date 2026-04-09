@@ -61,6 +61,11 @@ export class ConferenceData {
     toast.present();
   }
 
+  invalidateCache() {
+    this.data = null;
+    this.storage.remove('schedule-cache');
+  }
+
   load(): any {
     if (this.data) {
       return of(this.data);
