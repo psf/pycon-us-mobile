@@ -1,0 +1,65 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Sprints</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>Development Sprints</h1>
+        <p>
+          Sprints are a key part of PyCon US! They take place after the main conference
+          and give attendees the chance to contribute to open source projects alongside
+          core developers and maintainers.
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="sprints.length === 0">
+      <ion-col>
+        <p>No sprint projects have been posted yet. Check back closer to the conference!</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-xl="6" size-md="6" size-sm="6" size-xs="12" *ngFor="let sprint of sprints">
+        <ion-card class="ion-no-padding ion-no-border ion-margin-bottom sprint-card">
+          <ion-card-header>
+            <ion-card-title class="sprint-card-title">{{sprint.name}}</ion-card-title>
+            <ion-card-subtitle *ngIf="sprint.submitter">{{sprint.submitter}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col [size]="sprint.logo_url ? '8' : '12'">
+                  <div [innerHtml]="sprint.description_html"></div>
+                </ion-col>
+                <ion-col *ngIf="sprint.logo_url" size="4" class="ion-text-end">
+                  <img [src]="sprint.logo_url" class="sprint-logo" [alt]="sprint.name + ' logo'">
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="sprint.url">
+                <ion-col>
+                  <ion-button fill="outline" size="small" [href]="sprint.url" target="_blank">
+                    <ion-icon slot="start" name="open-outline"></ion-icon>
+                    Project Page
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <br><br><br><br>
+    </ion-row>
+  </ion-grid>
+</ion-content>

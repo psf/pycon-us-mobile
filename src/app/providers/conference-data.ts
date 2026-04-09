@@ -128,6 +128,7 @@ export class ConferenceData {
       "sessions": [],
       "conference": data.conference,
       "open-spaces": [],
+      "sprints": data.sprints || [],
     };
 
     data['open-spaces'].forEach((openSpace: any) => {
@@ -665,6 +666,14 @@ export class ConferenceData {
     return this.load().pipe(
       map((data: any) => {
         return data.conference.content;
+      })
+    );
+  }
+
+  getSprints() {
+    return this.load().pipe(
+      map((data: any) => {
+        return data.sprints || [];
       })
     );
   }
