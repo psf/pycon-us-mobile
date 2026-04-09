@@ -139,6 +139,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'job-listings',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../job-listings/job-listings.module').then(m => m.JobListingsPageModule)
+          }
+        ]
+      },
+      {
         path: 'now',
         loadChildren: () => import('../now/now.module').then(m => m.NowPageModule)
       },

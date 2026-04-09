@@ -1,0 +1,63 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Job Listings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar *ngIf="allListings.length > 0" class="search-toolbar">
+    <ion-searchbar [(ngModel)]="searchText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="filterListings()" placeholder="Search"></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p>
+          Browse job opportunities from PyCon US sponsors. Connect with companies
+          that are actively hiring in the Python community.
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="allListings.length === 0">
+      <ion-col>
+        <p>No job listings have been posted yet. Check back closer to the conference!</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-xl="6" size-md="6" size-sm="6" size-xs="12" *ngFor="let listing of listings">
+        <ion-card class="ion-no-padding ion-no-border ion-margin-bottom listing-card">
+          <ion-card-header>
+            <ion-card-title class="listing-card-title">{{listing.sponsor_name}}</ion-card-title>
+            <ion-card-subtitle *ngIf="listing.sponsor_level">{{listing.sponsor_level}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col [size]="listing.sponsor_logo_url ? '8' : '12'">
+                  <div [innerHtml]="listing.description_html"></div>
+                </ion-col>
+                <ion-col *ngIf="listing.sponsor_logo_url" size="4" class="ion-text-end">
+                  <img [src]="listing.sponsor_logo_url" class="listing-logo" [alt]="listing.sponsor_name + ' logo'">
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <br><br><br><br>
+    </ion-row>
+  </ion-grid>
+</ion-content>

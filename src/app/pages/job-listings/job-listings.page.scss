@@ -1,0 +1,15 @@
+.listing-card {
+  cursor: pointer;
+}
+
+.listing-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.listing-logo {
+  max-width: 48px;
+  max-height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+}
