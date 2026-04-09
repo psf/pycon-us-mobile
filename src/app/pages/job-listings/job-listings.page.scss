@@ -1,15 +1,80 @@
+.page-intro {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 0;
+}
+
+.listings-container {
+  padding: 0 16px;
+}
+
 .listing-card {
-  cursor: pointer;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--ion-color-step-100, rgba(255,255,255,0.1));
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
-.listing-card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+.sponsor-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.listing-logo {
-  max-width: 48px;
-  max-height: 48px;
+.sponsor-logo {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   border-radius: 8px;
+  flex-shrink: 0;
+  background: #fff;
+  padding: 3px;
+}
+
+.sponsor-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sponsor-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.level-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--ion-color-step-100, rgba(255,255,255,0.1));
+  color: var(--ion-color-step-600, rgba(255,255,255,0.6));
+  font-weight: 500;
+}
+
+.roles-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-height: 40px;
+  }
+}
+
+.role-icon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.role-title {
+  font-size: 0.9rem;
 }
