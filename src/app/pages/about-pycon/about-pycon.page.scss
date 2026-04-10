@@ -67,7 +67,12 @@ ion-title {
     padding: 20px;
     font-size: 0.95rem;
     line-height: 1.6;
+    color: var(--ion-text-color);
   }
+}
+
+:host-context(.dark-theme) .about-card {
+  --background: #1e1e1e;
 }
 
 .dev-accordion {
