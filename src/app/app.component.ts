@@ -33,16 +33,21 @@ export class AppComponent implements OnInit {
     { title: 'Posters',   group: 'presentations', url: '/app/tabs/tracks/posters',   icon: 'easel-outline'},
     { title: 'Sponsor Presentations', url: '/app/tabs/tracks/sponsor-presentations', icon: 'briefcase-outline'},
   ]
-  appPages = [
-    { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
-    { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
-    { title: 'Conference Map', url: '/app/tabs/conference-map', icon:'map-outline' },
-    { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
+  conferencePages = [
     { title: 'Open Spaces', url: '/app/tabs/tracks/open-spaces', icon: 'people-circle-outline' },
     { title: 'Sprints', url: '/app/tabs/sprints', icon: 'rocket-outline' },
-    { title: 'Job Listings', url: '/app/tabs/job-listings', icon: 'briefcase-outline' },
+  ]
+  expoPages = [
     { title: 'Sponsors', url: '/app/tabs/sponsors', icon: 'business-outline' },
     { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
+    { title: 'Job Listings', url: '/app/tabs/job-listings', icon: 'briefcase-outline' },
+  ]
+  infoPages = [
+    { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
+    { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
+    { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
+    { title: 'Conference Map', url: '/app/tabs/conference-map', icon: 'map-outline' },
+    { title: 'Help & Safety', url: '/app/tabs/help', icon: 'help-circle-outline' },
   ]
   nickname = null;
   loggedIn = false;
