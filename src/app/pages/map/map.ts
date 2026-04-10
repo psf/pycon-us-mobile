@@ -258,10 +258,24 @@ export class MapPage implements OnInit, OnDestroy {
       this.sponsorList = result.sponsors || [];
     } catch (e) {
       console.log('Failed to fetch sponsors for staff scanner', e);
+      const errorAlert = await this.alertCtrl.create({
+        header: 'Unable to load sponsors',
+        message: 'Could not fetch the sponsor list. Check your network connection or try again later.',
+        buttons: ['OK'],
+      });
+      await errorAlert.present();
       return;
     }
 
-    if (this.sponsorList.length === 0) return;
+    if (this.sponsorList.length === 0) {
+      const emptyAlert = await this.alertCtrl.create({
+        header: 'No sponsors available',
+        message: 'No sponsors with lead retrieval are configured yet.',
+        buttons: ['OK'],
+      });
+      await emptyAlert.present();
+      return;
+    }
 
     const inputs = this.sponsorList.map(s => ({
       type: 'radio' as const,

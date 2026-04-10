@@ -42,4 +42,29 @@
 
   </ion-tab-bar>
 
+  <ion-modal #staffToolsModal [isOpen]="showStaffTools" (didDismiss)="showStaffTools = false"
+             [breakpoints]="[0, 0.35]" [initialBreakpoint]="0.35" [handle]="true">
+    <ng-template>
+      <ion-content class="staff-tools-sheet">
+        <div class="staff-tools-header">
+          <h2>Staff Tools</h2>
+        </div>
+        <ion-list lines="full">
+          <ion-item *ngIf="hasDoorCheck" button="true" (click)="goToTool('/app/tabs/door-check')" detail="true">
+            <ion-icon slot="start" name="checkbox-outline" color="primary"></ion-icon>
+            <ion-label>Door Check</ion-label>
+          </ion-item>
+          <ion-item *ngIf="hasDoorCheck" button="true" (click)="goToTool('/app/tabs/t-shirt-redemption')" detail="true">
+            <ion-icon slot="start" name="shirt-outline" color="primary"></ion-icon>
+            <ion-label>Swag Pickup</ion-label>
+          </ion-item>
+          <ion-item *ngIf="hasLeadRetrieval || hasDoorCheck" button="true" (click)="goToTool('/app/tabs/lead-retrieval')" detail="true">
+            <ion-icon slot="start" name="qr-code-outline" color="primary"></ion-icon>
+            <ion-label>Lead Scanner</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-tabs>

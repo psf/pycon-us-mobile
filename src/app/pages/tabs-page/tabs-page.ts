@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { ConferenceData } from '../../providers/conference-data';
@@ -15,11 +15,12 @@ export class TabsPage implements OnInit {
   hasLeadRetrieval: boolean = false;
   hasDoorCheck: boolean = false;
   loggedIn: boolean = false;
+  showStaffTools: boolean = false;
 
   constructor(
     private userData: UserData,
     private confData: ConferenceData,
-    private actionSheetCtrl: ActionSheetController,
+    private modalCtrl: ModalController,
     private router: Router,
   ) {}
 
@@ -38,37 +39,15 @@ export class TabsPage implements OnInit {
     });
   }
 
-  async openStaffTools(event: Event) {
+  openStaffTools(event: Event) {
     event.stopPropagation();
     event.preventDefault();
+    this.showStaffTools = true;
+  }
 
-    const buttons = [];
-    if (this.hasDoorCheck) {
-      buttons.push({
-        text: 'Door Check',
-        icon: 'checkbox-outline',
-        handler: () => { this.router.navigateByUrl('/app/tabs/door-check'); }
-      });
-      buttons.push({
-        text: 'Swag Pickup',
-        icon: 'gift-outline',
-        handler: () => { this.router.navigateByUrl('/app/tabs/t-shirt-redemption'); }
-      });
-    }
-    if (this.hasLeadRetrieval || this.hasDoorCheck) {
-      buttons.push({
-        text: 'Lead Scanner',
-        icon: 'qr-code-outline',
-        handler: () => { this.router.navigateByUrl('/app/tabs/lead-retrieval'); }
-      });
-    }
-    buttons.push({ text: 'Cancel', role: 'cancel', icon: 'close' });
-
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: 'Staff Tools',
-      buttons
-    });
-    await actionSheet.present();
+  goToTool(path: string) {
+    this.showStaffTools = false;
+    this.router.navigateByUrl(path);
   }
 
   showSponsorBanner() {
