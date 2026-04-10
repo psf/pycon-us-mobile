@@ -1,7 +1,12 @@
 # PyCon US Mobile
 
-This application provides on-site tools for PyCon US Attendees, Sponsors,
-and Staff!
+> [!NOTE]  
+> This will be the last year this codebase exists as is.
+> We are losing support of critical features needed from Ionic so we will be rewriting it for 2027.
+> 
+> Interested? Get in touch :) infrastructure@python.org
+
+This application provides on-site tools for PyCon US Attendees, Sponsors, and Staff!
 
 ## Table of Contents
 - [Getting Started](#getting-started)
