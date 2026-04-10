@@ -13,40 +13,44 @@
     </div>
   </div>
 
-  <div class="ion-padding-horizontal sponsor-name">
-    <h1>{{ sponsor?.name }}</h1>
-    <span *ngIf="sponsor?.level" class="level-badge">{{ sponsor?.level }}</span>
-  </div>
+  <ion-card class="sponsor-info-card">
+    <ion-card-content>
+      <h1>{{ sponsor?.name }}</h1>
+      <span *ngIf="sponsor?.level" class="level-badge">{{ sponsor?.level }}</span>
 
-  <div *ngIf="sponsor?.booth_number" class="ion-padding-horizontal sponsor-booth">
-    <ion-icon name="location-outline"></ion-icon>
-    <span>Expo Hall Booth {{ sponsor?.booth_number }}</span>
-  </div>
+      <div *ngIf="sponsor?.booth_number || sponsor?.job_fair_table_number" class="sponsor-locations">
+        <ion-chip *ngIf="sponsor?.booth_number" outline="true" color="primary">
+          <ion-icon name="storefront-outline"></ion-icon>
+          <ion-label>Expo Booth {{ sponsor?.booth_number }}</ion-label>
+        </ion-chip>
+        <ion-chip *ngIf="sponsor?.job_fair_table_number" outline="true" color="tertiary">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label>Job Fair Table {{ sponsor?.job_fair_table_number }}</ion-label>
+        </ion-chip>
+      </div>
 
-  <div *ngIf="sponsor?.description" class="ion-padding-horizontal sponsor-description">
-    <p [innerHtml]="sponsor?.description"></p>
-  </div>
+      <p *ngIf="sponsor?.description" class="sponsor-desc" [innerHtml]="sponsor?.description"></p>
 
-  <div *ngIf="sponsor?.external_url" class="ion-padding-horizontal sponsor-website">
-    <ion-button expand="block" fill="outline" (click)="openUrl(sponsor.external_url)">
-      <ion-icon name="globe-outline" slot="start"></ion-icon>
-      Visit Website
-    </ion-button>
-  </div>
+      <ion-button *ngIf="sponsor?.external_url" expand="block" (click)="openUrl(sponsor.external_url)">
+        <ion-icon name="globe-outline" slot="start"></ion-icon>
+        Visit Website
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 
-  <div *ngIf="jobListings.length > 0" class="ion-padding-horizontal sponsor-jobs">
-    <h2>Open Positions</h2>
-    <div *ngFor="let listing of jobListings" class="listing-card">
-      <ion-list *ngIf="listing.roles?.length > 0" class="roles-list" lines="none">
+  <ion-card *ngIf="jobListings.length > 0" class="jobs-card">
+    <ion-card-header>
+      <ion-card-title>Open Positions</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngFor="let listing of jobListings" lines="none">
         <ion-item *ngFor="let role of listing.roles" class="role-item" [button]="!!role.url" (click)="openUrl(role.url)" [detail]="!!role.url">
-          <ion-icon name="briefcase-outline" slot="start" color="medium" class="role-icon"></ion-icon>
-          <ion-label class="role-label">
-            <span class="role-title">{{ role.title }}</span>
-          </ion-label>
+          <ion-icon name="briefcase-outline" slot="start" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ role.title }}</ion-label>
         </ion-item>
       </ion-list>
-    </div>
-  </div>
+    </ion-card-content>
+  </ion-card>
 
   <div style="height: 80px"></div>
 </ion-content>

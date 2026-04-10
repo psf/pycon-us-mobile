@@ -1,13 +1,6 @@
-/*
- * Sponsor Hero
- */
-
 ion-header {
   background: #3B3EA9;
-
-  &::after {
-    display: none;
-  }
+  &::after { display: none; }
 }
 
 ion-toolbar {
@@ -15,9 +8,7 @@ ion-toolbar {
   --border-color: transparent;
 }
 
-ion-toolbar ion-button,
-ion-toolbar ion-back-button,
-ion-toolbar ion-menu-button {
+ion-toolbar ion-back-button {
   --color: #ffffff;
 }
 
@@ -26,7 +17,7 @@ ion-toolbar ion-menu-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 32px 40px;
+  padding: 16px 32px 48px;
 }
 
 .sponsor-logo-container {
@@ -36,28 +27,32 @@ ion-toolbar ion-menu-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 280px;
+  max-width: 260px;
   width: 100%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 .sponsor-logo {
   max-width: 100%;
-  max-height: 120px;
+  max-height: 100px;
   object-fit: contain;
 }
 
-/*
- * Sponsor Info
- */
+.sponsor-info-card {
+  margin: -24px 16px 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(16, 17, 54, 0.1);
+  position: relative;
+  z-index: 1;
 
-.sponsor-name {
-  padding-top: 24px;
-  text-align: center;
+  ion-card-content {
+    text-align: center;
+    padding: 20px;
+  }
 
   h1 {
-    margin: 0 0 8px;
-    font-size: 1.6rem;
+    margin: 0 0 6px;
+    font-size: 1.4rem;
     font-weight: 700;
   }
 }
@@ -66,85 +61,40 @@ ion-toolbar ion-menu-button {
   display: inline-block;
   font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.08em;
   padding: 3px 12px;
-  border-radius: 4px;
-  background: var(--ion-color-step-100, rgba(255, 255, 255, 0.1));
-  color: var(--ion-color-step-600, rgba(255, 255, 255, 0.6));
+  border-radius: 99px;
+  background: #5833E9;
+  color: #ffffff;
   font-weight: 600;
 }
 
-.sponsor-booth {
+.sponsor-locations {
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 6px;
-  padding-top: 16px;
-  font-size: 0.9rem;
-  opacity: 0.7;
+  margin-top: 12px;
+}
 
-  ion-icon {
+.sponsor-desc {
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 12px 0 8px;
+  color: var(--ion-text-color);
+}
+
+.jobs-card {
+  margin: 0 16px;
+  border-radius: 16px;
+
+  ion-card-title {
     font-size: 1.1rem;
   }
-}
-
-.sponsor-description {
-  padding-top: 20px;
-
-  p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
-  }
-}
-
-.sponsor-website {
-  padding-top: 24px;
-
-  ion-button {
-    --border-radius: 10px;
-    --border-color: var(--ion-color-primary);
-    --color: var(--ion-color-primary);
-    font-weight: 600;
-    letter-spacing: 0.3px;
-  }
-}
-
-/*
- * Job Listings
- */
-
-.sponsor-jobs {
-  padding-top: 32px;
-
-  h2 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin: 0 0 12px;
-  }
-}
-
-.listing-card {
-  padding: 0;
-}
-
-.roles-list {
-  background: transparent;
-  padding: 0;
 
   ion-item {
-    --background: transparent;
     --padding-start: 0;
-    --padding-end: 0;
-    --min-height: 44px;
+    --background: transparent;
   }
-}
-
-.role-icon {
-  font-size: 16px;
-  margin-right: 8px;
-}
-
-.role-title {
-  font-size: 0.9rem;
 }
