@@ -1,0 +1,52 @@
+<ion-header class="ion-no-border" translucent="false">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="backHref"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="sponsor-detail">
+  <div class="sponsor-hero">
+    <div class="sponsor-logo-container">
+      <img *ngIf="sponsor?.logo_url" class="sponsor-logo" [src]="sponsor?.logo_url" [alt]="sponsor?.name + ' logo'" />
+    </div>
+  </div>
+
+  <div class="ion-padding-horizontal sponsor-name">
+    <h1>{{ sponsor?.name }}</h1>
+    <span *ngIf="sponsor?.level" class="level-badge">{{ sponsor?.level }}</span>
+  </div>
+
+  <div *ngIf="sponsor?.booth_number" class="ion-padding-horizontal sponsor-booth">
+    <ion-icon name="location-outline"></ion-icon>
+    <span>Expo Hall Booth {{ sponsor?.booth_number }}</span>
+  </div>
+
+  <div *ngIf="sponsor?.description" class="ion-padding-horizontal sponsor-description">
+    <p [innerHtml]="sponsor?.description"></p>
+  </div>
+
+  <div *ngIf="sponsor?.external_url" class="ion-padding-horizontal sponsor-website">
+    <ion-button expand="block" fill="outline" (click)="openUrl(sponsor.external_url)">
+      <ion-icon name="globe-outline" slot="start"></ion-icon>
+      Visit Website
+    </ion-button>
+  </div>
+
+  <div *ngIf="jobListings.length > 0" class="ion-padding-horizontal sponsor-jobs">
+    <h2>Open Positions</h2>
+    <div *ngFor="let listing of jobListings" class="listing-card">
+      <ion-list *ngIf="listing.roles?.length > 0" class="roles-list" lines="none">
+        <ion-item *ngFor="let role of listing.roles" class="role-item" [button]="!!role.url" (click)="openUrl(role.url)" [detail]="!!role.url">
+          <ion-icon name="briefcase-outline" slot="start" color="medium" class="role-icon"></ion-icon>
+          <ion-label class="role-label">
+            <span class="role-title">{{ role.title }}</span>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <div style="height: 80px"></div>
+</ion-content>

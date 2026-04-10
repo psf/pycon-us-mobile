@@ -55,6 +55,10 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../sponsors/sponsors.module').then(m => m.SponsorsPageModule)
+          },
+          {
+            path: 'sponsor-detail/:sponsorId',
+            loadChildren: () => import('../sponsor-detail/sponsor-detail.module').then(m => m.SponsorDetailModule)
           }
         ]
       },
