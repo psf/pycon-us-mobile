@@ -1,48 +1,83 @@
-.speaker-card {
+ion-header {
+  background: linear-gradient(180deg, #3B3EA9 0%, #3B3EA9 100%);
+  &::after { display: none; }
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: #ffffff;
+}
+
+ion-toolbar ion-menu-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  &.title-visible {
+    opacity: 1;
+  }
+}
+
+.page-hero {
   display: flex;
   flex-direction: column;
-  // add a border around the card to make it stand out
-  border: 1px solid var(--ion-color-step-150, #d7d8da);
+  align-items: center;
+  padding: 16px 24px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+  text-align: center;
+
+  .page-hero-icon {
+    font-size: 40px;
+    color: #25C8EB;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
 }
 
-/* Due to the fact the cards are inside of columns the margins don't overlap
- * properly so we want to remove the extra margin between cards
- */
-ion-col:not(:last-of-type) .speaker-card {
-  margin-bottom: 0;
+.search-toolbar {
+  --background: var(--ion-background-color, #fff);
+  --border-color: transparent;
+  margin-top: 8px;
 }
 
-.speaker-card .speaker-item {
-  --min-height: 85px;
-}
+.speaker-list {
+  ion-avatar {
+    width: 44px;
+    height: 44px;
+  }
 
-.speaker-card .speaker-item h2 {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
+  h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
 
-.speaker-card .speaker-item p {
-  font-size: 13px;
-  letter-spacing: 0.02em;
-}
+  p {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+  }
 
-.speaker-card ion-card-header {
-  padding: 0;
-}
-
-.speaker-card ion-card-content {
-  flex: 1 1 auto;
-
-  padding: 0;
-}
-
-.ios ion-list {
-  margin-bottom: 10px;
-}
-
-.md ion-list {
-  border-top: 1px solid var(--ion-color-step-150, #d7d8da);
-
-  padding: 0;
+  .track-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+  }
 }

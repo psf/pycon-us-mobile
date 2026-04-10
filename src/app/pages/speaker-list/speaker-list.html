@@ -1,63 +1,40 @@
-<ion-header translucent="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-buttons *ngIf="!showSearchbar" slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title *ngIf="!ios && !showSearchbar">Speakers</ion-title>
-    <ion-searchbar #search *ngIf="showSearchbar" [debounce]="250" showCancelButton="always" [(ngModel)]="speakerQueryText" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true && focusButton()">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title [class.title-visible]="showTitle">Speakers</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Speakers</ion-title>
-    </ion-toolbar>
+<ion-content fullscreen="true" scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div class="page-hero">
+    <ion-icon name="people" class="page-hero-icon"></ion-icon>
+    <h1>Speakers</h1>
+    <p>PyCon US 2026 presenters</p>
+  </div>
 
-    <ion-toolbar>
-      <ion-searchbar [(ngModel)]="speakerQueryText" [debounce]="250" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" placeholder="Search"></ion-searchbar>
-    </ion-toolbar>
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar [(ngModel)]="speakerQueryText" [debounce]="250" (ionClear)="resetSpeakers()" (ionCancel)="resetSpeakers()" (ionChange)="searchSpeakers()" placeholder="Search speakers"></ion-searchbar>
+  </ion-toolbar>
 
-  </ion-header>
+  <ion-list lines="full" class="speaker-list">
+    <ion-item *ngFor="let speaker of displaySpeakers" [hidden]="speaker.hide"
+              button="true" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}" detail="true">
+      <ion-avatar slot="start">
+        <img [src]="speaker.profilePic" [alt]="speaker.name">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{speaker.name}}</h2>
+        <p *ngIf="speaker.sessions?.length > 0">
+          <span class="track-badge" [attr.data-track]="speaker.sessions[0].track | lowercase">{{speaker.sessions[0].track | trackName}}</span>
+          {{speaker.sessions[0].name}}
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let speaker of displaySpeakers" [hidden]="speaker.hide">
-        <ion-card class="speaker-card">
-          <ion-card-header>
-            <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/speakers/speaker-details/{{speaker.id}}">
-              <ion-avatar slot="start">
-                <ion-img [src]="speaker.profilePic" [alt]="speaker.name + ' profile picture'"></ion-img>
-              </ion-avatar>
-              <ion-label>
-                <h2>{{speaker.name}}</h2>
-
-              </ion-label>
-            </ion-item>
-          </ion-card-header>
-
-          <ion-card-content>
-            <ion-list lines="none">
-              <ion-item *ngFor="let session of speaker.sessions" detail="false" routerLink="/app/tabs/speakers/session/{{session.id}}">
-                <ion-label>
-                  <h3>{{session.name}}</h3>
-                  <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
-                  <ion-text style="font-size: smaller;">{{session.day}} {{session.timeStart}} in {{session.location}}</ion-text>
-                </ion-label>
-              </ion-item>
-
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
   <ion-infinite-scroll [disabled]="!scrolling" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>

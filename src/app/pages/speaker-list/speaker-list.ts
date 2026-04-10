@@ -16,6 +16,7 @@ export class SpeakerListPage implements OnInit {
   speakerQueryText = '';
   ios: boolean;
   showSearchbar: boolean;
+  showTitle = false;
   page: number = 0;
   scrolling: boolean = false;
 
@@ -26,6 +27,10 @@ export class SpeakerListPage implements OnInit {
     private loadingCtrl: LoadingController,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   updateSpeakers() {
     this.confData.getSpeakers("").subscribe((speakers: any[]) => {
