@@ -1,0 +1,150 @@
+/*
+ * Sponsor Hero
+ */
+
+ion-header {
+  background: #3B3EA9;
+
+  &::after {
+    display: none;
+  }
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+}
+
+ion-toolbar ion-button,
+ion-toolbar ion-back-button,
+ion-toolbar ion-menu-button {
+  --color: #ffffff;
+}
+
+.sponsor-hero {
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px 40px;
+}
+
+.sponsor-logo-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 280px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.sponsor-logo {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+}
+
+/*
+ * Sponsor Info
+ */
+
+.sponsor-name {
+  padding-top: 24px;
+  text-align: center;
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+}
+
+.level-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 12px;
+  border-radius: 4px;
+  background: var(--ion-color-step-100, rgba(255, 255, 255, 0.1));
+  color: var(--ion-color-step-600, rgba(255, 255, 255, 0.6));
+  font-weight: 600;
+}
+
+.sponsor-booth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 16px;
+  font-size: 0.9rem;
+  opacity: 0.7;
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}
+
+.sponsor-description {
+  padding-top: 20px;
+
+  p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.sponsor-website {
+  padding-top: 24px;
+
+  ion-button {
+    --border-radius: 10px;
+    --border-color: var(--ion-color-primary);
+    --color: var(--ion-color-primary);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+}
+
+/*
+ * Job Listings
+ */
+
+.sponsor-jobs {
+  padding-top: 32px;
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+}
+
+.listing-card {
+  padding: 0;
+}
+
+.roles-list {
+  background: transparent;
+  padding: 0;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --padding-end: 0;
+    --min-height: 44px;
+  }
+}
+
+.role-icon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.role-title {
+  font-size: 0.9rem;
+}

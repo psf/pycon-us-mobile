@@ -18,7 +18,7 @@
   <ion-grid>
     <ion-row *ngFor="let sponsorLevel of sponsors | keyvalue : levelOrder">
       <ion-col size-xl="3" size-md="4" size-sm="6" size-xs="12" *ngFor="let sponsor of sponsorLevel.value" [hidden]="sponsor.hide">
-        <ion-card>
+        <ion-card button="true" [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + getSponsorSlug(sponsor.name)">
           <div style="text-align: center; width: 100%; padding-top: 2em;">
             <img style="min-width: 128px; max-width: 33%; max-height: 33%;" [src]="sponsor.logo_url" [alt]="sponsor.name + ' logo'" />
           </div>
