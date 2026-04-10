@@ -9,6 +9,7 @@ export class LiveUpdateService {
   updateAvailable: any = null;
   needsUpdate: boolean = false;
   build: string = "base";
+  appVersion: string = "";
 
   constructor() {
     App.addListener('appStateChange', ({ isActive }) => {
@@ -20,8 +21,8 @@ export class LiveUpdateService {
 
   async updateAppInfo() {
     const info = await App.getInfo();
-    this.build = info.name + " " + info.version + "-" + info.build
-    console.log(this.build);
+    this.appVersion = info.version;
+    this.build = info.build;
   }
 
   async reload() {

@@ -30,7 +30,7 @@
       <br>
       <br>
       <ion-col>
-        <ion-text>App Version: {{liveUpdateService.build}}</ion-text>
+        <ion-text>App Version: {{liveUpdateService.appVersion}} (build {{liveUpdateService.build}})</ion-text>
         <br>
         <ion-button *ngIf="loggedIn" (click)="shareDebug()">Share Debug Info with PyCon Staff</ion-button>
         <br>
