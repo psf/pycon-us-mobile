@@ -24,14 +24,34 @@
       </ion-row>
     </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-text>App Version: {{liveUpdateService.appVersion}} (build {{liveUpdateService.build}})</ion-text>
-        <br>
-        <ion-button *ngIf="loggedIn" (click)="shareDebug()">Share Debug Info with PyCon Staff</ion-button>
-        <br>
-        <ion-text>Environment: {{environmentUrl}}</ion-text>
-      </ion-col>
-    </ion-row>
   </ion-grid>
+
+  <ion-accordion-group class="dev-accordion">
+    <ion-accordion value="dev-info">
+      <ion-item slot="header" color="light">
+        <ion-icon slot="start" name="code-slash-outline" color="medium"></ion-icon>
+        <ion-label color="medium">Developer Info</ion-label>
+      </ion-item>
+      <div slot="content" class="dev-content">
+        <div class="dev-row">
+          <span class="dev-label">App Version</span>
+          <span class="dev-value">{{liveUpdateService.appVersion}}</span>
+        </div>
+        <div class="dev-row">
+          <span class="dev-label">Build</span>
+          <span class="dev-value">{{liveUpdateService.build}}</span>
+        </div>
+        <div class="dev-row">
+          <span class="dev-label">Environment</span>
+          <span class="dev-value">{{environmentUrl}}</span>
+        </div>
+        <ion-button *ngIf="loggedIn" expand="block" fill="outline" size="small" (click)="shareDebug()" class="dev-btn">
+          <ion-icon slot="start" name="share-outline"></ion-icon>
+          Share Debug Info with PyCon Staff
+        </ion-button>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <div style="height: 80px"></div>
 </ion-content>

@@ -1,1 +1,38 @@
-/* Styles moved to session-types page */
+.dev-accordion {
+  margin-top: 16px;
+}
+
+.dev-content {
+  padding: 16px 20px;
+  background: var(--ion-color-step-50, #f7f7f7);
+}
+
+.dev-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+
+  & + .dev-row {
+    border-top: 1px solid var(--ion-color-step-100, #eee);
+  }
+}
+
+.dev-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dev-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Menlo', 'SF Mono', 'Courier New', monospace;
+  color: var(--ion-text-color);
+}
+
+.dev-btn {
+  margin-top: 12px;
+}

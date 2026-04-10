@@ -89,3 +89,7 @@ ion-menu.ios ion-item.selected ion-icon {
 ion-item.indent {
   padding-left: 1.25em;
 }
+
+ion-accordion div[slot="content"] ion-item {
+  --padding-start: 40px;
+}

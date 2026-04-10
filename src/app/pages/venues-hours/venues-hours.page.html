@@ -1,0 +1,42 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Venues & Hours</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="venues-hero">
+    <div class="venues-hero-title">
+      <ion-icon name="location" class="venues-hero-icon"></ion-icon>
+      <h1>Venues & Hours</h1>
+    </div>
+    <p>Long Beach Convention Center</p>
+    <p class="venues-address">300 E Ocean Blvd, Long Beach, CA 90802</p>
+  </div>
+
+  <div class="venues-content ion-padding" [innerHTML]="content['venues-hours']"></div>
+
+  <ion-list lines="full">
+    <ion-item button="true" (click)="openUrl('https://maps.apple.com/?address=300+E+Ocean+Blvd,+Long+Beach,+CA+90802')" detail="true">
+      <ion-icon slot="start" name="navigate-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Get Directions</h2>
+        <p>Open in Maps</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" routerLink="/app/tabs/conference-map" detail="true">
+      <ion-icon slot="start" name="map-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Conference Map</h2>
+        <p>Indoor venue layout</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div style="height: 80px"></div>
+</ion-content>

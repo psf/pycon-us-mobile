@@ -1,0 +1,58 @@
+.coc-hero {
+  padding: 48px 24px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+  text-align: center;
+
+  .coc-hero-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .coc-hero-icon {
+    font-size: 36px;
+    color: #FFD779;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+}
+
+.coc-card {
+  margin: -16px 20px 0;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(16, 17, 54, 0.15);
+  position: relative;
+  z-index: 1;
+
+  ion-card-content {
+    padding: 24px;
+  }
+
+  p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: var(--ion-text-color);
+  }
+}
+
+.coc-actions {
+  margin-top: 16px;
+}
+
+.coc-footer {
+  font-size: 0.85rem;
+  font-style: italic;
+}

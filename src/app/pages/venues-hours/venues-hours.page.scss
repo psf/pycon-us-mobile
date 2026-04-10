@@ -1,0 +1,67 @@
+.venues-hero {
+  padding: 48px 24px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+  text-align: center;
+
+  .venues-hero-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .venues-hero-icon {
+    font-size: 36px;
+    color: #DD04D2;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 6px 0 0;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .venues-address {
+    font-size: 0.8rem;
+    opacity: 0.65;
+  }
+}
+
+.venues-content {
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 4px;
+    color: #5833E9;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 16px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  ul {
+    padding-left: 20px;
+    margin: 8px 0;
+
+    li {
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+  }
+}
