@@ -16,6 +16,7 @@ import { environment } from '../../../environments/environment';
 export class SessionDetailPage {
   session: any;
   isFavorite = false;
+  isOpenSpace = false;
   defaultHref = '';
 
   constructor(
@@ -33,7 +34,8 @@ export class SessionDetailPage {
         const foundSession = data.sessions.find(
           (s: any) => String(s.id) === String(sessionId)
         )
-        this.session = foundSession
+        this.session = foundSession;
+        this.isOpenSpace = this.session?.tracks?.includes('open-space');
 
         this.isFavorite = this.userProvider.hasFavorite(
           String(this.session.id)
