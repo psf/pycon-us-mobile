@@ -1,10 +1,9 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Development Sprints</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,21 +12,17 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <div class="page-hero">
+    <ion-icon name="rocket" class="page-hero-icon"></ion-icon>
+    <h1>Development Sprints</h1>
+    <p>Contribute to open source after the conference</p>
+  </div>
+
   <ion-toolbar *ngIf="allSprints.length > 0" class="search-toolbar">
     <ion-searchbar [(ngModel)]="searchText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="filterSprints()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 
   <ion-grid>
-    <ion-row>
-      <ion-col>
-        <p>
-          Sprints are a key part of PyCon US! They take place after the main conference
-          and give attendees the chance to contribute to open source projects alongside
-          core developers and maintainers.
-        </p>
-      </ion-col>
-    </ion-row>
-
     <ion-row class="ion-padding-bottom">
       <ion-col>
         <ion-button fill="outline" expand="block" (click)="submitSprint()">
