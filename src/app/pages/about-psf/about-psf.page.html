@@ -4,32 +4,206 @@
       <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>The PSF</ion-title>
+    <ion-title>Python Software Foundation</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-grid>
-    <ion-row>
-     <ion-col>
-       <h1>Python Software Foundation</h1><br>
-       <ion-button onclick="window.open('https://psfmember.org/civicrm/contribute/transact/?reset=1&id=2', '_system', 'location=yes'); return false;">Donate to the PSF</ion-button>
-     </ion-col>
-    </ion-row>
-    <ion-row>
-     <ion-col>
-      <ion-row>
-        <ion-col [innerHtml]="content['about-psf']">
-        </ion-col>
-      </ion-row>
+  <div class="ion-padding">
+    <p class="psf-intro">
+      The Python Software Foundation is the charitable organization behind the Python programming language.
+    </p>
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Our Mission</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        The mission of the Python Software Foundation is to promote, protect, and advance the Python
+        programming language, and to support and facilitate the growth of a diverse and international
+        community of Python programmers.
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>We Support the Python Community Through...</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon slot="start" name="cash-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Grants</strong>
+            <p>The PSF awards hundreds of thousands of dollars annually to groups and individuals around the world.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="code-slash-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>CPython</strong>
+            <p>We support CPython, the reference implementation of Python, and fund core developer work.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="server-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Infrastructure</strong>
+            <p>We support and maintain python.org, the Python Package Index (PyPI), Python Documentation, and many other services the Python community relies on.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="people-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>PyCon US</strong>
+            <p>We produce and underwrite the PyCon US Conference, the largest annual gathering for the Python community.</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Get Involved</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item button="true" (click)="openUrl('https://psfmember.org')" detail="true">
+          <ion-icon slot="start" name="person-add-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Become a Member</strong>
+            <p>Help the PSF promote, protect, and advance the Python programming language and community!</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://psfmember.org/civicrm/contribute/transact/?reset=1&id=2')" detail="true">
+          <ion-icon slot="start" name="heart-outline" color="danger"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Donate</strong>
+            <p>Assist the foundation's goals with a donation. The PSF is a recognized 501(c)(3) non-profit.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/volunteer/')" detail="true">
+          <ion-icon slot="start" name="hand-left-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Volunteer</strong>
+            <p>Learn how you can help the PSF and the greater Python community!</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/sponsorship/')" detail="true">
+          <ion-icon slot="start" name="business-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Sponsors</strong>
+            <p>Without our sponsors we wouldn't be able to help the Python community grow and prosper.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/grants/')" detail="true">
+          <ion-icon slot="start" name="document-text-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>PSF Grants Program</strong>
+            <p>The PSF welcomes grant proposals for projects related to Python development, technology, and education.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/community-partners/')" detail="true">
+          <ion-icon slot="start" name="globe-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Community Partners</strong>
+            <p>Organizations partnering with the PSF to support the Python community worldwide.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/volunteer/pycon/')" detail="true">
+          <ion-icon slot="start" name="star-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Volunteer at PyCon US</strong>
+            <p>Help make PyCon US happen — sign up to volunteer at the conference!</p>
+          </ion-label>
+        </ion-item>
+        <ion-item button="true" (click)="openUrl('https://www.python.org/psf/workgroups/')" detail="true">
+          <ion-icon slot="start" name="git-network-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>Work Groups</strong>
+            <p>PSF work groups tackle specific areas like diversity, packaging, and documentation.</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label>Python Resources</ion-label>
+    </ion-list-header>
+
+    <ion-item button="true" (click)="openUrl('https://www.python.org')" detail="true">
+      <ion-icon slot="start" name="logo-python" color="primary"></ion-icon>
+      <ion-label>
+        <h2>python.org</h2>
+        <p>The official Python website</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://pypi.org')" detail="true">
+      <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>PyPI</h2>
+        <p>The Python Package Index</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://docs.python.org')" detail="true">
+      <ion-icon slot="start" name="book-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Python Docs</h2>
+        <p>Official Python documentation</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label>PSF News & Social</ion-label>
+    </ion-list-header>
+
+    <ion-item button="true" (click)="openUrl('https://pyfound.blogspot.com')" detail="true">
+      <ion-icon slot="start" name="newspaper-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>PSF Blog</h2>
+        <p>News and updates from the PSF</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://fosstodon.org/&#64;ThePSF')" detail="true">
+      <ion-icon slot="start" name="globe-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>&#64;ThePSF&#64;fosstodon.org</h2>
+        <p>PSF on Mastodon</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://x.com/ThePSF')" detail="true">
+      <ion-icon slot="start" name="logo-twitter" color="primary"></ion-icon>
+      <ion-label>
+        <h2>&#64;ThePSF</h2>
+        <p>PSF on X / Twitter</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding ion-text-center">
+    <ion-button expand="block" color="danger" (click)="openUrl('https://psfmember.org/civicrm/contribute/transact/?reset=1&id=2')">
+      <ion-icon slot="start" name="heart"></ion-icon>
+      Donate to the PSF
+    </ion-button>
+  </div>
+
+  <ion-row>
+    <ion-col [innerHtml]="content['about-psf']">
     </ion-col>
-    </ion-row>
-    <ion-row>
-      <br>
-      <br>
-      <br>
-      <br>
-    </ion-row>
-  </ion-grid>
+  </ion-row>
+
+  <div style="height: 80px"></div>
 </ion-content>

@@ -1,0 +1,24 @@
+.psf-hero {
+  padding-top: 24px;
+  padding-bottom: 8px;
+
+  .psf-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+ion-card {
+  ion-card-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ion-text-color);
+  }
+}
