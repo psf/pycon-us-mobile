@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
   ]
   conferencePages = [
     { title: 'Open Spaces', url: '/app/tabs/tracks/open-spaces', icon: 'people-circle-outline' },
+    { title: 'Lightning Talks', url: '/app/tabs/lightning-talks', icon: 'flash-outline' },
     { title: 'Sprints', url: '/app/tabs/sprints', icon: 'rocket-outline' },
   ]
   expoPages = [
