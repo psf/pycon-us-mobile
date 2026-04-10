@@ -1,7 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
-
-import { ConferenceData } from '../../providers/conference-data';
+import { Component } from '@angular/core';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
@@ -9,31 +6,12 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   templateUrl: './social-media.page.html',
   styleUrls: ['./social-media.page.scss'],
 })
-export class SocialMediaPage implements OnInit {
-  content: any = "";
-
+export class SocialMediaPage {
   constructor(
-    private loadingCtrl: LoadingController,
-    private confData: ConferenceData,
-    private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {}
 
-  reloadContent() {
-    this.loadingCtrl.create({
-      message: 'Fetching latest...',
-      duration: 10000,
-    }).then((loader) => {
-      loader.present();
-      this.confData.getContent().subscribe((content: any[]) => {
-        this.content = content;
-        this.changeDetection.detectChanges();
-        setTimeout(() => {loader.dismiss()}, 100);
-      });
-    });
-  }
-
-  ngOnInit() {
-    this.reloadContent();
+  openUrl(url: string) {
+    window.open(url, '_system', 'location=yes');
   }
 }
