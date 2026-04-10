@@ -215,6 +215,25 @@ export class PyConAPI {
     )
   }
 
+  async fetchLeadRetrievalSponsors(): Promise<any> {
+    const method = 'GET';
+    const url = '/2026/api/v1/lead_retrieval/sponsors/';
+    const body = '';
+    const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
+    return this.http.get(
+      this.base + url,
+      {headers: authHeaders}
+    ).pipe(timeout(5000)).toPromise();
+  }
+
+  async setStaffSponsorId(sponsorId: string) {
+    await this.storage.set('staff-sponsor-id', sponsorId);
+  }
+
+  async clearStaffSponsorId() {
+    await this.storage.remove('staff-sponsor-id');
+  }
+
   async syncScan(accessCode: string): Promise<any> {
     const pending = await this.storage.get('pending-scan-' + accessCode).then((value) => {
       return value
@@ -239,7 +258,11 @@ export class PyConAPI {
     const _validator = scanData[scanData.length - 1];
 
     const method = 'GET';
-    const url = '/2026/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + encodeURIComponent(accessCode) + "&badge_validator=" + encodeURIComponent(_validator);
+    const sponsorId = await this.storage.get('staff-sponsor-id');
+    let url = '/2026/api/v1/lead_retrieval/capture/?' + 'attendee_access_code=' + encodeURIComponent(accessCode) + "&badge_validator=" + encodeURIComponent(_validator);
+    if (sponsorId) {
+      url += '&sponsor_id=' + encodeURIComponent(sponsorId);
+    }
     const body = '';
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
@@ -284,9 +307,11 @@ export class PyConAPI {
       console.log('Unable to sync note for missing ' + accessCode);
     }
 
+    const sponsorId = await this.storage.get('staff-sponsor-id');
+    const noteData = sponsorId ? {...pending, sponsor_id: sponsorId} : pending;
     const method = 'POST';
     const url = '/2026/api/v1/lead_retrieval/' + accessCode + "/note/";
-    const body = JSON.stringify(pending);
+    const body = JSON.stringify(noteData);
     const headers = {"Content-Type": "application/json"}
 
     const authHeaders = await this.buildRequestAuthHeaders(method, url, body);
