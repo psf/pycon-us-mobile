@@ -1,0 +1,96 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+    </ion-buttons>
+    <ion-title>Lightning Talks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="lt-hero">
+    <ion-icon name="flash" class="lt-hero-icon"></ion-icon>
+    <h1>Lightning Talks</h1>
+    <p>5 minutes. Any topic. Your moment.</p>
+  </div>
+
+  <ion-card class="lt-card">
+    <ion-card-content>
+      <h2>What's a Lightning Talk?</h2>
+      <p>
+        A maximum of 5 minutes on any topic of interest to other Python people.
+        It doesn't have to be about something you wrote — it can be something you learned,
+        or a technique you think other people will be interested in.
+      </p>
+      <p>
+        You know that thing at work that everyone comes to you for help with? <strong>Talk about that!</strong>
+      </p>
+      <p>
+        You know that thing you just learned that helped you out? <strong>Talk about that!</strong>
+      </p>
+      <p>
+        You know that thing you always wish you understood, but haven't figured out yet? <strong>Talk about that!</strong>
+      </p>
+      <p>Slides are encouraged but not required!</p>
+
+      <ion-button expand="block" color="primary" (click)="signUp()">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Sign Up for a Lightning Talk
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="encourage-card">
+    <ion-card-header>
+      <ion-card-title>Think you can't do one?</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon slot="start" name="school-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>"Everyone already knows that"</strong>
+            <p>No, they don't. Even if they do, it's interesting to hear your explanation.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="bulb-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>"I'm not an expert at anything"</strong>
+            <p>You don't have to be an expert, just interested enough to talk for 5 minutes. You can even do 1 minute!</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="heart-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>"It's scary talking in front of people"</strong>
+            <p>Folks at PyCon US are super-friendly and always welcoming of new speakers. Everyone is nervous — even people you think aren't.</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="sparkles-outline" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <strong>"My idea isn't good enough"</strong>
+            <p>It's a better idea than you think. Are there really any bad ideas for lightning talks? :)</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label>More Info</ion-label>
+    </ion-list-header>
+    <ion-item button="true" (click)="openUrl('https://us.pycon.org/2026/events/lightning-talks/')" detail="true">
+      <ion-icon slot="start" name="globe-outline" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Lightning Talks on pycon.org</h2>
+        <p>Full details, schedule, and sign-up</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div style="height: 80px"></div>
+</ion-content>

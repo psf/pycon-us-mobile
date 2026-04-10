@@ -134,6 +134,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'lightning-talks',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../lightning-talks/lightning-talks.module').then(m => m.LightningTalksPageModule)
+          }
+        ]
+      },
+      {
         path: 'session-types',
         children: [
           {

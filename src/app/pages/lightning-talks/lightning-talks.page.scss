@@ -1,0 +1,61 @@
+.lt-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+  text-align: center;
+
+  .lt-hero-icon {
+    font-size: 56px;
+    color: #FFD779;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+}
+
+.lt-card {
+  margin: -16px 20px 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(16, 17, 54, 0.15);
+  position: relative;
+  z-index: 1;
+
+  ion-card-content {
+    padding: 24px;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    color: var(--ion-text-color);
+  }
+}
+
+.encourage-card {
+  margin: 0 20px;
+  border-radius: 16px;
+
+  ion-card-title {
+    font-size: 1.1rem;
+  }
+}
