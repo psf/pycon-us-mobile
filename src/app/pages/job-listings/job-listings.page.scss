@@ -13,6 +13,15 @@ ion-toolbar ion-menu-button {
   --color: #ffffff;
 }
 
+ion-title {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  &.title-visible {
+    opacity: 1;
+  }
+}
+
 .page-hero {
   display: flex;
   flex-direction: column;
@@ -39,6 +48,10 @@ ion-toolbar ion-menu-button {
     font-size: 0.9rem;
     opacity: 0.8;
   }
+}
+
+.search-toolbar {
+  margin-top: 12px;
 }
 
 .listings-container {

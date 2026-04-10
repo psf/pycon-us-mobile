@@ -1,47 +1,51 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Account</ion-title>
+    <ion-title [class.title-visible]="showTitle">Account</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div *ngIf="nickname" class="ion-padding-top ion-text-center">
-    <img src="https://www.gravatar.com/avatar?d=mp&s=140" alt="avatar">
-    <h2>Signed in as {{nickname}}</h2>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div *ngIf="nickname" class="account-hero">
+    <ion-icon name="person-circle" class="account-hero-icon"></ion-icon>
+    <h1>{{nickname}}</h1>
     <p><code>{{email}}</code></p>
+  </div>
 
-    <ion-button *ngIf="isSpeaker" color="tertiary" (click)="openSpeakerDiscord()">
+  <div *ngIf="nickname" class="account-actions">
+    <ion-button *ngIf="isSpeaker" expand="block" color="tertiary" (click)="openSpeakerDiscord()">
       <ion-icon slot="start" name="logo-discord"></ion-icon>
       Speaker Discord
     </ion-button>
 
-    <br>
-
-    <ion-button (click)="logout()">Logout</ion-button>
-
+    <ion-button expand="block" fill="outline" color="danger" (click)="logout()">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      Logout
+    </ion-button>
   </div>
 
-  <ion-list class="ion-margin-top">
+  <ion-list lines="full">
     <ion-list-header>
       <ion-label>Report an Issue</ion-label>
     </ion-list-header>
     <ion-item button="true" (click)="openUrl('https://github.com/PyCon/pycon-us-mobile/issues/new')" detail="true">
-      <ion-icon slot="start" name="phone-portrait-outline"></ion-icon>
+      <ion-icon slot="start" name="phone-portrait-outline" color="primary"></ion-icon>
       <ion-label>
-        <h3>Mobile App Issue</h3>
+        <h2>Mobile App Issue</h2>
         <p>Report a bug or suggest a feature for the app</p>
       </ion-label>
     </ion-item>
     <ion-item button="true" (click)="openUrl('https://github.com/PyCon/pycon-site-public/issues/new')" detail="true">
-      <ion-icon slot="start" name="globe-outline"></ion-icon>
+      <ion-icon slot="start" name="globe-outline" color="primary"></ion-icon>
       <ion-label>
-        <h3>Website Issue</h3>
+        <h2>Website Issue</h2>
         <p>Report an issue with us.pycon.org</p>
       </ion-label>
     </ion-item>
   </ion-list>
+
+  <div style="height: 80px"></div>
 </ion-content>

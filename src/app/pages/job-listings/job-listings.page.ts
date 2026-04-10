@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
@@ -9,6 +10,8 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./job-listings.page.scss'],
 })
 export class JobListingsPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   allListings: any[] = [];
   listings: any[] = [];
   searchText: string = '';
@@ -18,6 +21,10 @@ export class JobListingsPage implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   processListings(raw: any[]): any[] {
     return raw.map(listing => {

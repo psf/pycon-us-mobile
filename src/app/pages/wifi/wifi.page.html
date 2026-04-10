@@ -4,10 +4,11 @@
       <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
+    <ion-title [class.title-visible]="showTitle">Wi-Fi</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="wifi-hero">
     <ion-icon name="wifi" class="wifi-hero-icon"></ion-icon>
     <h1>Connect to Wi-Fi</h1>

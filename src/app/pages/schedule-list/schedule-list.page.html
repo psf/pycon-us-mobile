@@ -4,13 +4,14 @@
       <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
+    <ion-title *ngIf="!showSearchbar" [class.title-visible]="showTitle">{{trackName | trackName : 'plural'}}</ion-title>
     <ion-buttons *ngIf="(trackName | lowercase) === 'ai' || (trackName | lowercase) === 'security'" slot="end">
       <span class="track-badge new-badge toolbar-new-badge">New track!</span>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="page-hero">
     <ion-icon [name]="isOpenSpaceView ? 'chatbubbles' : 'easel'" class="page-hero-icon"></ion-icon>
     <h1>{{trackName | trackName : 'plural'}}</h1>

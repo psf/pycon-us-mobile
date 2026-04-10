@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
@@ -11,6 +12,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./sprints.page.scss'],
 })
 export class SprintsPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   allSprints: any[] = [];
   sprints: any[] = [];
   searchText: string = '';
@@ -22,6 +25,10 @@ export class SprintsPage implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   loadSprints() {
     this.confData.getSprints().subscribe((sprints: any[]) => {

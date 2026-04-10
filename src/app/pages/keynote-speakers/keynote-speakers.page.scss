@@ -22,16 +22,16 @@ ion-title {
   }
 }
 
-.lt-hero {
+.ks-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 24px 32px;
+  padding: 16px 24px 48px;
   background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
   color: #fff;
   text-align: center;
 
-  .lt-hero-icon {
+  .ks-hero-icon {
     font-size: 56px;
     color: #FFD779;
     margin-bottom: 12px;
@@ -50,12 +50,16 @@ ion-title {
   }
 }
 
-.lt-card {
-  margin: -16px 20px 16px;
+.ks-card {
+  margin: 0 20px 16px;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(16, 17, 54, 0.15);
-  position: relative;
-  z-index: 1;
+
+  &.ks-card-first {
+    margin-top: -24px;
+    position: relative;
+    z-index: 1;
+  }
 
   ion-card-content {
     padding: 24px;
@@ -64,22 +68,65 @@ ion-title {
   h2 {
     font-size: 1.15rem;
     font-weight: 700;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
+    text-align: center;
   }
 
   p {
     font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 12px;
+    margin: 0;
     color: var(--ion-text-color);
   }
 }
 
-.encourage-card {
-  margin: 0 20px;
-  border-radius: 16px;
+.ks-speaker-photo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
 
-  ion-card-title {
-    font-size: 1.1rem;
+.ks-speaker-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3B3EA9;
+}
+
+.ks-card-council {
+  ion-card-content {
+    padding: 24px;
   }
+}
+
+.ks-council-photos {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ks-council-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 56px;
+}
+
+.ks-council-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #3B3EA9;
+}
+
+.ks-council-name {
+  font-size: 0.6rem;
+  color: var(--ion-color-medium);
+  text-align: center;
+  max-width: 56px;
+  line-height: 1.2;
 }

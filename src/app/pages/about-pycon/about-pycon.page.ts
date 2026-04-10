@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { IonContent, LoadingController } from '@ionic/angular';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Storage } from '@ionic/storage-angular';
 import { Share } from '@capacitor/share';
@@ -17,7 +17,9 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./about-pycon.page.scss'],
 })
 export class AboutPyconPage implements OnInit {
+  @ViewChild(IonContent) ionContent: IonContent;
   content: any = "";
+  showTitle = false;
   loggedIn: boolean = false;
   environmentUrl: string = environment.baseUrl;
 
@@ -29,6 +31,10 @@ export class AboutPyconPage implements OnInit {
     private storage: Storage,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   reloadContent() {
     this.loadingCtrl.create({

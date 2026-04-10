@@ -17,7 +17,32 @@ export class SessionDetailPage {
   session: any;
   isFavorite = false;
   isOpenSpace = false;
+  isKeynote = false;
+  keynoteData: any = null;
   defaultHref = '';
+
+  private keynoteSpeakers: Record<string, any> = {
+    'Lin Qiao': {
+      photo: 'https://pycon-assets.s3.amazonaws.com/2026/media/images/lin_qiao.original.jpg',
+      bio: 'Lin Qiao is the CEO and co-founder of global AI inference cloud and infrastructure platform Fireworks AI, enables teams like Cursor, Uber, DoorDash, and Shopify to build, tune, and scale highly optimized generative AI applications. Prior to founding Fireworks, Lin was the co-creator and head of Meta\'s PyTorch.',
+    },
+    'amanda casari': {
+      photo: 'https://pycon-assets.s3.amazonaws.com/2026/media/images/amcasari-headshot.original.png',
+      bio: 'amanda casari is an engineer and researcher who has worked in many technical and socio-technical disciplines for over 20 years, including developer relations, product management, data science, and underwater robotics.',
+    },
+    'Tim Schilling': {
+      photo: 'https://pycon-assets.s3.amazonaws.com/2026/media/images/Tim_Schilling.original.jpg',
+      bio: 'A software engineer that loves Django and our community. On the Django Steering Council, a cofounder of Djangonaut Space and an admin of Django Commons.',
+    },
+    'Rachell Calhoun': {
+      photo: 'https://pycon-assets.s3.amazonaws.com/2026/media/images/rachell_calhoun.original.jpg',
+      bio: 'Co-founder of Djangonaut Space and a Django developer. Organized Django Girls workshops across multiple countries and continents for over 10 years.',
+    },
+    'Pablo Galindo Salgado': {
+      photo: 'https://pycon-assets.s3.amazonaws.com/2026/media/images/Pablo_Galindo_Salgado.original.jpg',
+      bio: 'CPython core developer and Theoretical Physicist. Currently serving on the Python Steering Council in his 6th term and release manager for Python 3.10 and 3.11.',
+    },
+  };
 
   constructor(
     private dataProvider: ConferenceData,
@@ -36,6 +61,18 @@ export class SessionDetailPage {
         )
         this.session = foundSession;
         this.isOpenSpace = this.session?.tracks?.includes('open-space');
+        this.isKeynote = this.session?.tracks?.includes('keynote') || this.session?.track === 'Keynote';
+
+        // Enrich keynote sessions with speaker photo/bio
+        if (this.isKeynote) {
+          const sessionName = this.session?.name || '';
+          for (const [name, data] of Object.entries(this.keynoteSpeakers)) {
+            if (sessionName.toLowerCase().includes(name.toLowerCase())) {
+              this.keynoteData = { name, ...data };
+              break;
+            }
+          }
+        }
 
         this.isFavorite = this.userProvider.hasFavorite(
           String(this.session.id)

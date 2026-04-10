@@ -3,10 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-title [class.title-visible]="showTitle">Now & Next</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <ion-refresher slot="fixed" (ionRefresh)="refresh(); $event.target.complete()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

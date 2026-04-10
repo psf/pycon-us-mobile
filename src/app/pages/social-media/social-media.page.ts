@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
 @Component({
@@ -7,9 +8,16 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./social-media.page.scss'],
 })
 export class SocialMediaPage {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
+
   constructor(
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   openUrl(url: string) {
     window.open(url, '_system', 'location=yes');

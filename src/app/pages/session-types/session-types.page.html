@@ -4,10 +4,11 @@
       <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
+    <ion-title [class.title-visible]="showTitle">Session Types</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="types-hero">
     <div class="types-hero-title">
       <ion-icon name="pricetags" class="types-hero-icon"></ion-icon>
