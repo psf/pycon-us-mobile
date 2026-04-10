@@ -21,20 +21,17 @@
 
   <div class="ion-padding-horizontal speaker-presentations">
     <h2>Presentations</h2>
-    <ion-row>
-      <ion-col *ngFor="let session of speaker?.sessions">
-      <ion-card class="presentation-card">
-        <ion-card-header>
-          <ion-item detail="false" lines="none" class="speaker-item" routerLink="/app/tabs/schedule/session/{{session.id}}">
-            <ion-label>
-              <h2>{{session.name}}</h2>
-              <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
-              <ion-text style="font-size: smaller;">{{session.day}} {{session.timeStart}} in {{session.location}}</ion-text>
-            </ion-label>
-          </ion-item>
-        </ion-card-header>
-      </ion-card>
-      </ion-col>
-    </ion-row>
+    <ion-list lines="full">
+      <ion-item *ngFor="let session of speaker?.sessions" button="true" detail="true"
+                routerLink="/app/tabs/schedule/session/{{session.id}}">
+        <ion-label>
+          <h3>{{session.name}}</h3>
+          <p>
+            <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+            {{session.day}} {{session.timeStart}} in {{session.location}}
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
