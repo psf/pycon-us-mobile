@@ -243,6 +243,9 @@ export class MapPage implements OnInit, OnDestroy {
     this.refresh_presentation();
     setTimeout(this.syncAllPending, 60000);
 
+    // Show consent dialog on first use
+    await this.showConsentDialog();
+
     // Check if this is a staff user (has door_check but not lead_retrieval)
     const hasLeadRetrieval = await this.userData.checkHasLeadRetrieval();
     const hasDoorCheck = await this.userData.checkHasDoorCheck();
@@ -250,6 +253,36 @@ export class MapPage implements OnInit, OnDestroy {
       this.isStaffScanner = true;
       this.showSponsorSelector();
     }
+  }
+
+  async showConsentDialog() {
+    const hasConsent = await this.userData.checkScannerConsent();
+    if (hasConsent) return;
+
+    const alert = await this.alertCtrl.create({
+      header: 'Lead Scanner Consent',
+      message: 'By using the lead scanner, you confirm that you will only scan badges of attendees who have given you explicit verbal permission. Scanning without consent violates the PyCon US Code of Conduct.',
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            // Disable scanning — user didn't consent
+            this.scan_start_button_visibility = 'hidden';
+          },
+        },
+        {
+          text: 'I Agree',
+          handler: () => {
+            this.userData.setScannerConsent(true);
+          },
+        },
+      ],
+    });
+    await alert.present();
+    // Wait for dismissal before continuing
+    await alert.onDidDismiss();
   }
 
   async showSponsorSelector() {

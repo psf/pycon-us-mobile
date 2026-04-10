@@ -20,6 +20,7 @@ export class UserData {
   HAS_DOOR_CHECK = 'hasDoorCheck';
   HAS_MASK_VIOLATION = 'hasMaskViolation';
   IS_SPEAKER = 'isSpeaker';
+  HAS_SCANNER_CONSENT = 'hasScannerConsent';
 
   constructor(
     public storage: Storage,
@@ -168,6 +169,7 @@ export class UserData {
       this.storage.remove(this.HAS_DOOR_CHECK);
       this.storage.remove(this.HAS_MASK_VIOLATION);
       this.storage.remove(this.IS_SPEAKER);
+      this.storage.remove(this.HAS_SCANNER_CONSENT);
     }).then(() => {
       window.dispatchEvent(new CustomEvent('user:logout'));
     });
@@ -252,6 +254,16 @@ export class UserData {
   checkHasMaskViolation(): Promise<boolean> {
     return this.storage.get(this.HAS_MASK_VIOLATION).then((value) => {
       return value;
+    });
+  }
+
+  setScannerConsent(value: boolean): Promise<any> {
+    return this.storage.set(this.HAS_SCANNER_CONSENT, value);
+  }
+
+  checkScannerConsent(): Promise<boolean> {
+    return this.storage.get(this.HAS_SCANNER_CONSENT).then((value) => {
+      return value === true;
     });
   }
 
