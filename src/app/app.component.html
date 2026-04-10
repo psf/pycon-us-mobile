@@ -86,9 +86,33 @@
           </ion-accordion-group>
 
           <ion-list-header>
+            Events
+          </ion-list-header>
+          <ion-menu-toggle autoHide="false" *ngFor="let p of conferencePages; let i = index">
+            <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-list-header>
+            Expo &amp; Sponsors
+          </ion-list-header>
+          <ion-menu-toggle autoHide="false" *ngFor="let p of expoPages; let i = index">
+            <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-list-header>
             Information
           </ion-list-header>
-          <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
+          <ion-menu-toggle autoHide="false" *ngFor="let p of infoPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
@@ -96,7 +120,6 @@
               </ion-label>
               <ion-badge *ngIf="(p.title === 'About PyCon US' && liveUpdateService.needsUpdate)">Live Update Available</ion-badge>
             </ion-item>
-
           </ion-menu-toggle>
 
         </ion-list>
@@ -117,13 +140,6 @@
             <ion-item routerLink="/app/tabs/login" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="log-in"></ion-icon>
               <ion-label>Login</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/app/tabs/help" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
-              <ion-label>Help & Safety</ion-label>
             </ion-item>
           </ion-menu-toggle>
 
