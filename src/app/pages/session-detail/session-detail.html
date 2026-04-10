@@ -53,11 +53,14 @@
       </ion-item>
     </div>
 
-    <div *ngIf="session.imageUrl" class="session-image-container">
-      <img [src]="session.imageUrl" class="session-image">
+    <div *ngIf="session.imageUrl" class="session-image-container" [class.open-space-image-container]="isOpenSpace">
+      <img [src]="session.imageUrl" class="session-image" [class.open-space-hero-image]="isOpenSpace">
     </div>
 
-    <div class="session-description" [innerHtml]="session?.description" (click)="onDescriptionClick($event)">
+    <div class="session-description"
+         [class.open-space-description]="isOpenSpace"
+         [innerHtml]="session?.description"
+         (click)="onDescriptionClick($event)">
     </div>
   </div>
 </ion-content>

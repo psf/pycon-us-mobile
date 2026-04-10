@@ -26,6 +26,13 @@
   gap: 10px;
 }
 
+// When image or description directly follows meta-card (no speakers section),
+// add extra top spacing for visual breathing room
+.session-meta-card + .session-image-container,
+.session-meta-card + .session-description {
+  margin-top: 4px;
+}
+
 :host-context(.dark-theme) .session-meta-card {
   background: var(--ion-color-step-100, #1a1a1a);
 }
@@ -70,8 +77,12 @@
 }
 
 .session-image-container {
-  margin: 16px 0;
+  margin: 16px 0 20px;
   text-align: center;
+
+  &.open-space-image-container {
+    margin: 4px 0 24px;
+  }
 }
 
 .session-image {
@@ -79,6 +90,14 @@
   max-height: 300px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &.open-space-hero-image {
+    max-height: 220px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .session-description {
@@ -93,5 +112,11 @@
   a {
     color: var(--ion-color-primary);
     text-decoration: none;
+  }
+
+  &.open-space-description {
+    padding-top: 4px;
+    white-space: pre-line;
+    word-wrap: break-word;
   }
 }
