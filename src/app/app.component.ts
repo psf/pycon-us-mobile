@@ -42,8 +42,14 @@ export class AppComponent implements OnInit {
     { title: 'Expo Hall', url: '/app/tabs/expo-hall', icon: 'storefront-outline' },
     { title: 'Job Listings', url: '/app/tabs/job-listings', icon: 'briefcase-outline' },
   ]
+  aboutPages = [
+    { title: 'Conference Info', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
+    { title: 'Code of Conduct', url: '/app/tabs/coc', icon: 'shield-checkmark-outline' },
+    { title: 'Wi-Fi', url: '/app/tabs/wifi', icon: 'wifi-outline' },
+    { title: 'Venues & Hours', url: '/app/tabs/venues-hours', icon: 'location-outline' },
+    { title: 'Session Types', url: '/app/tabs/session-types', icon: 'pricetags-outline' },
+  ]
   infoPages = [
-    { title: 'About PyCon US', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
     { title: 'Conference Map', url: '/app/tabs/conference-map', icon: 'map-outline' },

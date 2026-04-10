@@ -4,3 +4,22 @@
   gap: 8px;
   padding: 16px 16px 8px;
 }
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  margin-inline-end: 16px;
+}
+
+.social-icon.bluesky {
+  fill: #0085ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .social-icon {
+    filter: invert(1);
+  }
+  .social-icon.bluesky {
+    filter: none;
+  }
+}

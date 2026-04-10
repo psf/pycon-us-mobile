@@ -112,13 +112,33 @@
           <ion-list-header>
             Information
           </ion-list-header>
+
+          <ion-accordion-group>
+            <ion-accordion value="about">
+              <ion-item slot="header" color="white">
+                <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+                <ion-label>About PyCon US</ion-label>
+                <ion-badge *ngIf="liveUpdateService.needsUpdate" slot="end">Update</ion-badge>
+              </ion-item>
+              <div slot="content">
+                <ion-menu-toggle autoHide="false" *ngFor="let p of aboutPages; let i = index">
+                  <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+                    <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                    <ion-label>
+                      {{p.title}}
+                    </ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+
           <ion-menu-toggle autoHide="false" *ngFor="let p of infoPages; let i = index">
             <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
-              <ion-badge *ngIf="(p.title === 'About PyCon US' && liveUpdateService.needsUpdate)">Live Update Available</ion-badge>
             </ion-item>
           </ion-menu-toggle>
 

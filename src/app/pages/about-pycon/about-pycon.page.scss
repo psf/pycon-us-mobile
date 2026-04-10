@@ -1,35 +1,38 @@
-.legend-heading {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.25rem;
+.dev-accordion {
+  margin-top: 16px;
 }
 
-.legend-intro {
-  font-size: 0.875rem;
-  color: var(--ion-color-medium);
-  margin-bottom: 1rem;
+.dev-content {
+  padding: 16px 20px;
+  background: var(--ion-color-step-50, #f7f7f7);
 }
 
-.legend-list {
+.dev-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.legend-item {
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
+  padding: 8px 0;
+
+  & + .dev-row {
+    border-top: 1px solid var(--ion-color-step-100, #eee);
+  }
 }
 
-.legend-item .track-badge {
-  flex-shrink: 0;
-  min-width: 5.5rem;
-  text-align: center;
+.dev-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.legend-desc {
-  font-size: 0.875rem;
+.dev-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Menlo', 'SF Mono', 'Courier New', monospace;
   color: var(--ion-text-color);
+}
+
+.dev-btn {
+  margin-top: 12px;
 }

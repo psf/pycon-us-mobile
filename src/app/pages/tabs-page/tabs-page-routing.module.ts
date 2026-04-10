@@ -103,6 +103,42 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'coc',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../coc/coc.module').then(m => m.CocPageModule)
+          }
+        ]
+      },
+      {
+        path: 'wifi',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../wifi/wifi.module').then(m => m.WifiPageModule)
+          }
+        ]
+      },
+      {
+        path: 'venues-hours',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../venues-hours/venues-hours.module').then(m => m.VenuesHoursPageModule)
+          }
+        ]
+      },
+      {
+        path: 'session-types',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../session-types/session-types.module').then(m => m.SessionTypesPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {

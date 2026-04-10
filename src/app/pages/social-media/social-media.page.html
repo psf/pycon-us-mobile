@@ -33,10 +33,18 @@
       </ion-label>
     </ion-item>
 
-    <ion-item button="true" (click)="openUrl('https://x.com/pycon')" detail="true">
-      <ion-icon slot="start" name="logo-twitter" color="primary"></ion-icon>
+    <ion-item button="true" (click)="openUrl('https://bsky.app/profile/pycon.org')" detail="true">
+      <img slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" alt="Bluesky">
       <ion-label>
-        <h2>X / Twitter</h2>
+        <h2>Bluesky</h2>
+        <p>&#64;pycon.org</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://x.com/pycon')" detail="true">
+      <img slot="start" src="assets/img/icon-x.svg" class="social-icon" alt="X">
+      <ion-label>
+        <h2>X</h2>
         <p>&#64;pycon</p>
       </ion-label>
     </ion-item>
@@ -71,10 +79,18 @@
       </ion-label>
     </ion-item>
 
-    <ion-item button="true" (click)="openUrl('https://x.com/ThePSF')" detail="true">
-      <ion-icon slot="start" name="logo-twitter" color="primary"></ion-icon>
+    <ion-item button="true" (click)="openUrl('https://bsky.app/profile/python.org')" detail="true">
+      <img slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" alt="Bluesky">
       <ion-label>
-        <h2>X / Twitter</h2>
+        <h2>Bluesky</h2>
+        <p>&#64;python.org</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button="true" (click)="openUrl('https://x.com/ThePSF')" detail="true">
+      <img slot="start" src="assets/img/icon-x.svg" class="social-icon" alt="X">
+      <ion-label>
+        <h2>X</h2>
         <p>&#64;ThePSF</p>
       </ion-label>
     </ion-item>
@@ -110,7 +126,7 @@
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://blog.pypi.org')" detail="true">
-      <ion-icon slot="start" name="cube-outline" color="primary"></ion-icon>
+      <img slot="start" src="assets/img/pypi-logo.png" class="social-icon" alt="PyPI">
       <ion-label>
         <h2>PyPI Blog</h2>
         <p>News from the Python Package Index</p>

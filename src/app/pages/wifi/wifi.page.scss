@@ -1,0 +1,88 @@
+.wifi-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+
+  .wifi-hero-icon {
+    font-size: 72px;
+    margin-bottom: 16px;
+    color: #FFD779;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+}
+
+.wifi-card {
+  margin: -20px 20px 0;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(16, 17, 54, 0.15);
+  position: relative;
+  z-index: 1;
+
+  ion-card-content {
+    padding: 28px 24px;
+  }
+}
+
+.wifi-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.wifi-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ion-color-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.wifi-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: 'Menlo', 'SF Mono', 'Courier New', monospace;
+  color: #5833E9;
+}
+
+.wifi-divider {
+  height: 1px;
+  background: var(--ion-color-step-100, #eee);
+}
+
+.wifi-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.wifi-note {
+  margin-top: 24px;
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--ion-color-medium);
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  p {
+    display: inline;
+    font-size: 0.85rem;
+  }
+}
