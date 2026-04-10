@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { LoadingController } from '@ionic/angular';
+import { IonContent, LoadingController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
@@ -12,6 +12,8 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./sponsors.page.scss'],
 })
 export class SponsorsPage implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   sponsors: any;
 
   constructor(
@@ -20,6 +22,10 @@ export class SponsorsPage implements OnInit {
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
   ) { }
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   levelOrder(a: KeyValue<string,any>, b: KeyValue<string,any>): number {
     return a.value[0].level_order < b.value[0].level_order ? -1 : (b.value[0].level_order < a.value[0].level_order ? 1 : 0);

@@ -1,16 +1,22 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button color="medium"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Now</ion-title>
+    <ion-title [class.title-visible]="showTitle">Now & Next</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <ion-refresher slot="fixed" (ionRefresh)="refresh(); $event.target.complete()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <div class="page-hero">
+    <ion-icon name="pulse" class="page-hero-icon"></ion-icon>
+    <h1>Now & Next</h1>
+    <p>What's happening at PyCon US right now</p>
+  </div>
 
   <div *ngIf="noConference" class="ion-padding ion-text-center">
     <ion-icon name="calendar-outline" style="font-size: 64px; color: var(--ion-color-medium);"></ion-icon>

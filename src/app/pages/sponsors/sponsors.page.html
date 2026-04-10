@@ -3,11 +3,11 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Sponsors</ion-title>
+    <ion-title [class.title-visible]="showTitle">Sponsors</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="sponsors-hero">
     <ion-icon name="heart" class="sponsors-hero-icon"></ion-icon>
     <h1>Our Sponsors</h1>

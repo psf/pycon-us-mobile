@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { IonContent, LoadingController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
@@ -10,7 +10,9 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./about-psf.page.scss'],
 })
 export class AboutPsfPage implements OnInit {
+  @ViewChild(IonContent) ionContent: IonContent;
   content: any = "";
+  showTitle = false;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -31,6 +33,10 @@ export class AboutPsfPage implements OnInit {
         setTimeout(() => {loader.dismiss()}, 100);
       });
     });
+  }
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
   }
 
   openUrl(url: string) {

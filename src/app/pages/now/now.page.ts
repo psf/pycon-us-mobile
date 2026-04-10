@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 import { ConferenceData } from '../../providers/conference-data';
 import { environment } from '../../../environments/environment';
 
@@ -8,6 +9,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./now.page.scss'],
 })
 export class NowPage implements OnInit, OnDestroy {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   nowSessions: any[] = [];
   nextSessions: any[] = [];
   nextTime: string = '';
@@ -16,6 +19,10 @@ export class NowPage implements OnInit, OnDestroy {
   private refreshInterval: any;
 
   constructor(private confData: ConferenceData) {}
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   ngOnInit() {
     this.refresh();

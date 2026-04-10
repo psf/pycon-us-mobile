@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, ViewChild, OnInit } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
-import { Config, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
+import { Config, IonContent, InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { UserData } from '../../providers/user-data';
@@ -23,6 +23,8 @@ const slugify = str =>
 export class ScheduleListPage implements OnInit {
   // Get a reference to the search bar
   @ViewChild('search') search : any;
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   trackName: string;
   trackSlug: string;
   excludeTracks: any[] = [];
@@ -50,6 +52,10 @@ export class ScheduleListPage implements OnInit {
     private userData: UserData,
   ) { }
 
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   updateSessions() {
     this.confData.getSessions(this.sessionQueryText, this.excludeTracks).subscribe((sessions: any[]) => {

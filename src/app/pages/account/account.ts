@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NavController, AlertController } from '@ionic/angular';
+import { IonContent, NavController, AlertController } from '@ionic/angular';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 
 import { AppComponent } from '../../app.component';
@@ -16,6 +16,8 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./account.scss'],
 })
 export class AccountPage implements OnInit, AfterViewInit {
+  @ViewChild(IonContent) content: IonContent;
+  showTitle = false;
   email: string;
   nickname: string;
   isSpeaker: boolean = false;
@@ -28,6 +30,10 @@ export class AccountPage implements OnInit, AfterViewInit {
     public userData: UserData,
     public liveUpdateService: LiveUpdateService,
   ) { }
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
+  }
 
   ngOnInit() {
     this.app.fetchFeatures();

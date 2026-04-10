@@ -1,14 +1,20 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Social Media</ion-title>
+    <ion-title [class.title-visible]="showTitle">Social Media</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div class="page-hero">
+    <ion-icon name="share-social" class="page-hero-icon"></ion-icon>
+    <h1>Social Media</h1>
+    <p>Connect with the Python community online</p>
+  </div>
+
   <div class="hashtag-banner">
     <ion-chip color="primary" outline="true">
       <ion-icon name="pricetag-outline"></ion-icon>

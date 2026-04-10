@@ -1,19 +1,24 @@
-<ion-header translucent="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons *ngIf="!showSearchbar" slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title *ngIf="!showSearchbar" class="track-title">
-      {{trackName | trackName : 'plural'}}
-    </ion-title>
+    <ion-title *ngIf="!showSearchbar" [class.title-visible]="showTitle">{{trackName | trackName : 'plural'}}</ion-title>
     <ion-buttons *ngIf="(trackName | lowercase) === 'ai' || (trackName | lowercase) === 'security'" slot="end">
       <span class="track-badge new-badge toolbar-new-badge">New track!</span>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div class="page-hero">
+    <ion-icon [name]="isOpenSpaceView ? 'chatbubbles' : 'easel'" class="page-hero-icon"></ion-icon>
+    <h1>{{trackName | trackName : 'plural'}}</h1>
+    <p *ngIf="!isOpenSpaceView">Browse presentations in this track</p>
+    <p *ngIf="isOpenSpaceView">Attendee-organized sessions</p>
+  </div>
+
   <ion-toolbar class="search-toolbar" *ngIf="!(isOpenSpaceView && sessions.length === 0)">
     <ion-searchbar [(ngModel)]="sessionQueryText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSessions()" (ionCancel)="resetSessions()" (ionChange)="searchSessions()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>

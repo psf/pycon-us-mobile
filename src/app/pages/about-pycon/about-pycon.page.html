@@ -1,30 +1,29 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate? 'primary' : 'medium'"></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>About PyCon US</ion-title>
+    <ion-title [class.title-visible]="showTitle">About PyCon US</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div class="about-hero">
+    <ion-icon name="information-circle" class="about-hero-icon"></ion-icon>
+    <h1>PyCon US 2026</h1>
+    <p>Long Beach, CA &bull; May 14-18</p>
+  </div>
 
-  <ion-grid>
-    <ion-row>
-     <ion-col>
-      <ion-row *ngIf="liveUpdateService.needsUpdate">
-        <ion-col>
-        <ion-button (click)="performAutomaticUpdate()" *ngIf="liveUpdateService.needsUpdate">Fetch latest update</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col [innerHtml]="content.about">
-        </ion-col>
-      </ion-row>
-    </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-button *ngIf="liveUpdateService.needsUpdate" expand="block" class="update-btn" (click)="performAutomaticUpdate()">
+    <ion-icon slot="start" name="download-outline"></ion-icon>
+    Fetch latest update
+  </ion-button>
+
+  <ion-card class="about-card">
+    <ion-card-content [innerHtml]="content.about">
+    </ion-card-content>
+  </ion-card>
 
   <ion-accordion-group class="dev-accordion">
     <ion-accordion value="dev-info">

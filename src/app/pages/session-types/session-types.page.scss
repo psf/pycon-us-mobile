@@ -1,5 +1,29 @@
+ion-header {
+  background: linear-gradient(180deg, #3B3EA9 0%, #3B3EA9 100%);
+  &::after { display: none; }
+}
+
+ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: #ffffff;
+}
+
+ion-toolbar ion-menu-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  &.title-visible {
+    opacity: 1;
+  }
+}
+
 .types-hero {
-  padding: 48px 24px 32px;
+  padding: 16px 24px 32px;
   background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
   color: #fff;
   text-align: center;

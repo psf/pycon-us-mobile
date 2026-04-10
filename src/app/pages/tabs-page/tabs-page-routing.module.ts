@@ -188,6 +188,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'keynote-speakers',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../keynote-speakers/keynote-speakers.module').then(m => m.KeynoteSpeakersPageModule)
+          }
+        ]
+      },
+      {
         path: 'job-listings',
         children: [
           {
