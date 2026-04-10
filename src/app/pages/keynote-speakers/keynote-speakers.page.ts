@@ -1,11 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { ConferenceData } from '../../providers/conference-data';
 
 interface KeynoteSpeaker {
   name: string;
   photo: string;
   bio: string;
+  session?: any;
 }
 
 interface SteeringCouncilMember {
@@ -24,7 +26,7 @@ interface SteeringCouncil {
   templateUrl: './keynote-speakers.page.html',
   styleUrls: ['./keynote-speakers.page.scss'],
 })
-export class KeynoteSpeakersPage {
+export class KeynoteSpeakersPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
   showTitle = false;
 
@@ -68,7 +70,28 @@ export class KeynoteSpeakersPage {
     bio: 'The Python Steering Council is a 5-person elected committee that assumes a mandate to maintain the quality and stability of the Python language and CPython interpreter, improve the contributor experience, formalize and maintain a relationship between the Python core team and the PSF, establish decision making processes for Python Enhancement Proposals, seek consensus among contributors and the Python core team, and resolve decisions and disputes in decision making among the language.',
   };
 
-  constructor(public liveUpdateService: LiveUpdateService) {}
+  constructor(
+    public liveUpdateService: LiveUpdateService,
+    private confData: ConferenceData,
+  ) {}
+
+  ngOnInit() {
+    this.confData.load().subscribe((data: any) => {
+      if (data?.sessions) {
+        const keynoteSessions = data.sessions.filter(
+          (s: any) => s.track === 'Keynote' || s.tracks?.includes('keynote')
+        );
+        this.speakers.forEach(speaker => {
+          const match = keynoteSessions.find(
+            (s: any) => s.name?.toLowerCase().includes(speaker.name.toLowerCase())
+          );
+          if (match) {
+            speaker.session = match;
+          }
+        });
+      }
+    });
+  }
 
   onScroll(event: any) {
     this.showTitle = event.detail.scrollTop > 100;

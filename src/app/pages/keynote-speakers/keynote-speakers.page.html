@@ -22,6 +22,15 @@
       </div>
       <h2>{{ speaker.name }}</h2>
       <p>{{ speaker.bio }}</p>
+      <ion-item *ngIf="speaker.session" button="true"
+                [routerLink]="'/app/tabs/schedule/session/' + speaker.session.id"
+                detail="true" lines="none" class="ks-session-link">
+        <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
+        <ion-label>
+          <h3>{{ speaker.session.name }}</h3>
+          <p>{{ speaker.session.day }} {{ speaker.session.timeStart }} &mdash; {{ speaker.session.location }}</p>
+        </ion-label>
+      </ion-item>
     </ion-card-content>
   </ion-card>
 
