@@ -4,7 +4,7 @@
       <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
       <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
     </ion-buttons>
-    <ion-title>Lead Retrieval</ion-title>
+    <ion-title>Lead Scanner</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,6 +12,25 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <ion-item *ngIf="isStaffScanner && selectedSponsor" color="primary" button="true" (click)="showSponsorSelector()">
+    <ion-icon slot="start" name="business-outline"></ion-icon>
+    <ion-label>
+      <h2>Scanning for: {{ selectedSponsor.name }}</h2>
+      <p>Tap to change sponsor</p>
+    </ion-label>
+    <ion-icon slot="end" name="swap-horizontal-outline"></ion-icon>
+  </ion-item>
+
+  <ion-item *ngIf="isStaffScanner && !selectedSponsor" color="warning">
+    <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
+    <ion-label class="ion-text-wrap">
+      <h2>No sponsor selected</h2>
+      <p>Select a sponsor before scanning</p>
+    </ion-label>
+    <ion-button slot="end" fill="clear" (click)="showSponsorSelector()">Select</ion-button>
+  </ion-item>
+
   <ion-list>
     <ion-list-header>
       <ion-label>Recent Scans</ion-label>
@@ -102,7 +121,7 @@
   </ion-card>
   <ion-toolbar class="footer-toolbar">
     <ion-buttons class="footer-buttons">
-      <ion-button fill="solid" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
+      <ion-button fill="solid" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility" [disabled]="isStaffScanner && !selectedSponsor">
         Start Scanner!
       </ion-button>
       <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">

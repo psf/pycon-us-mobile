@@ -1,11 +1,12 @@
 import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { Config, Platform } from '@ionic/angular';
+import { AlertController, Config, Platform } from '@ionic/angular';
 import { StartScanOptions, BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
 import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
 
 import { PyConAPI } from '../../providers/pycon-api';
+import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { LeadNoteModalComponent } from '../../lead-note-modal/lead-note-modal.component';
 
@@ -28,13 +29,18 @@ export class MapPage implements OnInit, OnDestroy {
 
   ios: boolean;
   show_permissions_error: boolean = false;
+  isStaffScanner: boolean = false;
+  selectedSponsor: any = null;
+  sponsorList: any[] = [];
 
   constructor(
     public confData: ConferenceData,
     public platform: Platform,
     private config: Config,
     private pycon: PyConAPI,
+    private userData: UserData,
     private storage: Storage,
+    private alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public liveUpdateService: LiveUpdateService,
     public detectorRef: ChangeDetectorRef,
@@ -231,11 +237,56 @@ export class MapPage implements OnInit, OnDestroy {
     this.stopScan();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     BarcodeScanner.removeAllListeners();
     this.ios = this.config.get('mode') === `ios`;
     this.refresh_presentation();
     setTimeout(this.syncAllPending, 60000);
+
+    // Check if this is a staff user (has door_check but not lead_retrieval)
+    const hasLeadRetrieval = await this.userData.checkHasLeadRetrieval();
+    const hasDoorCheck = await this.userData.checkHasDoorCheck();
+    if (!hasLeadRetrieval && hasDoorCheck) {
+      this.isStaffScanner = true;
+      this.showSponsorSelector();
+    }
+  }
+
+  async showSponsorSelector() {
+    try {
+      const result: any = await this.pycon.fetchLeadRetrievalSponsors();
+      this.sponsorList = result.sponsors || [];
+    } catch (e) {
+      console.log('Failed to fetch sponsors for staff scanner', e);
+      return;
+    }
+
+    if (this.sponsorList.length === 0) return;
+
+    const inputs = this.sponsorList.map(s => ({
+      type: 'radio' as const,
+      label: s.name + (s.booth_number ? ` (Booth ${s.booth_number})` : ''),
+      value: String(s.id),
+    }));
+
+    const alert = await this.alertCtrl.create({
+      header: 'Scan on behalf of',
+      message: 'Select which sponsor you are scanning for:',
+      inputs,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'Select',
+          handler: (sponsorId) => {
+            if (sponsorId) {
+              this.selectedSponsor = this.sponsorList.find(s => String(s.id) === sponsorId);
+              this.pycon.setStaffSponsorId(sponsorId);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   ngOnDestroy(): void {

@@ -55,9 +55,9 @@ export class TabsPage implements OnInit {
         handler: () => { this.router.navigateByUrl('/app/tabs/t-shirt-redemption'); }
       });
     }
-    if (this.hasLeadRetrieval) {
+    if (this.hasLeadRetrieval || this.hasDoorCheck) {
       buttons.push({
-        text: 'Lead Retrieval',
+        text: 'Lead Scanner',
         icon: 'qr-code-outline',
         handler: () => { this.router.navigateByUrl('/app/tabs/lead-retrieval'); }
       });
