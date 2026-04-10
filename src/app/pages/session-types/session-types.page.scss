@@ -1,0 +1,23 @@
+.legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .track-badge {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.legend-desc {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium, #92949c);
+  line-height: 1.3;
+}

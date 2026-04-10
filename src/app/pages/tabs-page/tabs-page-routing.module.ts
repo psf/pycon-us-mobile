@@ -103,6 +103,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'session-types',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../session-types/session-types.module').then(m => m.SessionTypesPageModule)
+          }
+        ]
+      },
+      {
         path: 'about-pycon',
         children: [
           {

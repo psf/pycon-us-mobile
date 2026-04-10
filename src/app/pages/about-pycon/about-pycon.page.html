@@ -26,63 +26,6 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <h2 class="legend-heading">Session Types</h2>
-        <p class="legend-intro">Sessions in the schedule are color-coded by type:</p>
-        <div class="legend-list">
-          <div class="legend-item">
-            <span class="track-badge" data-track="talk">Talk</span>
-            <span class="legend-desc">Standard conference presentations (30 min)</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="tutorial">Tutorial</span>
-            <span class="legend-desc">In-depth hands-on sessions (3 hrs, separate registration)</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="keynote">Keynote</span>
-            <span class="legend-desc">Featured keynote speakers</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="plenary">Plenary</span>
-            <span class="legend-desc">Full-audience sessions (lightning talks, opening/closing)</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="charla">Charla</span>
-            <span class="legend-desc">Talks presented in Spanish</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="lightning-talks">Lightning Talks</span>
-            <span class="legend-desc">Short 5-minute presentations</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="ai">AI</span>
-            <span class="legend-desc">Future of AI with Python track</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="security">Security</span>
-            <span class="legend-desc">Trailblazing Python Security track</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="poster">Poster</span>
-            <span class="legend-desc">Poster session presentations</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="sponsor presentation">Sponsor Presentation</span>
-            <span class="legend-desc">Talks by conference sponsors</span>
-          </div>
-          <div class="legend-item">
-            <span class="track-badge" data-track="open space">Open Space</span>
-            <span class="legend-desc">Attendee-organized unconference sessions</span>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <br>
-      <br>
-      <br>
-      <br>
-      <ion-col>
         <ion-text>App Version: {{liveUpdateService.appVersion}} (build {{liveUpdateService.build}})</ion-text>
         <br>
         <ion-button *ngIf="loggedIn" (click)="shareDebug()">Share Debug Info with PyCon Staff</ion-button>
