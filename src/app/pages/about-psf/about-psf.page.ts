@@ -33,6 +33,10 @@ export class AboutPsfPage implements OnInit {
     });
   }
 
+  openUrl(url: string) {
+    window.open(url, '_system', 'location=yes');
+  }
+
   ngOnInit() {
     this.reloadContent();
   }
