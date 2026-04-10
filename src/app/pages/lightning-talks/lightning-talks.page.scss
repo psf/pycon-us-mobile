@@ -37,15 +37,21 @@
     padding: 24px;
   }
 
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
   p {
     font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: var(--ion-text-color);
   }
 }
 
-.tips-card {
+.encourage-card {
   margin: 0 20px;
   border-radius: 16px;
 
