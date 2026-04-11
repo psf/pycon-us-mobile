@@ -8,6 +8,13 @@
             PyCon US 2026
           </ion-list-header>
 
+          <ion-menu-toggle *ngIf="isDev" autoHide="false">
+            <ion-item routerLink="/app/tabs/dev-tools" routerLinkActive="active" routerDirection="root" detail="false" color="warning">
+              <ion-icon slot="start" name="construct-outline"></ion-icon>
+              <ion-label>Dev Tools</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-item *ngIf="loggedIn">
             <ion-label>Hello, {{nickname}}</ion-label>
           </ion-item>
@@ -43,7 +50,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle *ngIf="hasLeadRetrieval" autoHide="false">
+          <ion-menu-toggle *ngIf="hasLeadRetrieval || hasDoorCheck" autoHide="false">
             <ion-item routerLink="/app/tabs/lead-retrieval" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="qr-code"></ion-icon>
               <ion-label>

@@ -94,9 +94,31 @@
     </ion-item-group>
   </ion-list>
 
-  <ion-list-header [hidden]="hasData">
-    Schedule not loaded, if this persists check your network.
-  </ion-list-header>
+  <div class="error-state" [hidden]="hasData">
+    <div class="error-graphic">
+      <svg viewBox="0 0 110 110" class="python-logo-error" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="pyGradA" x1="0" y1="0" x2="1" y2="0.5">
+            <stop offset="0%" stop-color="#3B3EA9"/>
+            <stop offset="100%" stop-color="#5833E9"/>
+          </linearGradient>
+          <linearGradient id="pyGradB" x1="0" y1="0.5" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFD779"/>
+            <stop offset="100%" stop-color="#D47454"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#pyGradA)" d="M54.9 0C41.6 0 29.1 2.4 29.1 13.1V22h26.4v3.3H18C10.5 25.3.5 30 .5 43.6S9 62 18 62h7.6v-13c0-8.7 7.5-16.4 18-16.4h25.9c8 0 14.4-6.6 14.4-14.5V13.1C84 5.4 73.5 0 54.9 0zM40 7.3c3 0 5.4 2.5 5.4 5.5s-2.4 5.4-5.4 5.4-5.4-2.4-5.4-5.4 2.4-5.5 5.4-5.5z"/>
+        <path fill="url(#pyGradB)" d="M55.1 110c13.3 0 25.8-2.4 25.8-13.1V88H54.5v-3.3h37.5c7.5 0 17.5-4.7 17.5-18.3S101 48 92 48h-7.6v13c0 8.7-7.5 16.4-18 16.4H40.5c-8 0-14.4 6.6-14.4 14.5v5c0 7.7 10.5 13.1 29.1 13.1zM70 102.7c-3 0-5.4-2.5-5.4-5.5s2.4-5.4 5.4-5.4 5.4 2.4 5.4 5.4-2.4 5.5-5.4 5.5z"/>
+      </svg>
+      <ion-icon name="cloud-offline-outline" class="error-cloud-icon"></ion-icon>
+    </div>
+    <h2 class="error-title">Couldn't load schedule</h2>
+    <p class="error-message">Check your network connection and try again. The schedule needs an internet connection to load for the first time.</p>
+    <ion-button fill="outline" (click)="reloadSchedule()" class="error-retry-btn">
+      <ion-icon slot="start" name="refresh-outline"></ion-icon>
+      Try Again
+    </ion-button>
+  </div>
 
   <div *ngIf="todayIndex !== null" slot="fixed" class="jump-now-wrapper">
     <button class="jump-now-btn" [class.collapsed]="jumpBtnCollapsed" (click)="jumpToNow()">

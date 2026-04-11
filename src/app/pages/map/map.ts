@@ -9,6 +9,7 @@ import { PyConAPI } from '../../providers/pycon-api';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { LeadNoteModalComponent } from '../../lead-note-modal/lead-note-modal.component';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class MapPage implements OnInit, OnDestroy {
   isStaffScanner: boolean = false;
   selectedSponsor: any = null;
   sponsorList: any[] = [];
+  isDev: boolean = !environment.production;
+  filterBySponsor: boolean = false;
 
   constructor(
     public confData: ConferenceData,
@@ -47,7 +50,15 @@ export class MapPage implements OnInit, OnDestroy {
   ) {}
 
   sortScans() {
-    return this.scan_presentation.sort(function(a, b) {
+    let scans = [...this.scan_presentation];
+    if (this.isStaffScanner && this.filterBySponsor && this.selectedSponsor) {
+      const filterName = this.selectedSponsor.name;
+      scans = scans.filter(s => {
+        const name = (s.sponsor_name || '').replace(/^"|"$/g, '');
+        return name === filterName;
+      });
+    }
+    return scans.sort(function(a, b) {
       var x = new Date(a.scanned_at);
       var y = new Date(b.scanned_at);
       return ((x > y) ? -1 : ((x < y) ? 1 : 0));
@@ -56,13 +67,19 @@ export class MapPage implements OnInit, OnDestroy {
 
   refresh_presentation = async () => {
     var allScans = [];
-    this.storage.forEach((value, key, index) => {
+    const selectedId = this.selectedSponsor ? String(this.selectedSponsor.id) : null;
+    const keys = await this.storage.keys();
+    for (const key of keys) {
+      const value = await this.storage.get(key);
+      if (!value) continue;
       if (key.startsWith("pending-scan-")) {
         allScans.push({
           "status": "pending",
           "scanned_at": value.scannedAt,
           "access_code": value.scanData.split(":")[0],
           "note": value.note,
+          "sponsor_name": value.sponsorName ? String(value.sponsorName).replace(/^"|"$/g, '') : null,
+          "sponsor_id": value.sponsorId || null,
         })
       } else if (key.startsWith("synced-scan-")) {
         allScans.push({
@@ -71,6 +88,8 @@ export class MapPage implements OnInit, OnDestroy {
           "access_code": value.scanData.split(":")[0],
           "first_name": value.data.first_name,
           "note": value.note,
+          "sponsor_name": value.sponsorName ? String(value.sponsorName).replace(/^"|"$/g, '') : null,
+          "sponsor_id": value.sponsorId || null,
         })
       } else if (key.startsWith("failed-scan-")) {
         allScans.push({
@@ -78,10 +97,17 @@ export class MapPage implements OnInit, OnDestroy {
           "scanned_at": value.scannedAt,
           "access_code": value.scanData.split(":")[0],
           "note": value.note,
+          "sponsor_name": value.sponsorName ? String(value.sponsorName).replace(/^"|"$/g, '') : null,
+          "sponsor_id": value.sponsorId || null,
         })
       }
-    });
+    }
     this.scan_presentation = allScans;
+    this.detectorRef.detectChanges();
+  }
+
+  toggleSponsorFilter() {
+    this.detectorRef.detectChanges();
   }
 
   openNoteModal = async (accessCode, scan) => {
@@ -233,6 +259,29 @@ export class MapPage implements OnInit, OnDestroy {
     this.content_visibility = '';
   }
 
+  async simulateScan() {
+    const fakeNames = [
+      'Guido van Rossum', 'Carol Willing', 'Brett Cannon', 'Mariatta Wijaya',
+      'Pablo Galindo', 'Dustin Ingram', 'Sumana Harihareswara', 'Ned Batchelder',
+      'Lynn Root', 'Russell Keith-Magee', 'Hynek Schlawack', 'Łukasz Langa',
+      'Deb Nicholson', 'Thomas Wouters', 'Barry Warsaw', 'Savannah Ostrowski',
+    ];
+    const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+    const fakeCode = 'SIM' + Math.floor(Math.random() * 99999);
+    const scanDate = new Date();
+
+    const sponsorName = this.selectedSponsor?.name ? String(this.selectedSponsor.name).replace(/^"|"$/g, '') : null;
+    await this.storage.set('synced-scan-' + fakeCode, {
+      scanData: fakeCode + ':SIMULATED',
+      scannedAt: scanDate.toISOString(),
+      sponsorName: sponsorName,
+      sponsorId: this.selectedSponsor ? String(this.selectedSponsor.id) : null,
+      data: { first_name: name, captured: true, captured_date: scanDate.toISOString() },
+    });
+    this.refresh_presentation();
+    this.detectorRef.detectChanges();
+  }
+
   ionViewWillLeave() {
     this.stopScan();
   }
@@ -251,7 +300,15 @@ export class MapPage implements OnInit, OnDestroy {
     const hasDoorCheck = await this.userData.checkHasDoorCheck();
     if (!hasLeadRetrieval && hasDoorCheck) {
       this.isStaffScanner = true;
-      this.showSponsorSelector();
+      // Restore previously selected sponsor from storage
+      const savedSponsorId = await this.storage.get('staff-sponsor-id');
+      const savedSponsorName = await this.storage.get('staff-sponsor-name');
+      const savedSponsorLogo = await this.storage.get('staff-sponsor-logo');
+      if (savedSponsorId && savedSponsorName) {
+        this.selectedSponsor = { id: savedSponsorId, name: String(savedSponsorName).replace(/^"|"$/g, ''), logo_url: savedSponsorLogo || null };
+      } else {
+        this.showSponsorSelector();
+      }
     }
   }
 
@@ -328,6 +385,9 @@ export class MapPage implements OnInit, OnDestroy {
             if (sponsorId) {
               this.selectedSponsor = this.sponsorList.find(s => String(s.id) === sponsorId);
               this.pycon.setStaffSponsorId(sponsorId);
+              this.storage.set('staff-sponsor-name', this.selectedSponsor?.name || null);
+              this.storage.set('staff-sponsor-logo', this.selectedSponsor?.logo_url || null);
+              this.refresh_presentation();
             }
           }
         }
