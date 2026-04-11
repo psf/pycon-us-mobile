@@ -228,3 +228,58 @@ $tracks: (
     cursor: default;
   }
 }
+
+/*
+ * Error state — schedule not loaded
+ */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 32px;
+  min-height: 50vh;
+}
+
+.error-graphic {
+  position: relative;
+  margin-bottom: 24px;
+
+  .python-logo-error {
+    width: 100px;
+    height: 100px;
+    opacity: 0.15;
+  }
+
+  .error-cloud-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    color: #3B3EA9;
+  }
+}
+
+.error-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ion-text-color);
+}
+
+.error-message {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ion-color-medium);
+  margin: 0 0 24px;
+  max-width: 300px;
+}
+
+.error-retry-btn {
+  --border-radius: 12px;
+  --border-color: #3B3EA9;
+  --color: #3B3EA9;
+  font-weight: 600;
+}
