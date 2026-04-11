@@ -1,8 +1,7 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button [color]="liveUpdateService.needsUpdate ? 'primary' : 'medium'"></ion-menu-button>
-      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Lead Scanner</ion-title>
   </ion-toolbar>
@@ -13,120 +12,95 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-item *ngIf="isStaffScanner && selectedSponsor" color="primary" button="true" (click)="showSponsorSelector()">
-    <ion-icon slot="start" name="business-outline"></ion-icon>
-    <ion-label>
-      <h2>Scanning for: {{ selectedSponsor.name }}</h2>
-      <p>Tap to change sponsor</p>
-    </ion-label>
-    <ion-icon slot="end" name="swap-horizontal-outline"></ion-icon>
-  </ion-item>
+  <!-- Staff sponsor selector banner -->
+  <div *ngIf="isStaffScanner && selectedSponsor" class="sponsor-banner">
+    <div class="sponsor-banner-main" (click)="showSponsorSelector()">
+      <img *ngIf="selectedSponsor.logo_url" [src]="selectedSponsor.logo_url" class="sponsor-banner-logo" />
+      <ion-icon *ngIf="!selectedSponsor.logo_url" name="business" class="sponsor-banner-icon"></ion-icon>
+      <div class="sponsor-banner-text">
+        <strong>{{ selectedSponsor.name }}</strong>
+        <span>Tap to change</span>
+      </div>
+      <ion-icon name="chevron-forward-outline" class="sponsor-banner-chevron"></ion-icon>
+    </div>
+    <div class="sponsor-banner-filter" (click)="filterBySponsor = !filterBySponsor; toggleSponsorFilter()">
+      <ion-icon [name]="filterBySponsor ? 'funnel' : 'funnel-outline'" [class.active]="filterBySponsor"></ion-icon>
+    </div>
+  </div>
 
-  <ion-item *ngIf="isStaffScanner && !selectedSponsor" color="warning">
-    <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
-    <ion-label class="ion-text-wrap">
-      <h2>No sponsor selected</h2>
-      <p>Select a sponsor before scanning</p>
-    </ion-label>
-    <ion-button slot="end" fill="clear" (click)="showSponsorSelector()">Select</ion-button>
-  </ion-item>
+  <div *ngIf="isStaffScanner && !selectedSponsor" class="sponsor-banner sponsor-banner-warning" (click)="showSponsorSelector()">
+    <ion-icon name="alert-circle" class="sponsor-banner-icon warning"></ion-icon>
+    <div class="sponsor-banner-text">
+      <strong>No sponsor selected</strong>
+      <span>Tap to select a sponsor</span>
+    </div>
+    <ion-icon name="chevron-forward-outline" class="sponsor-banner-chevron"></ion-icon>
+  </div>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Recent Scans</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-text color="medium" class="header-info">
-        This list displays the recent scans on this device only.<br>
-        View all your scans and the captured data on your dashboard at us.pycon.org.<br>
-      </ion-text>
-    </ion-item>
-    <ion-item *ngIf="show_permissions_error">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Uh oh..</ion-card-title>
-          <ion-card-subtitle>Camera Permissions Not Granted</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text>Looks like you did not grant this application permission to access your camera.</ion-text>
-          <ion-text>
-            You can resolve this by opening<br><br>
-            <code *ngIf="ios">Settings > Privacy & Security > Camera > PyCon US 2026<br><br></code>
-            <code *ngIf="!ios">Settings > Apps > PyCon US 2026 > Permissions > Camera<br><br></code>
-            And enabling camera permssions for this app.
-          </ion-text>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
-    <ion-item *ngFor="let scan of sortScans()">
+  <!-- Camera permission error -->
+  <ion-card *ngIf="show_permissions_error" color="danger" class="permission-card">
+    <ion-card-content>
+      <h3>Camera Permission Required</h3>
+      <p>Open <code *ngIf="ios">Settings > Privacy > Camera > PyCon US</code><code *ngIf="!ios">Settings > Apps > PyCon US > Camera</code> and enable access.</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  <!-- Empty state -->
+  <div *ngIf="sortScans().length === 0" class="empty-state">
+    <ion-icon name="scan-outline" class="empty-icon"></ion-icon>
+    <h3>No scans yet</h3>
+    <p>Tap "Start Scanner" to begin scanning badges</p>
+  </div>
+
+  <!-- Scan list -->
+  <ion-list *ngIf="sortScans().length > 0" lines="full" class="scan-list">
+    <ion-item *ngFor="let scan of sortScans()" class="scan-item" button="true" (click)="openNoteModal(scan.access_code, scan)" detail="false">
+      <div slot="start" class="scan-status-dot" [class.captured]="scan.status === 'captured'" [class.pending]="scan.status === 'pending'" [class.failed]="scan.status === 'failed'"></div>
       <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="auto">
-              <h1>
-                <ion-icon
-                  [color]="(scan.status === 'captured')? 'success' : (scan.status === 'failed')? 'danger' : 'default'"
-                  [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
-                </ion-icon>
-                {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
-              </h1>
-              <p>Scanned {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status === 'captured'">Captured {{scan.scanned_at|dateAgo}}</p>
-              <p *ngIf="scan.status === 'pending'">Pending capture when online...</p>
-              <p *ngIf="scan.status === 'failed'">Invalid code.</p>
-            </ion-col>
-            <ion-col>
-              <div class="ion-float-end ion-float-top">
-                <ion-button (click)="openNoteModal(scan.access_code, scan)" size="75%" fill="clear">
-                  <ion-icon [name]="scan.note? 'document-text': 'document-outline'"></ion-icon>
-                  <ion-text size="small">Note</ion-text>
-                </ion-button>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <h2 class="scan-name">{{ (scan.status === 'captured') ? scan.first_name : scan.access_code }}</h2>
+        <p *ngIf="isStaffScanner && scan.sponsor_name" class="scan-sponsor">
+          <ion-icon name="business-outline"></ion-icon> {{ scan.sponsor_name }}
+        </p>
+        <p class="scan-time">
+          {{ scan.scanned_at | dateAgo }}
+          <span *ngIf="scan.status === 'pending'" class="scan-badge pending">Pending</span>
+          <span *ngIf="scan.status === 'failed'" class="scan-badge failed">Failed</span>
+        </p>
       </ion-label>
+      <ion-icon slot="end" [name]="scan.note ? 'document-text' : 'document-outline'" [color]="scan.note ? 'primary' : 'medium'" class="scan-note-icon"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
 
 <ion-footer>
-  <ion-card *ngIf="last_scan">
-    <ion-item>
-      <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <h1>
-                <ion-icon
-                  [color]="(last_scan.status === 'captured')? 'success' : 'default'"
-                  [name]="(last_scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
-                </ion-icon>
-                {{(last_scan.status === 'captured')? last_scan.first_name : last_scan.access_code}}
-                <ion-spinner *ngIf="last_scan.status !== 'captured'" name="dots"></ion-spinner>
-              </h1>
-            </ion-col>
-            <ion-col>
-              <div class="ion-float-end">
-                <ion-button (click)="openNoteModal(last_scan.access_code, last_scan)" size="75%" fill="clear">
-                  <ion-icon [name]="last_scan.note? 'document-text': 'document-outline'"></ion-icon>
-                  <ion-text size="small">Note</ion-text>
-                </ion-button>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-    </ion-item>
-  </ion-card>
-  <ion-toolbar class="footer-toolbar">
-    <ion-buttons class="footer-buttons">
-      <ion-button fill="solid" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility" [disabled]="isStaffScanner && !selectedSponsor">
-        Start Scanner!
-      </ion-button>
-      <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">
-        Stop Scanner
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <!-- Last scan toast -->
+  <div *ngIf="last_scan" class="last-scan-bar">
+    <div class="last-scan-info">
+      <ion-icon [color]="(last_scan.status === 'captured') ? 'success' : 'medium'" [name]="(last_scan.status === 'captured') ? 'checkmark-circle' : 'ellipsis-horizontal-circle'"></ion-icon>
+      <span class="last-scan-name">
+        {{ (last_scan.status === 'captured') ? last_scan.first_name : last_scan.access_code }}
+        <ion-spinner *ngIf="last_scan.status !== 'captured'" name="dots" class="last-scan-spinner"></ion-spinner>
+      </span>
+    </div>
+    <ion-button fill="clear" size="small" (click)="openNoteModal(last_scan.access_code, last_scan)">
+      <ion-icon [name]="last_scan.note ? 'document-text' : 'document-outline'"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="scanner-actions">
+    <ion-button *ngIf="isDev" expand="block" fill="clear" size="small" color="medium" (click)="simulateScan()">
+      <ion-icon slot="start" name="flask-outline"></ion-icon>
+      Simulate Scan
+    </ion-button>
+    <ion-button expand="block" color="success" size="large" (click)="startScan()" [style.visibility]="scan_start_button_visibility" [disabled]="isStaffScanner && !selectedSponsor" class="scan-btn-main">
+      <ion-icon slot="start" name="scan-outline"></ion-icon>
+      Start Scanner
+    </ion-button>
+    <ion-button expand="block" color="danger" size="large" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility" class="scan-btn-main">
+      <ion-icon slot="start" name="stop-circle-outline"></ion-icon>
+      Stop Scanner
+    </ion-button>
+  </div>
 </ion-footer>

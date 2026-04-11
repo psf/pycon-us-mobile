@@ -386,9 +386,11 @@ export class PyConAPI {
       return;
     } else {
       const scanDate = new Date();
+      const sponsorId = await this.storage.get('staff-sponsor-id');
+      const sponsorName = await this.storage.get('staff-sponsor-name');
       return this.storage.set(
         'pending-scan-' + accessCode,
-        {scanData: scanData, scannedAt: scanDate.toISOString()}
+        {scanData: scanData, scannedAt: scanDate.toISOString(), sponsorId: sponsorId, sponsorName: sponsorName}
       ).then(() => {
         console.log('Scanned ' + accessCode);
         this.syncScan(accessCode);
