@@ -227,6 +227,15 @@ const routes: Routes = [
         loadChildren: () => import('../login/login.module').then(m => m.LoginModule)
       },
       {
+        path: 'dev-tools',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../dev-tools/dev-tools.module').then(m => m.DevToolsPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/app/tabs/schedule',
         pathMatch: 'full'
