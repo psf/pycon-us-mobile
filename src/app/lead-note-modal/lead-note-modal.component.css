@@ -1,0 +1,112 @@
+.scan-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 16px;
+  text-align: center;
+}
+
+.scan-header-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.scan-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.scan-header-sponsor {
+  font-size: 0.8rem;
+  color: #5833E9;
+  margin: 2px 0 0;
+}
+
+.field-section {
+  margin-bottom: 20px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ion-color-medium);
+  margin-bottom: 8px;
+}
+
+/* Interest buttons */
+.interest-group {
+  display: flex;
+  gap: 8px;
+}
+
+.interest-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border: 2px solid var(--ion-color-step-200, #e0e0e0);
+  border-radius: 12px;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ion-text-color);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &.selected.hot {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef4444;
+  }
+
+  &.selected.warm {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.08);
+    color: #f59e0b;
+  }
+
+  &.selected.cold {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+  }
+}
+
+/* Follow-up chips */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.followup-chip {
+  padding: 8px 14px;
+  border: 1.5px solid var(--ion-color-step-200, #e0e0e0);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 0.85rem;
+  color: var(--ion-text-color);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &.selected {
+    border-color: #5833E9;
+    background: rgba(88, 51, 233, 0.08);
+    color: #5833E9;
+    font-weight: 600;
+  }
+}
+
+/* Note textarea */
+.note-textarea {
+  --background: var(--ion-color-step-50, #f5f5f5);
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--ion-color-step-150, #e8e8e8);
+}

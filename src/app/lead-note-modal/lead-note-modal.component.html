@@ -1,39 +1,67 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
-    <ion-title>Make a note</ion-title>
+    <ion-title>Lead Notes</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()">Save</ion-button>
+      <ion-button (click)="confirm()" color="primary"><strong>Save</strong></ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <h1>
-              <ion-icon
-                [color]="(scan.status === 'captured')? 'success' : 'default'"
-                [name]="(scan.status === 'captured')? 'id-card-outline' : 'qr-code'">
-              </ion-icon>
-              {{(scan.status === 'captured')? scan.first_name : scan.access_code}}
-            </h1>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Note</ion-label>
+  <!-- Scan info -->
+  <div class="scan-header">
+    <ion-icon
+      [color]="(scan.status === 'captured') ? 'success' : 'medium'"
+      [name]="(scan.status === 'captured') ? 'checkmark-circle' : 'ellipsis-horizontal-circle'"
+      class="scan-header-icon">
+    </ion-icon>
+    <h2>{{ (scan.status === 'captured') ? scan.first_name : scan.access_code }}</h2>
+    <p *ngIf="scan.sponsor_name" class="scan-header-sponsor">{{ scan.sponsor_name }}</p>
+  </div>
+
+  <!-- Interest level -->
+  <div class="field-section">
+    <ion-label class="field-label">Interest Level</ion-label>
+    <div class="interest-group">
+      <button class="interest-btn" [class.selected]="interestLevel === 'hot'" [class.hot]="interestLevel === 'hot'" (click)="interestLevel = interestLevel === 'hot' ? '' : 'hot'">
+        🔥 Hot
+      </button>
+      <button class="interest-btn" [class.selected]="interestLevel === 'warm'" [class.warm]="interestLevel === 'warm'" (click)="interestLevel = interestLevel === 'warm' ? '' : 'warm'">
+        ☀️ Warm
+      </button>
+      <button class="interest-btn" [class.selected]="interestLevel === 'cold'" [class.cold]="interestLevel === 'cold'" (click)="interestLevel = interestLevel === 'cold' ? '' : 'cold'">
+        ❄️ Cold
+      </button>
+    </div>
+  </div>
+
+  <!-- Follow-up actions -->
+  <div class="field-section">
+    <ion-label class="field-label">Follow-up</ion-label>
+    <div class="chip-group">
+      <button *ngFor="let action of followUpActions"
+              class="followup-chip"
+              [class.selected]="action.checked"
+              (click)="action.checked = !action.checked">
+        {{ action.emoji }} {{ action.label }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Free-form notes -->
+  <div class="field-section">
+    <ion-label class="field-label">Notes</ion-label>
     <ion-textarea
-      [(ngModel)]="note"
-      placeholder="Write your notes here..."
-      maxlength=3000
-      autoGrow=true
-      inputmode="text"></ion-textarea>
-  </ion-item>
+      [(ngModel)]="freeformNote"
+      placeholder="Additional notes..."
+      maxlength="2000"
+      [autoGrow]="true"
+      rows="3"
+      inputmode="text"
+      class="note-textarea">
+    </ion-textarea>
+  </div>
 </ion-content>
