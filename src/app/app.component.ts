@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage-angular';
 import { UserData } from './providers/user-data';
 import { ConferenceData } from './providers/conference-data';
 import { LiveUpdateService } from './providers/live-update.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +68,8 @@ export class AppComponent implements OnInit {
   hasLeadRetrieval = false;
   hasDoorCheck= false;
   hasMaskViolation = false;
+  isDev = !environment.production;
+  environmentUrl = environment.baseUrl;
 
   constructor(
     private menu: MenuController,
@@ -215,4 +218,5 @@ export class AppComponent implements OnInit {
   openUrl(url: string) {
     window.open(url, '_system', 'location=yes');
   }
+
 }
