@@ -20,6 +20,7 @@ export class AccountPage implements OnInit, AfterViewInit {
   showTitle = false;
   email: string;
   nickname: string;
+  loggedIn = false;
   isSpeaker: boolean = false;
 
   constructor(
@@ -43,6 +44,9 @@ export class AccountPage implements OnInit, AfterViewInit {
     this.getEmail();
     this.getNickname();
     this.checkIsSpeaker();
+    this.userData.isLoggedIn().then((loggedIn) => {
+      this.loggedIn = loggedIn;
+    });
   }
 
   getEmail() {
@@ -53,8 +57,12 @@ export class AccountPage implements OnInit, AfterViewInit {
 
   getNickname() {
     this.userData.getNickname().then((nickname) => {
-      if (nickname === null) {
-        this.router.navigate(['/app/tabs/login'], { replaceUrl: true });
+      if (!nickname) {
+        this.userData.isLoggedIn().then((loggedIn) => {
+          if (!loggedIn) {
+            this.router.navigate(['/app/tabs/login'], { replaceUrl: true });
+          }
+        });
       }
       this.nickname = nickname;
     });

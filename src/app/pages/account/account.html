@@ -9,13 +9,13 @@
 </ion-header>
 
 <ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
-  <div *ngIf="nickname" class="account-hero">
+  <div *ngIf="loggedIn" class="account-hero">
     <ion-icon name="person-circle" class="account-hero-icon"></ion-icon>
-    <h1>{{nickname}}</h1>
-    <p><code>{{email}}</code></p>
+    <h1>{{ nickname || email || 'Account' }}</h1>
+    <p *ngIf="nickname && email"><code>{{email}}</code></p>
   </div>
 
-  <div *ngIf="nickname" class="account-actions">
+  <div *ngIf="loggedIn" class="account-actions">
     <ion-button *ngIf="isSpeaker" expand="block" color="tertiary" (click)="openSpeakerDiscord()">
       <ion-icon slot="start" name="logo-discord"></ion-icon>
       Speaker Discord
