@@ -1,3 +1,11 @@
+.pycon-tab-bar ion-tab-button.pycon-active {
+  --color: #DD04D2;
+
+  ion-label {
+    font-weight: 700;
+  }
+}
+
 .bannerSponsorHidden {
   display: none;
 }

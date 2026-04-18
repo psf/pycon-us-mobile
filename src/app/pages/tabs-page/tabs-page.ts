@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
@@ -16,6 +17,7 @@ export class TabsPage implements OnInit {
   hasDoorCheck: boolean = false;
   loggedIn: boolean = false;
   showStaffTools: boolean = false;
+  activeTab: string = '';
 
   constructor(
     private userData: UserData,
@@ -31,6 +33,18 @@ export class TabsPage implements OnInit {
     this.checkLoggedIn();
     this.listenForLoginEvents();
     setInterval(this.showSponsorBanner, 30000);
+
+    this.activeTab = this.computeActiveTab(this.router.url);
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(e => {
+        this.activeTab = this.computeActiveTab(e.urlAfterRedirects);
+      });
+  }
+
+  private computeActiveTab(url: string): string {
+    const match = url.match(/\/app\/tabs\/([^/?#]+)/);
+    return match ? match[1] : '';
   }
 
   checkLoggedIn() {
