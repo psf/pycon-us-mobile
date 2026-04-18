@@ -77,6 +77,10 @@ $tracks: (
   &:active {
     --color: #680579;
   }
+
+  &.filters-active {
+    --color: #DD04D2;
+  }
 }
 
 .search-toolbar {
