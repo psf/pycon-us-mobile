@@ -42,7 +42,9 @@
     </div>
 
     <div class="session-body">
-      <div *ngFor="let keynote of keynoteData" class="keynote-speaker-card">
+      <div *ngFor="let keynote of keynoteData; let i = index"
+           class="keynote-speaker-card"
+           [class.keynote-speaker-card-flipped]="i % 2 === 1">
         <img [src]="keynote.photo" [alt]="keynote.name" class="keynote-photo">
         <div class="keynote-info">
           <h3>{{keynote.name}}</h3>
@@ -68,7 +70,14 @@
         <img [src]="session.imageUrl" class="session-image" [class.open-space-hero-image]="isOpenSpace">
       </div>
 
-      <div class="session-description"
+      <div *ngIf="keynoteAbstract" class="session-description keynote-abstract">
+        <h2 *ngIf="keynoteAbstract.title" class="keynote-abstract-title">{{ keynoteAbstract.title }}</h2>
+        <p *ngIf="keynoteAbstract.eyebrow" class="keynote-abstract-eyebrow">{{ keynoteAbstract.eyebrow }}</p>
+        <p *ngFor="let para of keynoteAbstract.paragraphs">{{ para }}</p>
+      </div>
+
+      <div *ngIf="!keynoteAbstract"
+           class="session-description"
            [class.open-space-description]="isOpenSpace"
            [innerHtml]="session?.description"
            (click)="onDescriptionClick($event)">
