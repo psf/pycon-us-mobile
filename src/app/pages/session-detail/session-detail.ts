@@ -18,7 +18,7 @@ export class SessionDetailPage {
   isFavorite = false;
   isOpenSpace = false;
   isKeynote = false;
-  keynoteData: any = null;
+  keynoteData: any[] = [];
   defaultHref = '';
 
   private keynoteSpeakers: Record<string, any> = {
@@ -63,15 +63,14 @@ export class SessionDetailPage {
         this.isOpenSpace = this.session?.tracks?.includes('open-space');
         this.isKeynote = this.session?.tracks?.includes('keynote') || this.session?.track === 'Keynote';
 
-        // Enrich keynote sessions with speaker photo/bio
+        // Enrich keynote sessions with speaker photo/bio. Collect every
+        // matching speaker so co-hosted keynotes (e.g. "Rachell Calhoun &
+        // Tim Schilling") render all speakers, not just the first match.
         if (this.isKeynote) {
-          const sessionName = this.session?.name || '';
-          for (const [name, data] of Object.entries(this.keynoteSpeakers)) {
-            if (sessionName.toLowerCase().includes(name.toLowerCase())) {
-              this.keynoteData = { name, ...data };
-              break;
-            }
-          }
+          const sessionName = (this.session?.name || '').toLowerCase();
+          this.keynoteData = Object.entries(this.keynoteSpeakers)
+            .filter(([name]) => sessionName.includes(name.toLowerCase()))
+            .map(([name, data]) => ({ name, ...data }));
         }
 
         this.isFavorite = this.userProvider.hasFavorite(
