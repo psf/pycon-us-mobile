@@ -63,34 +63,50 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let session of group.sessions | sessionOrder" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
-        <ion-item [color]="session?.color? session.color : ''" [routerLink]="session.listRender? '/app/tabs/tracks/' + session.section: '/app/tabs/schedule/session/'+session.id">
-          <ion-label>
-            <h3>
-              <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
-              {{session.name}}
-            </h3>
-            <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
-            <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
-            <span *ngIf="session.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
-            <p class="session-meta">
-              <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
-              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
-            </p>
-            <p *ngIf="session?.speakerNames?.length" class="session-speakers">
-              <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
-            </p>
-          </ion-label>
-        </ion-item>
-        <ion-item-options>
-          <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="!session.favorite">
-            Favorite
-          </ion-item-option>
-          <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="session.favorite">
-            Remove
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
+      <ng-container *ngFor="let session of group.sessions | sessionOrder">
+        <a *ngIf="session.track === 'Informational'"
+           class="informational-notice"
+           [hidden]="session.hide"
+           [routerLink]="session.listRender ? '/app/tabs/tracks/' + session.section : '/app/tabs/schedule/session/' + session.id">
+          <h3 class="notice-title">
+            <ion-icon name="information-circle-outline" class="notice-icon" aria-hidden="true"></ion-icon>
+            <span class="notice-name">{{session.name}}</span>
+          </h3>
+          <p class="notice-meta">
+            <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+            <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+          </p>
+        </a>
+
+        <ion-item-sliding *ngIf="session.track !== 'Informational'" #slidingItem [attr.track]="session.track | lowercase" [hidden]="session.hide">
+          <ion-item [color]="session?.color? session.color : ''" [routerLink]="session.listRender? '/app/tabs/tracks/' + session.section: '/app/tabs/schedule/session/'+session.id">
+            <ion-label>
+              <h3>
+                <ion-icon *ngIf="session.favorite" slot="icon-only" name="star"></ion-icon>
+                {{session.name}}
+              </h3>
+              <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+              <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
+              <span *ngIf="session.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
+              <p class="session-meta">
+                <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
+                <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+              </p>
+              <p *ngIf="session?.speakerNames?.length" class="session-speakers">
+                <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="!session.favorite">
+              Favorite
+            </ion-item-option>
+            <ion-item-option color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="session.favorite">
+              Remove
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ng-container>
     </ion-item-group>
   </ion-list>
 
