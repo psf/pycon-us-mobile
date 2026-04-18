@@ -72,6 +72,19 @@ ion-title {
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+  text-decoration: none;
+  color: inherit;
+
+  &:active {
+    opacity: 0.6;
+  }
+}
+
+.sponsor-chevron {
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--ion-color-step-400, #a0a0a0);
+  flex-shrink: 0;
 }
 
 .sponsor-logo {
@@ -132,4 +145,11 @@ ion-title {
   -webkit-box-orient: vertical;
   overflow: hidden;
   overflow-wrap: anywhere;
+}
+
+.role-location {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
