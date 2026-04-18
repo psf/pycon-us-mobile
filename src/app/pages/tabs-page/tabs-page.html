@@ -5,37 +5,37 @@
   </ion-tab-bar>
 
   <ion-tab-bar slot="bottom" class="pycon-tab-bar">
-    <ion-tab-button tab="speakers">
+    <ion-tab-button tab="speakers" [class.pycon-active]="activeTab === 'speakers'">
       <ion-icon name="people"></ion-icon>
       <ion-label>Speakers</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="conference-map">
+    <ion-tab-button tab="conference-map" [class.pycon-active]="activeTab === 'conference-map'">
       <ion-icon name="map"></ion-icon>
       <ion-label>Map</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="schedule">
+    <ion-tab-button tab="schedule" [class.pycon-active]="activeTab === 'schedule'">
       <ion-icon name="calendar"></ion-icon>
       <ion-label>Schedule</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="now">
+    <ion-tab-button tab="now" [class.pycon-active]="activeTab === 'now'">
       <ion-icon name="radio"></ion-icon>
       <ion-label>Now</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="hasDoorCheck" (click)="openStaffTools($event)">
+    <ion-tab-button *ngIf="hasDoorCheck" (click)="openStaffTools($event)" [class.pycon-active]="activeTab === 'lead-retrieval'">
       <ion-icon name="scan"></ion-icon>
       <ion-label>Scanner</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="hasLeadRetrieval && !hasDoorCheck" tab="lead-retrieval">
+    <ion-tab-button *ngIf="hasLeadRetrieval && !hasDoorCheck" tab="lead-retrieval" [class.pycon-active]="activeTab === 'lead-retrieval'">
       <ion-icon name="qr-code"></ion-icon>
       <ion-label>Scanner</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button *ngIf="!loggedIn" tab="login">
+    <ion-tab-button *ngIf="!loggedIn" tab="login" [class.pycon-active]="activeTab === 'login'">
       <ion-icon name="log-in"></ion-icon>
       <ion-label>Login</ion-label>
     </ion-tab-button>
