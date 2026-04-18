@@ -29,19 +29,22 @@
 
   <div class="listings-container">
     <div *ngFor="let listing of listings" class="listing-card">
-      <div class="sponsor-header">
+      <a class="sponsor-header"
+         [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + getSponsorSlug(listing.sponsor_name)">
         <img *ngIf="listing.sponsor_logo_url" [src]="listing.sponsor_logo_url" [alt]="listing.sponsor_name + ' logo'" class="sponsor-logo">
         <div class="sponsor-info">
           <h2 class="sponsor-name">{{listing.sponsor_name}}</h2>
           <span *ngIf="listing.sponsor_level" class="level-badge">{{listing.sponsor_level}}</span>
         </div>
-      </div>
+        <ion-icon name="chevron-forward" class="sponsor-chevron" aria-hidden="true"></ion-icon>
+      </a>
 
       <ion-list *ngIf="listing.roles?.length > 0" class="roles-list" lines="none">
         <ion-item *ngFor="let role of listing.roles" class="role-item" [button]="!!role.url" (click)="openUrl(role.url)" [detail]="!!role.url">
           <ion-icon name="briefcase-outline" slot="start" color="medium" class="role-icon"></ion-icon>
           <ion-label class="role-label">
             <span class="role-title">{{role.title}}</span>
+            <span *ngIf="role.location" class="role-location">{{role.location}}</span>
           </ion-label>
         </ion-item>
       </ion-list>

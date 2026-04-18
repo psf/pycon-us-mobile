@@ -28,14 +28,24 @@ export class JobListingsPage implements OnInit {
 
   processListings(raw: any[]): any[] {
     return raw.map(listing => {
+      const structured = Array.isArray(listing.postings) ? listing.postings : [];
+      const roles = structured.length > 0
+        ? structured
+            .filter(p => (p.title || '').trim() && (p.url || '').trim())
+            .map(p => ({
+              title: (p.title || '').trim(),
+              location: (p.location || '').trim(),
+              url: (p.url || '').trim(),
+            }))
+        : this.parseRoles(listing.description_html);
       return {
         ...listing,
-        roles: this.parseRoles(listing.description_html),
+        roles,
       };
     });
   }
 
-  parseRoles(html: string): {title: string, url: string}[] {
+  parseRoles(html: string): {title: string, location: string, url: string}[] {
     if (!html) return [];
 
     // Strip HTML tags to work with plain text
@@ -47,11 +57,11 @@ export class JobListingsPage implements OnInit {
 
     if (urls.length === 0) {
       // No URLs — just return the text as a single entry
-      return text.length > 0 ? [{title: text, url: ''}] : [];
+      return text.length > 0 ? [{title: text, location: '', url: ''}] : [];
     }
 
     // Try splitting by URLs to find role names
-    const roles: {title: string, url: string}[] = [];
+    const roles: {title: string, location: string, url: string}[] = [];
     let remaining = text;
 
     for (const url of urls) {
@@ -63,12 +73,12 @@ export class JobListingsPage implements OnInit {
           const lines = before.split(/\n/).filter(l => l.trim());
           const title = lines[lines.length - 1].replace(/^[-|–]\s*/, '').trim();
           if (title.length > 0 && title.length < 200) {
-            roles.push({title, url});
+            roles.push({title, location: '', url});
           } else {
-            roles.push({title: this.shortenUrl(url), url});
+            roles.push({title: this.shortenUrl(url), location: '', url});
           }
         } else {
-          roles.push({title: this.shortenUrl(url), url});
+          roles.push({title: this.shortenUrl(url), location: '', url});
         }
         remaining = remaining.substring(idx + url.length).replace(/^\s*[-|–,]\s*/, '').trim();
       }
@@ -76,7 +86,7 @@ export class JobListingsPage implements OnInit {
 
     // If we couldn't parse anything meaningful, return the raw text as one block
     if (roles.length === 0 && text.length > 0) {
-      return [{title: text, url: ''}];
+      return [{title: text, location: '', url: ''}];
     }
 
     return roles;
@@ -127,7 +137,8 @@ export class JobListingsPage implements OnInit {
     }
     const words = this.searchText.toLowerCase().replace(/,|\.|-/g, ' ').split(' ').filter(w => w.trim().length);
     this.listings = this.allListings.filter(listing => {
-      const haystack = `${listing.sponsor_name || ''} ${listing.description_html || ''} ${listing.roles?.map(r => r.title).join(' ') || ''}`.toLowerCase();
+      const roleText = listing.roles?.map(r => `${r.title} ${r.location || ''}`).join(' ') || '';
+      const haystack = `${listing.sponsor_name || ''} ${listing.description_html || ''} ${roleText}`.toLowerCase();
       return words.every(word => haystack.includes(word));
     });
   }
@@ -141,6 +152,10 @@ export class JobListingsPage implements OnInit {
     if (url) {
       window.open(url, '_system', 'location=yes');
     }
+  }
+
+  getSponsorSlug(name: string): string {
+    return (name || '').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   }
 
   ngOnInit() {
