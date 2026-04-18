@@ -42,11 +42,11 @@
     </div>
 
     <div class="session-body">
-      <div *ngIf="keynoteData" class="keynote-speaker-card">
-        <img [src]="keynoteData.photo" [alt]="keynoteData.name" class="keynote-photo">
+      <div *ngFor="let keynote of keynoteData" class="keynote-speaker-card">
+        <img [src]="keynote.photo" [alt]="keynote.name" class="keynote-photo">
         <div class="keynote-info">
-          <h3>{{keynoteData.name}}</h3>
-          <p>{{keynoteData.bio}}</p>
+          <h3>{{keynote.name}}</h3>
+          <p>{{keynote.bio}}</p>
         </div>
       </div>
 
