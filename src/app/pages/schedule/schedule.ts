@@ -244,6 +244,12 @@ export class SchedulePage implements OnInit, OnDestroy {
     }, 500); // ms delay
   }
 
+  clearFilters() {
+    this.excludeTracks = [];
+    this.user.setScheduleFilters([]);
+    this.updateSchedule();
+  }
+
   async presentFilter() {
     const modal = await this.modalCtrl.create({
       component: ScheduleFilterPage,

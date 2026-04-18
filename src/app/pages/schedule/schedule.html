@@ -13,8 +13,11 @@
       <ion-button (click)="toggleFavorites()" class="header-action">
         <ion-icon slot="icon-only" [name]="segment === 'favorites' ? 'star' : 'star-outline'"></ion-icon>
       </ion-button>
-      <ion-button (click)="presentFilter()" class="header-action">
-        <ion-icon slot="icon-only" name="funnel-outline"></ion-icon>
+      <ion-button *ngIf="excludeTracks.length" (click)="clearFilters()" class="header-action filters-active" aria-label="Clear filters">
+        <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+      </ion-button>
+      <ion-button (click)="presentFilter()" class="header-action" [class.filters-active]="excludeTracks.length">
+        <ion-icon slot="icon-only" [name]="excludeTracks.length ? 'funnel' : 'funnel-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
