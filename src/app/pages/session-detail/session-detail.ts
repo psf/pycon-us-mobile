@@ -8,6 +8,13 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 import { Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 
+interface KeynoteAbstract {
+  match: string[];
+  title?: string;
+  eyebrow?: string;
+  paragraphs: string[];
+}
+
 @Component({
   selector: 'page-session-detail',
   styleUrls: ['./session-detail.scss'],
@@ -19,7 +26,40 @@ export class SessionDetailPage {
   isOpenSpace = false;
   isKeynote = false;
   keynoteData: any[] = [];
+  keynoteAbstract: KeynoteAbstract | null = null;
   defaultHref = '';
+
+  private keynoteAbstracts: KeynoteAbstract[] = [
+    {
+      match: ['Djangonaut', 'Rachell Calhoun', 'Tim Schilling'],
+      title: 'Djangonaut Space',
+      eyebrow: 'Joint keynote by Tim Schilling & Rachell Calhoun',
+      paragraphs: [
+        'Permission to board granted. Find out how we\u2019ve empowered people to contribute to Django, the third-party ecosystem, and the broader community.',
+        'Djangonaut Space is a contributor mentorship program for the Django framework. It centers around a free, 8-week group mentoring session where individuals will work self-paced in a semi-structured learning environment. The program launched its pilot session at the end of 2023 with Session 6 touching down in April of 2026.',
+        'The program started with the lofty goals of making contributing to Django more sustainable, helping people level up their Django code contributions, increasing diversity among our code contributors, and setting them up for leadership roles.',
+        'After seven iterations in three years, we are seeing the long-term payoffs. We\u2019re increasing contributions, developing leaders, and we\u2019ve seen how an inclusive environment that actively welcomes people in can fuel contributors on their own open-source journeys.',
+        'And yes, space puns intended.',
+      ],
+    },
+    {
+      match: ['Lin Qiao'],
+      title: 'Your AI Product Doesn\u2019t Have a Moat\u2026 Yet',
+      paragraphs: [
+        'Every company shipping an AI product faces the same problem: if you\u2019re calling someone else\u2019s API, you\u2019re building on rented land. Your competitor can make the same API call tomorrow and ship the same feature. The companies pulling ahead design their products and models concurrently.',
+        'Lin Qiao, CEO of Fireworks AI, will share examples from Cursor, Notion and Vercel \u2014 teams that integrated fine-tuned models into production to unlock features, cut latency and push code generation past SOTA. What they all have in common is a design pattern of tight feedback loops: when a user corrects an output or finds a better solution, that data improves the model, which improves the product, which generates better data. The product and model evolve together.',
+        'Lin will break down what this loop looks like in practice \u2014 evaluation frameworks, RFT workflows, infrastructure decisions \u2014 and cover the hard tradeoffs: when to fine-tune vs. prompt engineer, how to treat cost and latency as first-class design constraints, and why handing your data to a third-party API might build your competitor\u2019s next training set.',
+      ],
+    },
+    {
+      match: ['Pablo Galindo', 'Horizonte de sucesos', 'Event Horizon'],
+      title: 'Horizonte de sucesos / Event Horizon',
+      paragraphs: [
+        'Espa\u00f1ol \u2014 Mantener uno de los lenguajes de programaci\u00f3n m\u00e1s usados del mundo no es solo cuesti\u00f3n de c\u00f3digo. Es cargar con decisiones que afectan a millones de personas, ser parte de una comunidad que nunca duerme, y encontrar razones para seguir cuando nadie te lo pide y nadie te paga por hacerlo. El mundo del software est\u00e1 cambiando, y con \u00e9l, las reglas del juego para quienes lo sostienen desde dentro. En esta charla compartir\u00e9 lo que he aprendido despu\u00e9s de a\u00f1os en las trincheras del open source: qu\u00e9 significa realmente ser maintainer, qu\u00e9 se gana, qu\u00e9 se pierde, y por qu\u00e9 a pesar de todo sigue mereciendo la pena.',
+        'English \u2014 Maintaining one of the most widely used programming languages in the world is not just a matter of code. It means carrying decisions that affect millions of people, being part of a community that never sleeps, and finding reasons to keep going when nobody asks you to and nobody pays you for it. The world of software is shifting, and with it, the rules of the game for those who hold it together from the inside. In this talk I will share what I have learned after years in the trenches of open source: what it really means to be a maintainer, what you gain, what you lose, and why in spite of everything it is still worth it.',
+      ],
+    },
+  ];
 
   private keynoteSpeakers: Record<string, any> = {
     'Lin Qiao': {
@@ -71,6 +111,9 @@ export class SessionDetailPage {
           this.keynoteData = Object.entries(this.keynoteSpeakers)
             .filter(([name]) => sessionName.includes(name.toLowerCase()))
             .map(([name, data]) => ({ name, ...data }));
+          this.keynoteAbstract = this.keynoteAbstracts.find(
+            (a) => a.match.some((m) => sessionName.includes(m.toLowerCase()))
+          ) || null;
         }
 
         this.isFavorite = this.userProvider.hasFavorite(

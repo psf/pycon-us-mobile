@@ -72,6 +72,25 @@ ion-toolbar ion-button {
   margin: 0 0 8px;
   align-items: flex-start;
 
+  &.keynote-speaker-card-flipped {
+    display: block;
+
+    &::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .keynote-photo {
+      float: right;
+      margin: 0 0 8px 16px;
+    }
+
+    .keynote-info {
+      text-align: left;
+    }
+  }
+
   .keynote-photo {
     width: 80px;
     height: 80px;
@@ -213,5 +232,23 @@ ion-toolbar ion-button {
     padding-top: 4px;
     white-space: pre-line;
     word-wrap: break-word;
+  }
+
+  &.keynote-abstract {
+    margin-top: 8px;
+  }
+
+  .keynote-abstract-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--ion-text-color);
+  }
+
+  .keynote-abstract-eyebrow {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--ion-color-medium);
+    margin: 0 0 14px;
   }
 }
