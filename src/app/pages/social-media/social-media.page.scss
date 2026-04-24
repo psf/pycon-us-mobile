@@ -61,6 +61,11 @@ ion-title {
   width: 24px;
   height: 24px;
   margin-inline-end: 16px;
+  // Ionic's MD mode only applies top/bottom margins to ion-icon[slot="start"],
+  // not raw <img> — without this the Bluesky/X/PyPI rows collapse shorter than
+  // the ion-icon-based rows on Android.
+  align-self: center;
+  margin-block: 12px;
 }
 
 .social-icon.bluesky {
