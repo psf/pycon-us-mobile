@@ -1,6 +1,6 @@
 import { Component, ElementRef, ChangeDetectorRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
-import { AlertController, Config, Platform } from '@ionic/angular';
+import { AlertController, Config, NavController, Platform } from '@ionic/angular';
 import { StartScanOptions, BarcodeScanner, BarcodeFormat, LensFacing, ScanResult } from '@capacitor-mlkit/barcode-scanning';
 import { Storage } from '@ionic/storage-angular';
 import { ModalController } from '@ionic/angular';
@@ -35,6 +35,7 @@ export class MapPage implements OnInit, OnDestroy {
   sponsorList: any[] = [];
   isDev: boolean = !environment.production;
   filterBySponsor: boolean = false;
+  hasConsent: boolean = false;
 
   constructor(
     public confData: ConferenceData,
@@ -47,6 +48,7 @@ export class MapPage implements OnInit, OnDestroy {
     public modalCtrl: ModalController,
     public liveUpdateService: LiveUpdateService,
     public detectorRef: ChangeDetectorRef,
+    private nav: NavController,
   ) {}
 
   sortScans() {
@@ -229,6 +231,10 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   startScan = async () => {
+    if (!this.hasConsent) {
+      await this.showConsentDialog();
+      if (!this.hasConsent) return;
+    }
     const permission = await this.checkPermission();
     if (!permission) {
       this.show_permissions_error = true;
@@ -260,6 +266,10 @@ export class MapPage implements OnInit, OnDestroy {
   }
 
   async simulateScan() {
+    if (!this.hasConsent) {
+      await this.showConsentDialog();
+      if (!this.hasConsent) return;
+    }
     const fakeNames = [
       'Guido van Rossum', 'Carol Willing', 'Brett Cannon', 'Mariatta Wijaya',
       'Pablo Galindo', 'Dustin Ingram', 'Sumana Harihareswara', 'Ned Batchelder',
@@ -286,35 +296,43 @@ export class MapPage implements OnInit, OnDestroy {
     this.stopScan();
   }
 
-  async ngOnInit() {
-    BarcodeScanner.removeAllListeners();
-    this.ios = this.config.get('mode') === `ios`;
-    this.refresh_presentation();
-    setTimeout(this.syncAllPending, 60000);
-
-    // Show consent dialog on first use
+  async ionViewWillEnter() {
+    // Re-check consent every time the page becomes active. Ionic caches the
+    // component in the route stack, so ngOnInit only runs on first instantiation.
+    this.hasConsent = false;
     await this.showConsentDialog();
+    if (!this.hasConsent) return;
+
+    this.refresh_presentation();
 
     // Check if this is a staff user (has door_check but not lead_retrieval)
     const hasLeadRetrieval = await this.userData.checkHasLeadRetrieval();
     const hasDoorCheck = await this.userData.checkHasDoorCheck();
     if (!hasLeadRetrieval && hasDoorCheck) {
       this.isStaffScanner = true;
-      // Restore previously selected sponsor from storage
       const savedSponsorId = await this.storage.get('staff-sponsor-id');
       const savedSponsorName = await this.storage.get('staff-sponsor-name');
       const savedSponsorLogo = await this.storage.get('staff-sponsor-logo');
       if (savedSponsorId && savedSponsorName) {
         this.selectedSponsor = { id: savedSponsorId, name: String(savedSponsorName).replace(/^"|"$/g, ''), logo_url: savedSponsorLogo || null };
-      } else {
+      } else if (!this.selectedSponsor) {
         this.showSponsorSelector();
       }
     }
   }
 
+  async ngOnInit() {
+    BarcodeScanner.removeAllListeners();
+    this.ios = this.config.get('mode') === `ios`;
+    setTimeout(this.syncAllPending, 60000);
+  }
+
   async showConsentDialog() {
-    const hasConsent = await this.userData.checkScannerConsent();
-    if (hasConsent) return;
+    const storedConsent = await this.userData.checkScannerConsent();
+    if (storedConsent) {
+      this.hasConsent = true;
+      return;
+    }
 
     const alert = await this.alertCtrl.create({
       header: 'Lead Scanner Consent',
@@ -325,21 +343,25 @@ export class MapPage implements OnInit, OnDestroy {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            // Disable scanning — user didn't consent
-            this.scan_start_button_visibility = 'hidden';
+            this.hasConsent = false;
           },
         },
         {
           text: 'I Agree',
           handler: () => {
+            this.hasConsent = true;
             this.userData.setScannerConsent(true);
           },
         },
       ],
     });
     await alert.present();
-    // Wait for dismissal before continuing
     await alert.onDidDismiss();
+
+    if (!this.hasConsent) {
+      // User declined — leave the page so nothing on it can be used
+      this.nav.navigateRoot('/app/tabs/schedule');
+    }
   }
 
   async showSponsorSelector() {
