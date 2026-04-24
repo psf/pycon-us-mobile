@@ -42,6 +42,11 @@ export class ConferenceData {
     return this.trackIcons[trackName] || 'mic-outline';
   }
 
+  private resolveSpeakerPhoto(photo?: string | null): string {
+    if (!photo) return 'assets/img/person-circle-outline.png';
+    return /^https?:\/\//.test(photo) ? photo : `${environment.baseUrl}${photo}`;
+  }
+
   constructor(
     public http: HttpClient,
     public user: UserData,
@@ -234,7 +239,7 @@ export class ConferenceData {
               "name": speaker.name,
               // only display the speaker photo if it's not null in the response.
               // otherwise, show a default fallback photo
-              "profilePic": speaker.photo ? speaker.photo : 'assets/img/person-circle-outline.png',
+              "profilePic": this.resolveSpeakerPhoto(speaker.photo),
               "about": speaker.bio,
             });
           }
@@ -329,7 +334,7 @@ export class ConferenceData {
                   "name": speaker.name,
                   // only display the speaker photo if it's not null in the response.
                   // otherwise, show a default fallback photo
-                  "profilePic": speaker.photo ? speaker.photo : 'assets/img/person-circle-outline.png',
+                  "profilePic": this.resolveSpeakerPhoto(speaker.photo),
                   "about": speaker.bio,
                 });
               }
