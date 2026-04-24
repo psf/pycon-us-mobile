@@ -50,5 +50,9 @@
 	{
 		"pkg": "@capacitor/status-bar",
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
+	},
+	{
+		"pkg": "@ebarooni/capacitor-calendar",
+		"classpath": "dev.barooni.capacitor.calendar.CapacitorCalendarPlugin"
 	}
 ]
