@@ -13,4 +13,13 @@ ext {
     androidxJunitVersion = '1.2.1'
     androidxEspressoCoreVersion = '3.6.1'
     cordovaAndroidVersion = '10.1.1'
+
+    // Override @capacitor-mlkit/barcode-scanning's CameraX default (1.1.0).
+    // Play Console rejects releases whose native libraries are not aligned
+    // for 16 KB memory pages — libimage_processing_util_jni.so at CameraX
+    // 1.1.0 is 4 KB-aligned. 1.4.0+ ships 16 KB-aligned libs.
+    androidxCameraCamera2Version = '1.4.2'
+    androidxCameraCoreVersion = '1.4.2'
+    androidxCameraLifecycleVersion = '1.4.2'
+    androidxCameraViewVersion = '1.4.2'
 }
