@@ -11,11 +11,25 @@
 }
 .bannerSponsor {
   padding-bottom: 0;
+  gap: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
-.bannerSponsor img {
+.bannerSponsor-logo {
   background-color: white;
   border-radius: .25em;
   padding: .25em;
+  max-width: 110px;
+  max-height: 44px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.bannerSponsor-text {
+  font-size: smaller;
+  flex: 1;
+  min-width: 0;
 }
 
 .staff-tools-sheet {
