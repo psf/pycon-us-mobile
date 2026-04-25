@@ -93,3 +93,64 @@ ion-item.indent {
 ion-accordion div[slot="content"] ion-item {
   --padding-start: 40px;
 }
+
+/*
+ * Sidebar "Install Latest Update" CTA — soft tinted card inset from the menu edges.
+ */
+ion-menu ion-item.update-cta {
+  --background: rgba(var(--ion-color-primary-rgb), 0.10);
+  --background-hover: rgba(var(--ion-color-primary-rgb), 0.16);
+  --background-activated: rgba(var(--ion-color-primary-rgb), 0.20);
+  --background-focused: rgba(var(--ion-color-primary-rgb), 0.18);
+  --color: var(--ion-color-primary);
+  --border-radius: 14px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-end: 6px;
+  --min-height: 60px;
+
+  margin: 4px 14px 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(var(--ion-color-primary-rgb), 0.18);
+
+  .update-cta-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(var(--ion-color-primary-rgb), 0.18);
+    margin-right: 12px;
+    margin-inline-end: 12px;
+
+    ion-icon {
+      font-size: 20px;
+      color: var(--ion-color-primary);
+    }
+  }
+
+  ion-label {
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ion-color-primary);
+      margin: 0;
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--ion-color-medium, #6c7280);
+      margin-top: 2px;
+      opacity: 0.95;
+      white-space: normal;
+    }
+  }
+
+  .update-cta-chevron {
+    color: var(--ion-color-primary);
+    font-size: 18px;
+    margin-inline-start: 4px;
+  }
+}

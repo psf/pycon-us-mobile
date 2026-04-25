@@ -8,6 +8,19 @@
             PyCon US 2026
           </ion-list-header>
 
+          <ion-menu-toggle *ngIf="liveUpdateService.needsUpdate" autoHide="true">
+            <ion-item button detail="false" lines="none" class="update-cta" (click)="liveUpdateService.performAutomaticUpdate()">
+              <div class="update-cta-icon" slot="start">
+                <ion-icon name="cloud-download-outline" aria-hidden="true"></ion-icon>
+              </div>
+              <ion-label>
+                <h3>Install Latest Update</h3>
+                <p>New content is ready &mdash; tap to refresh</p>
+              </ion-label>
+              <ion-icon class="update-cta-chevron" name="chevron-forward" slot="end" aria-hidden="true"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle *ngIf="isDev" autoHide="false">
             <ion-item routerLink="/app/tabs/dev-tools" routerLinkActive="active" routerDirection="root" detail="false" color="warning">
               <ion-icon slot="start" name="construct-outline"></ion-icon>
@@ -125,7 +138,6 @@
               <ion-item slot="header" color="white">
                 <ion-icon slot="start" name="information-circle-outline"></ion-icon>
                 <ion-label>About PyCon US</ion-label>
-                <ion-badge *ngIf="liveUpdateService.needsUpdate" slot="end">Update</ion-badge>
               </ion-item>
               <div slot="content">
                 <ion-menu-toggle autoHide="false" *ngFor="let p of aboutPages; let i = index">
