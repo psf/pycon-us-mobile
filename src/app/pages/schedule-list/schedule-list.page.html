@@ -44,7 +44,7 @@
         </div>
         <p class="session-meta">
           <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.day}} {{session.timeStart}} – {{session.timeEnd}}</span>
-          <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+          <span *ngIf="session.displayLocation || session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.displayLocation || session.location}}</span>
         </p>
         <div *ngIf="session.speakers?.length" class="speaker-avatars">
           <ion-avatar *ngFor="let speaker of session.speakers" class="speaker-avatar-small">
@@ -91,7 +91,7 @@
                     {{session.name}}
                   </ion-card-title>
                   <ion-card-subtitle>
-                    {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
+                    {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.displayLocation || session.location}}
                   </ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>

@@ -38,7 +38,7 @@
             <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
             <p class="session-meta">
               <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
-              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+              <span *ngIf="session.displayLocation || session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.displayLocation || session.location}}</span>
             </p>
             <p *ngIf="session?.speakerNames?.length" class="session-speakers">
               <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
@@ -67,7 +67,7 @@
             <span *ngIf="session.isSpanish" class="track-badge spanish-badge">En Español</span>
             <p class="session-meta">
               <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}}<span *ngIf="session.timeStart !== session.timeEnd"> – {{session.timeEnd}}</span></span>
-              <span *ngIf="session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.location}}</span>
+              <span *ngIf="session.displayLocation || session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.displayLocation || session.location}}</span>
             </p>
             <p *ngIf="session?.speakerNames?.length" class="session-speakers">
               <ion-icon name="person-outline"></ion-icon> {{session.speakerNames.join(', ')}}
