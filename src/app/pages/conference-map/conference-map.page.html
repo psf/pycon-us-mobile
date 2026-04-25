@@ -4,6 +4,11 @@
       <ion-menu-button color="medium"></ion-menu-button>
     </ion-buttons>
     <ion-title>Conference Center</ion-title>
+    <ion-buttons slot="end" *ngIf="mapView === 'expo-hall'">
+      <ion-button (click)="toggleExpoSearch()" aria-label="Search booths">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
     <ion-segment [(ngModel)]="mapView" value="floor-plans">
@@ -12,6 +17,9 @@
       </ion-segment-button>
       <ion-segment-button value="3d-tour">
         <ion-label>3D Tour</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="expo-hall">
+        <ion-label>Expo Hall</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -41,5 +49,7 @@
     title="PyCon US Venue 3D Map"
     style="border: 0; min-height: 100%;">
   </iframe>
+
+  <app-expo-hall-map *ngIf="mapView === 'expo-hall'" #expoMap></app-expo-hall-map>
 
 </ion-content>

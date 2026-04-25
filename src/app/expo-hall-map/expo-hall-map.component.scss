@@ -1,0 +1,184 @@
+// Expo Hall — interactive floor plan with sponsor logo overlays.
+// Shared component used by the standalone Expo Hall page and the
+// "Expo Hall" segment in the Conference Map page.
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.expo-hall-search-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 110;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.expo-hall-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-inner {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+// Booth overlay positioned on the floor plan
+.boothgroup {
+  position: absolute;
+  cursor: pointer;
+
+  .boothgroupinner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .booth {
+    position: absolute;
+    inset: 0;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .booth-img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  &:active .booth,
+  &:hover .booth {
+    background: rgba(240, 192, 64, 0.28);
+    outline: 2px solid rgba(240, 192, 64, 0.85);
+  }
+
+  &.highlighted .booth {
+    background: rgba(240, 192, 64, 0.35);
+    outline: 3px solid #f0c040;
+    animation: pulse 1.2s ease-in-out 2;
+  }
+}
+
+@keyframes pulse {
+  0%   { background: rgba(240, 192, 64, 0.15); }
+  50%  { background: rgba(240, 192, 64, 0.45); }
+  100% { background: rgba(240, 192, 64, 0.15); }
+}
+
+// Search results dropdown
+.search-results {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--ion-background-color, #fff);
+  border-bottom: 1px solid var(--ion-color-light, #e0e0e0);
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ion-color-light, #f0f0f0);
+  cursor: pointer;
+
+  &:active {
+    background: var(--ion-color-light, #f5f5f5);
+  }
+
+  .booth-name {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--ion-text-color, #222);
+  }
+
+  .booth-number {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    color: var(--ion-color-medium, #888);
+  }
+}
+
+// Tap popup at the bottom of the screen
+.booth-popup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 0 16px 16px;
+}
+
+.booth-popup-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--ion-background-color, #fff);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
+}
+
+.booth-popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+
+  // The chevron sits inline at the right side of the link content so the
+  // tappable target spans the whole sponsor name + level row.
+  .booth-popup-chevron {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ion-color-medium, #888);
+    font-size: 1rem;
+  }
+}
+
+a.booth-popup-content {
+  padding-right: 24px;
+}
+
+.booth-popup-name {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  font-weight: 700;
+  color: var(--ion-text-color, #111);
+}
+
+.booth-popup-number {
+  font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+  color: var(--ion-color-medium, #888);
+}
+
+.close-btn {
+  --color: var(--ion-color-medium, #888);
+  margin-left: 8px;
+}

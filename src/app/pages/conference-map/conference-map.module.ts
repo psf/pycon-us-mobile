@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { PinchZoomModule } from '@ciag/ngx-pinch-zoom';
 
+import { ExpoHallMapModule } from '../../expo-hall-map/expo-hall-map.module';
+
 import { ConferenceMapPageRoutingModule } from './conference-map-routing.module';
 
 import { ConferenceMapPage } from './conference-map.page';
@@ -16,6 +18,7 @@ import { ConferenceMapPage } from './conference-map.page';
     FormsModule,
     IonicModule,
     PinchZoomModule,
+    ExpoHallMapModule,
     ConferenceMapPageRoutingModule
   ],
   declarations: [ConferenceMapPage]

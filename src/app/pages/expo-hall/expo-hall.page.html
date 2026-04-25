@@ -10,80 +10,8 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-
-  <ion-toolbar *ngIf="showSearchbar">
-    <ion-searchbar
-      #searchBar
-      [debounce]="250"
-      showCancelButton="always"
-      [(ngModel)]="searchQuery"
-      (ionChange)="onSearch()"
-      (ionClear)="clearSearch()"
-      (ionCancel)="clearSearch()"
-      placeholder="Search sponsors...">
-    </ion-searchbar>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-  <!-- Search results dropdown -->
-  <div class="search-results" *ngIf="searchResults.length > 0">
-    <div
-      class="search-result-item"
-      *ngFor="let booth of searchResults"
-      (click)="selectBooth(booth)">
-      <span class="booth-name">{{ booth.name }}</span>
-      <span class="booth-number">Booth {{ booth.id }}</span>
-    </div>
-  </div>
-
-  <!-- Map -->
-  <div class="map-container">
-    <pinch-zoom class="expo-hall-map">
-      <div class="map-inner">
-
-        <img
-          src="assets/img/pycon-us-2026-floorplan-nologo.png"
-          alt="PyCon US 2026 Expo Hall Floor Plan"
-        />
-
-        <div
-          *ngFor="let booth of booths"
-          class="boothgroup"
-          [id]="'boothgroup-' + booth.id"
-          [ngStyle]="getBoothStyle(booth)"
-          (click)="onBoothTap(booth)"
-          [class.highlighted]="highlightedBoothId === booth.id">
-          <div class="boothgroupinner">
-            <div [id]="'booth' + booth.id" class="booth">
-              <img *ngIf="booth.logoUrl" class="booth-img" [src]="booth.logoUrl" [alt]="booth.name + ' logo'" />
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </pinch-zoom>
-  </div>
-
-  <!-- Tap popup -->
-  <div class="booth-popup" *ngIf="selectedBooth" (click)="selectedBooth = null">
-    <div class="booth-popup-inner" (click)="$event.stopPropagation()">
-      <a *ngIf="selectedBooth.level"
-         class="booth-popup-content"
-         [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + getSponsorSlug(selectedBooth.name)">
-        <span class="booth-popup-name">{{ selectedBooth.name }}</span>
-        <span class="booth-popup-number">Booth {{ selectedBooth.id }} &middot; {{ selectedBooth.level }}</span>
-        <ion-icon class="booth-popup-chevron" name="chevron-forward-outline"></ion-icon>
-      </a>
-      <div *ngIf="!selectedBooth.level" class="booth-popup-content">
-        <span class="booth-popup-name">{{ selectedBooth.name }}</span>
-        <span class="booth-popup-number">Booth {{ selectedBooth.id }}</span>
-      </div>
-      <ion-button fill="clear" size="small" class="close-btn" (click)="selectedBooth = null" aria-label="Close booth details">
-        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-      </ion-button>
-    </div>
-  </div>
-
+  <app-expo-hall-map #expoMap></app-expo-hall-map>
 </ion-content>

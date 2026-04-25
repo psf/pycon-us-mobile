@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PinchZoomModule } from '@ciag/ngx-pinch-zoom';
+import { ExpoHallMapModule } from '../../expo-hall-map/expo-hall-map.module';
 
 import { ExpoHallPageRoutingModule } from './expo-hall-routing.module';
 
@@ -15,8 +15,8 @@ import { ExpoHallPage } from './expo-hall.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    PinchZoomModule,
-    ExpoHallPageRoutingModule
+    ExpoHallMapModule,
+    ExpoHallPageRoutingModule,
   ],
   declarations: [ExpoHallPage]
 })
