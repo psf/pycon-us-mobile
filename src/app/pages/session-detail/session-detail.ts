@@ -123,7 +123,7 @@ export class SessionDetailPage implements OnDestroy {
         (s: any) => String(s.id) === String(sessionId)
       );
       this.session = foundSession;
-      this.isOpenSpace = this.session?.tracks?.includes('open-space');
+      this.isOpenSpace = this.session?.track === 'Open Space' || this.session?.tracks?.includes('Open Space');
       this.isKeynote = this.session?.tracks?.includes('keynote') || this.session?.track === 'Keynote';
       // Only the *collapsed* "Posters" schedule slot lists every poster;
       // individual poster session-detail pages show their own description.

@@ -207,7 +207,9 @@ export class ConferenceData {
         "startUtc": openSpace.start,
         "endUtc": openSpace.end,
         "track": "Open Space",
-        "tracks": ["open-space"],
+        // Use the display name everywhere so excludeTracks (driven by the
+        // filter modal which surfaces display names) actually matches.
+        "tracks": ["Open Space"],
         "id": openSpace.conf_key + 9000,
         "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'}),
         "imageUrl": this.resolveOpenSpaceImage(openSpace.image_url),

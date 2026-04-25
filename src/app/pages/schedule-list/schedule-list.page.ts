@@ -167,22 +167,19 @@ export class ScheduleListPage implements OnInit {
               this.trackName = trackNameToCompare;
             }
           })
+          // Open-space sessions now expose 'Open Space' as their track
+          // (matching the filter modal's display name) — the legacy
+          // 'open-space' slug is no longer in session.tracks. Just toggle
+          // the display name in/out of excludeTracks based on which list
+          // we're viewing.
           if (slug !== 'open-spaces') {
-            if (!this.excludeTracks.includes('open-space')) {
-              this.excludeTracks.push('open-space');
-            }
-            const openSpaceDisplayNameIndex = this.excludeTracks.indexOf('Open Space');
-            if (openSpaceDisplayNameIndex > -1 && this.excludeTracks.includes('open-space')) {
-              this.excludeTracks.splice(openSpaceDisplayNameIndex, 1);
+            if (!this.excludeTracks.includes('Open Space')) {
+              this.excludeTracks.push('Open Space');
             }
           } else {
-            const openSpaceTrackIndex = this.excludeTracks.indexOf('open-space');
-            if (openSpaceTrackIndex > -1) {
-              this.excludeTracks.splice(openSpaceTrackIndex, 1);
-            }
-            const openSpaceDisplayNameIndex = this.excludeTracks.indexOf('Open Space');
-            if (openSpaceDisplayNameIndex > -1) {
-                this.excludeTracks.splice(openSpaceDisplayNameIndex, 1);
+            const i = this.excludeTracks.indexOf('Open Space');
+            if (i > -1) {
+              this.excludeTracks.splice(i, 1);
             }
           }
         });
