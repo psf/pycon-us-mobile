@@ -168,6 +168,17 @@ export class ConferenceData {
       this.data.sessions.push(session);
     });
 
+    // Drop plenary slots that are mislabeled posters. The conference.json
+    // upstream sometimes returns the daily posters block as kind="plenary" with
+    // a name like "Posters (Hall AB)" — see PYMOBIL-108. The actual poster
+    // slots come through correctly as kind="poster" and are collapsed below,
+    // so this entry is always a duplicate.
+    data.schedule = data.schedule.filter((slot: any) => {
+      if (slot.kind !== 'plenary') return true;
+      const cleanName = markdownToTxt(slot.name).replace(/\s*\([^)]*\)\s*$/, '').trim();
+      return !/^posters?$/i.test(cleanName);
+    });
+
     // Collapse repeating slots (posters, breaks) into single entries per day/time
     const collapseKinds = ['poster', 'break'];
     const collapsedGroups = new Map<string, any>();
