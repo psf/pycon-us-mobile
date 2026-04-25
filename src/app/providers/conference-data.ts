@@ -646,6 +646,11 @@ export class ConferenceData {
           }
         });
       session.roomLinks = links;
+      // Keep session.location as the comma-joined raw string (the room
+      // fanout above relies on it). For the schedule timeline we show
+      // only the first room — wide multi-room labels for breaks/lunch
+      // wrapped onto multiple lines and looked terrible.
+      session.displayLocation = links.length > 0 ? links[0].name : (session.location || '');
     });
     roomMap.forEach((room: any) => {
       room.sessions.sort(
