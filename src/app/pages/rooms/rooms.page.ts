@@ -8,6 +8,7 @@ import { ConferenceData } from '../../providers/conference-data';
 })
 export class RoomsPage implements OnInit {
   rooms: any[] = [];
+  showTitle = false;
 
   constructor(private confData: ConferenceData) {}
 
@@ -15,5 +16,9 @@ export class RoomsPage implements OnInit {
     this.confData.getRooms().subscribe((rooms: any[]) => {
       this.rooms = rooms;
     });
+  }
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
   }
 }

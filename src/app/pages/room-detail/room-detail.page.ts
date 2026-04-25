@@ -19,6 +19,7 @@ export class RoomDetailPage implements OnInit, OnDestroy {
   days: RoomDay[] = [];
   loaded = false;
   highlightSessionId: any = null;
+  showTitle = false;
 
   private paramSub?: Subscription;
   private dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -42,6 +43,10 @@ export class RoomDetailPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramSub?.unsubscribe();
+  }
+
+  onScroll(event: any) {
+    this.showTitle = event.detail.scrollTop > 100;
   }
 
   private loadRoom(slug: string | null) {

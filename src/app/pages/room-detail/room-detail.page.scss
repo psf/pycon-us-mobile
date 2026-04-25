@@ -1,26 +1,52 @@
-.room-hero {
-  text-align: center;
-  padding: 28px 16px 18px;
-  background: linear-gradient(135deg, var(--ion-color-primary, #2c4392) 0%, color-mix(in srgb, var(--ion-color-primary, #2c4392) 60%, #14224d) 100%);
-  color: #fff;
+ion-header {
+  background: linear-gradient(180deg, #3B3EA9 0%, #3B3EA9 100%);
+  &::after { display: none; }
+}
 
-  .room-hero-icon {
-    font-size: 36px;
-    color: #fff;
-    margin-bottom: 6px;
-    opacity: 0.85;
+ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: #ffffff;
+}
+
+ion-toolbar ion-back-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  &.title-visible {
+    opacity: 1;
+  }
+}
+
+.page-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px 32px;
+  background: linear-gradient(180deg, #3B3EA9 23.5%, #101136 53.29%);
+  color: #fff;
+  text-align: center;
+
+  .page-hero-icon {
+    font-size: 40px;
+    color: #4DD8E6;
+    margin-bottom: 10px;
   }
 
   h1 {
-    font-size: 24px;
-    font-weight: 700;
     margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
   }
 
   p {
-    margin-top: 4px;
-    font-size: 13px;
-    opacity: 0.85;
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
   }
 }
 

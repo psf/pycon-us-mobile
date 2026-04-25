@@ -3,18 +3,18 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/app/tabs/rooms"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ room?.name || 'Room' }}</ion-title>
+    <ion-title [class.title-visible]="showTitle">{{ room?.name || 'Room' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
   <div *ngIf="loaded && !room" class="empty-state">
     <ion-icon name="alert-circle-outline"></ion-icon>
     <p>Room not found.</p>
   </div>
 
-  <div *ngIf="room" class="room-hero">
-    <ion-icon name="pin-outline" class="room-hero-icon"></ion-icon>
+  <div *ngIf="room" class="page-hero">
+    <ion-icon name="pin" class="page-hero-icon"></ion-icon>
     <h1>{{ room.name }}</h1>
     <p>{{ room.sessions.length }} {{ room.sessions.length === 1 ? 'session' : 'sessions' }} scheduled</p>
   </div>

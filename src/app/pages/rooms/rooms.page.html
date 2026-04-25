@@ -3,11 +3,17 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Rooms</ion-title>
+    <ion-title [class.title-visible]="showTitle">Rooms</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+  <div class="page-hero">
+    <ion-icon name="map" class="page-hero-icon"></ion-icon>
+    <h1>Rooms</h1>
+    <p>Browse sessions by location</p>
+  </div>
+
   <div *ngIf="!rooms.length" class="empty-state">
     <ion-icon name="pin-outline"></ion-icon>
     <p>Loading rooms&hellip;</p>
