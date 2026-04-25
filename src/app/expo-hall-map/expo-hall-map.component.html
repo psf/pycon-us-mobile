@@ -25,7 +25,7 @@
 
 <!-- Map -->
 <div class="map-container">
-  <pinch-zoom class="expo-hall-map">
+  <pinch-zoom #pinchZoom class="expo-hall-map" [autoZoomOut]="false" [doubleTap]="true" [wheel]="true" [draggableImage]="false">
     <div class="map-inner">
 
       <img
@@ -54,6 +54,11 @@
 <!-- Tap popup -->
 <div class="booth-popup" *ngIf="selectedBooth" (click)="selectedBooth = null">
   <div class="booth-popup-inner" (click)="$event.stopPropagation()">
+    <img
+      *ngIf="selectedBooth.logoUrl"
+      class="booth-popup-logo"
+      [src]="selectedBooth.logoUrl"
+      [alt]="selectedBooth.name + ' logo'" />
     <a *ngIf="selectedBooth.level"
        class="booth-popup-content"
        [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + getSponsorSlug(selectedBooth.name)">

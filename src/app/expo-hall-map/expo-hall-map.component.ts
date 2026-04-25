@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, LoadingController } from '@ionic/angular';
 
 import { ConferenceData } from '../providers/conference-data';
@@ -22,14 +22,22 @@ export interface BoothData {
   templateUrl: './expo-hall-map.component.html',
   styleUrls: ['./expo-hall-map.component.scss'],
 })
-export class ExpoHallMapComponent implements OnInit {
+export class ExpoHallMapComponent implements OnInit, AfterViewInit {
   @ViewChild('searchBar') searchBar!: IonSearchbar;
+  @ViewChild('pinchZoom') pinchZoomCmp?: { pinchZoom?: { maxScale: number } };
 
   showSearchbar = false;
   searchQuery = '';
   searchResults: BoothData[] = [];
   selectedBooth: BoothData | null = null;
   highlightedBoothId: string | null = null;
+
+  // Static logo fallbacks for booths that don't come through the sponsor API
+  // (PSF, community booths, attendee lounge, etc.). Keyed by booth id.
+  private readonly STATIC_BOOTH_LOGOS: { [id: string]: string } = {
+    '407': 'assets/img/python-logo.png',
+    '606': 'assets/img/pycon-us-2026-logo.svg',
+  };
 
   // Booth coordinates in the original 8000×5655 floor plan image.
   // Names are the seed labels — they get overwritten with the live sponsor
@@ -108,7 +116,38 @@ export class ExpoHallMapComponent implements OnInit {
     this.loadSponsors();
   }
 
+  ngAfterViewInit() {
+    // @ciag/ngx-pinch-zoom hardcodes defaultMaxScale=3 and only auto-derives
+    // a higher cap when the first descendant is an <img> AND limitZoom is
+    // the string "original image size". Our content is wrapped in a div so
+    // the auto-detect path is never taken; passing a numeric limitZoom is
+    // silently ignored. Reach into the underlying IvyPinch instance after
+    // it's constructed and bump maxScale directly. Polled because the
+    // instance is created during ngOnInit on the child component.
+    const start = Date.now();
+    const tick = () => {
+      const inner = this.pinchZoomCmp?.pinchZoom;
+      if (inner) {
+        inner.maxScale = 25;
+        return;
+      }
+      if (Date.now() - start < 2000) {
+        setTimeout(tick, 50);
+      }
+    };
+    tick();
+  }
+
   loadSponsors(showLoader = false) {
+    // Seed static fallbacks first so the API merge can override them when a
+    // booth does come through as a sponsor; otherwise PSF/community booths
+    // remain blank.
+    for (const booth of this.booths) {
+      if (!booth.logoUrl && this.STATIC_BOOTH_LOGOS[booth.id]) {
+        booth.logoUrl = this.STATIC_BOOTH_LOGOS[booth.id];
+      }
+    }
+
     const apply = (sponsors: any) => {
       for (const list of Object.values(sponsors || {})) {
         for (const sponsor of list as any[]) {
