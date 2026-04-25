@@ -43,6 +43,7 @@ export class LiveUpdateService {
     this.channel = result.liveUpdate?.channel || '';
     if (this.updateAvailable.activeApplicationPathChanged) {
         this.needsUpdate = true;
+        document.body.classList.add('has-pending-update');
     }
   }
 
