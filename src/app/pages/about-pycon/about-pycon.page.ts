@@ -90,23 +90,6 @@ export class AboutPyconPage implements OnInit {
     this.liveUpdateService.checkForUpdate();
   }
 
-  async performAutomaticUpdate() {
-   this.loadingCtrl.create({
-    message: 'Installing the latest build...',
-    duration: 60000,
-   }).then((loader) => {
-     loader.present();
-     if (this.liveUpdateService.needsUpdate) {
-         this.liveUpdateService.reload();
-         setTimeout(() => {loader.dismiss()}, 1000);
-     } else {
-         setTimeout(() => {loader.dismiss()}, 1000);
-     }
-   }).catch((err) => {
-     console.log(err);
-   });
-  }
-
   ngOnInit() {
     this.liveUpdateService.checkForUpdate();
     this.reloadContent();

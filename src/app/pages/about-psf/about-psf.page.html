@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+      <ion-button *ngIf="liveUpdateService.needsUpdate" (click)="liveUpdateService.performAutomaticUpdate()" fill="clear" aria-label="Install latest update">
+        <ion-icon slot="icon-only" name="cloud-download-outline" color="primary"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title [class.title-visible]="showTitle">Python Software Foundation</ion-title>
   </ion-toolbar>
