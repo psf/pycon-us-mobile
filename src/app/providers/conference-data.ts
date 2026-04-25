@@ -36,6 +36,7 @@ export class ConferenceData {
     'Security': 'shield-checkmark-outline',
     'Charla': 'chatbubbles-outline',
     'Ai': 'hardware-chip-outline',
+    'Open Space': 'people-circle-outline',
   };
 
   getTrackIcon(trackName: string): string {
@@ -177,6 +178,13 @@ export class ConferenceData {
       });
     });
 
+    // Register the Open Space track up front so it appears in the schedule
+    // filter even when the user has it hidden by default — they need a way
+    // to re-enable it.
+    if (data['open-spaces'].length && !this.data.tracks.find((t: any) => t && t.name === 'Open Space')) {
+      this.data.tracks.push({ name: 'Open Space', icon: this.getTrackIcon('Open Space') });
+    }
+
     data['open-spaces'].forEach((openSpace: any) => {
       var start = new Date(openSpace.start);
       var end = new Date(openSpace.end);
@@ -184,7 +192,11 @@ export class ConferenceData {
         "name": openSpace.title,
         "color": 'light',
         "preRegistered": false,
-        "listRender": true,
+        // Tap goes to the session detail page (which has open-space-aware
+        // rendering already). Setting listRender:true would route taps to
+        // the Open Spaces list instead — fine when this entry only existed
+        // there, but now that it's inline on the schedule we want detail.
+        "listRender": false,
         "section": "open-spaces",
         "location": openSpace.room_display,
         "description": openSpace.description,

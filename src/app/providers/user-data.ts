@@ -279,8 +279,14 @@ export class UserData {
 
   getScheduleFilters(): Promise<Array<string>> {
     return this.storage.get('scheduleFilters').then((value) => {
-      // If there are none, return an empty array
-      return value || [];
+      // First-time users default to hiding Open Spaces from the schedule
+      // (they're conference-day-only and clutter the timeline before then).
+      // Anyone who has explicitly toggled the filter — even to clear all
+      // exclusions, which is stored as `[]` — keeps their preference.
+      if (value === null || value === undefined) {
+        return ['Open Space'];
+      }
+      return value;
     });
   }
 
