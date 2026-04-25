@@ -123,6 +123,7 @@ export class SchedulePage implements OnInit, OnDestroy {
   }
 
   async handleRefresh(event) {
+    this.liveUpdateService.checkForUpdate();
     this.reloadSchedule(true).then(() => {
       setTimeout(() => {
         event.target.complete();
