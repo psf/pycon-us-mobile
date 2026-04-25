@@ -121,6 +121,12 @@ export class TabsPage implements OnInit {
     this.router.navigateByUrl(path);
   }
 
+  goToSponsor(sponsor: any) {
+    if (!sponsor?.name) return;
+    const slug = String(sponsor.name).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    this.router.navigateByUrl(`/app/tabs/sponsors/sponsor-detail/${slug}`);
+  }
+
   listenForLoginEvents() {
     window.addEventListener('user:login', () => {
       this.checkHasLeadRetrieval();

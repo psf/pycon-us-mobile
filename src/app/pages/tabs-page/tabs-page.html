@@ -1,5 +1,5 @@
 <ion-tabs>
-  <ion-tab-bar class="bannerSponsor bannerSponsorHidden" slot="bottom" *ngFor="let BannerSponsor of sponsors">
+  <ion-tab-bar class="bannerSponsor bannerSponsorHidden" slot="bottom" *ngFor="let BannerSponsor of sponsors" (click)="goToSponsor(BannerSponsor)" role="button" [attr.aria-label]="'View ' + BannerSponsor.name + ' sponsor details'">
     <img class="bannerSponsor-logo" src="{{BannerSponsor.logo_url}}">
     <span class="bannerSponsor-text">{{BannerSponsor.name}} is a {{BannerSponsor.level}}<br> Sponsor of PyCon US 2026</span>
   </ion-tab-bar>
