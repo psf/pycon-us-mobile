@@ -34,11 +34,19 @@
           <span class="dev-value">{{liveUpdateService.appVersion}}</span>
         </div>
         <div class="dev-row">
-          <span class="dev-label">Build</span>
+          <span class="dev-label">Native Build</span>
           <span class="dev-value">{{liveUpdateService.build}}</span>
         </div>
+        <div class="dev-row" *ngIf="liveUpdateService.snapshot?.buildId">
+          <span class="dev-label">Live Update Build</span>
+          <span class="dev-value">#{{liveUpdateService.snapshot.buildId}}</span>
+        </div>
+        <div class="dev-row" *ngIf="liveUpdateService.channel">
+          <span class="dev-label">Channel</span>
+          <span class="dev-value">{{liveUpdateService.channel}}</span>
+        </div>
         <div class="dev-row">
-          <span class="dev-label">Environment</span>
+          <span class="dev-label">API</span>
           <span class="dev-value">{{environmentUrl}}</span>
         </div>
         <ion-button *ngIf="loggedIn" expand="block" fill="outline" size="small" (click)="shareDebug()" class="dev-btn">
