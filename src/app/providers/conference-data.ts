@@ -47,6 +47,14 @@ export class ConferenceData {
     return /^https?:\/\//.test(photo) ? photo : `${environment.baseUrl}${photo}`;
   }
 
+  private resolveOpenSpaceImage(image?: string | null): string | null {
+    // Mirror resolveSpeakerPhoto: backend returns site-relative paths
+    // (/2026/media/open_spaces_images/foo.png) which break under livereload
+    // because the document origin is the dev server, not the API host.
+    if (!image) return null;
+    return /^https?:\/\//.test(image) ? image : `${environment.baseUrl}${image}`;
+  }
+
   slugifyRoom(name: string): string {
     return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   }
@@ -190,9 +198,28 @@ export class ConferenceData {
         "tracks": ["open-space"],
         "id": openSpace.conf_key + 9000,
         "day": start.toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'}),
-        "imageUrl": openSpace.image_url,
+        "imageUrl": this.resolveOpenSpaceImage(openSpace.image_url),
       }
       this.data.sessions.push(session);
+
+      // Also slot the open-space into the schedule day/time group so it
+      // appears inline on the day timeline alongside talks/tutorials,
+      // not just on the dedicated Open Spaces page.
+      const offset = environment.utcOffset;
+      const estDate = new Date(start.getTime() + (offset * 3600 * 1000));
+      const day = estDate.toISOString().split('T')[0];
+      const group = start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute: '2-digit'}).toLowerCase();
+      const scheduleDay = this.data.schedule.find((d: any) => d.date === day);
+      if (scheduleDay) {
+        const scheduleDayGroup = scheduleDay.groups.find((g: any) => g.time === group);
+        if (scheduleDayGroup) {
+          scheduleDayGroup.sessions.push(session);
+        } else {
+          scheduleDay.groups.push({"time": group, "sessions": [session], "startTime": start});
+        }
+      } else {
+        this.data.schedule.push({"date": day, "groups": [{"time": group, "sessions": [session], "startTime": start}]});
+      }
     });
 
     // Drop plenary slots that are mislabeled posters. The conference.json
@@ -200,7 +227,15 @@ export class ConferenceData {
     // a name like "Posters (Hall AB)" — see PYMOBIL-108. The actual poster
     // slots come through correctly as kind="poster" and are collapsed below,
     // so this entry is always a duplicate.
+    //
+    // Also drop placeholder open-space rows (kind="available-open-space" or
+    // "available-open-space-slot") — backend emits these for every unbooked
+    // open-space room/timeslot. They have no title, no track, null location,
+    // and shouldn't appear on the schedule.
     data.schedule = data.schedule.filter((slot: any) => {
+      if (typeof slot.kind === 'string' && slot.kind.startsWith('available-open-space')) {
+        return false;
+      }
       if (slot.kind !== 'plenary') return true;
       const cleanName = markdownToTxt(slot.name).replace(/\s*\([^)]*\)\s*$/, '').trim();
       return !/^posters?$/i.test(cleanName);
