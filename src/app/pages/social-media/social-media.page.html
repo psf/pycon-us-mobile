@@ -33,23 +33,23 @@
 
     <ion-item button="true" (click)="openUrl('https://fosstodon.org/@pycon')" detail="true">
       <ion-icon slot="start" name="logo-mastodon" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>Mastodon</h2>
         <p>&#64;pycon&#64;fosstodon.org</p>
       </ion-label>
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://bsky.app/profile/pycon.org')" detail="true">
-      <img slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" alt="Bluesky">
-      <ion-label>
+      <ion-icon slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" aria-label="Bluesky"></ion-icon>
+      <ion-label class="ion-text-wrap">
         <h2>Bluesky</h2>
         <p>&#64;pycon.org</p>
       </ion-label>
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://x.com/pycon')" detail="true">
-      <img slot="start" src="assets/img/icon-x.svg" class="social-icon" alt="X">
-      <ion-label>
+      <ion-icon slot="start" src="assets/img/icon-x.svg" class="social-icon x-icon" aria-label="X"></ion-icon>
+      <ion-label class="ion-text-wrap">
         <h2>X</h2>
         <p>&#64;pycon</p>
       </ion-label>
@@ -57,7 +57,7 @@
 
     <ion-item button="true" (click)="openUrl('https://www.youtube.com/@PyConUS')" detail="true">
       <ion-icon slot="start" name="logo-youtube" color="danger"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>YouTube</h2>
         <p>PyCon US</p>
       </ion-label>
@@ -65,7 +65,7 @@
 
     <ion-item button="true" (click)="openUrl('https://www.linkedin.com/company/thepsf/')" detail="true">
       <ion-icon slot="start" name="logo-linkedin" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>LinkedIn</h2>
         <p>Python Software Foundation</p>
       </ion-label>
@@ -79,23 +79,23 @@
 
     <ion-item button="true" (click)="openUrl('https://fosstodon.org/@ThePSF')" detail="true">
       <ion-icon slot="start" name="logo-mastodon" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>Mastodon</h2>
         <p>&#64;ThePSF&#64;fosstodon.org</p>
       </ion-label>
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://bsky.app/profile/python.org')" detail="true">
-      <img slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" alt="Bluesky">
-      <ion-label>
+      <ion-icon slot="start" src="assets/img/icon-bluesky.svg" class="social-icon bluesky" aria-label="Bluesky"></ion-icon>
+      <ion-label class="ion-text-wrap">
         <h2>Bluesky</h2>
         <p>&#64;python.org</p>
       </ion-label>
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://x.com/ThePSF')" detail="true">
-      <img slot="start" src="assets/img/icon-x.svg" class="social-icon" alt="X">
-      <ion-label>
+      <ion-icon slot="start" src="assets/img/icon-x.svg" class="social-icon x-icon" aria-label="X"></ion-icon>
+      <ion-label class="ion-text-wrap">
         <h2>X</h2>
         <p>&#64;ThePSF</p>
       </ion-label>
@@ -109,7 +109,7 @@
 
     <ion-item button="true" (click)="openUrl('https://pycon.blogspot.com')" detail="true">
       <ion-icon slot="start" name="calendar-outline" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>PyCon US Blog</h2>
         <p>Conference news and announcements</p>
       </ion-label>
@@ -117,7 +117,7 @@
 
     <ion-item button="true" (click)="openUrl('https://pyfound.blogspot.com')" detail="true">
       <ion-icon slot="start" name="newspaper-outline" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>PSF Blog</h2>
         <p>News and updates from the Python Software Foundation</p>
       </ion-label>
@@ -125,15 +125,15 @@
 
     <ion-item button="true" (click)="openUrl('https://blog.python.org')" detail="true">
       <ion-icon slot="start" name="logo-python" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>CPython Blog</h2>
         <p>Python insider — core development updates</p>
       </ion-label>
     </ion-item>
 
     <ion-item button="true" (click)="openUrl('https://blog.pypi.org')" detail="true">
-      <img slot="start" src="assets/img/pypi-logo.png" class="social-icon" alt="PyPI">
-      <ion-label>
+      <img slot="start" src="assets/img/pypi-logo.png" class="social-icon pypi" alt="PyPI">
+      <ion-label class="ion-text-wrap">
         <h2>PyPI Blog</h2>
         <p>News from the Python Package Index</p>
       </ion-label>

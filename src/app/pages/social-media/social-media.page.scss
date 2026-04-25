@@ -60,23 +60,27 @@ ion-title {
 .social-icon {
   width: 24px;
   height: 24px;
+  font-size: 24px;
   margin-inline-end: 16px;
-  // Ionic's MD mode only applies top/bottom margins to ion-icon[slot="start"],
-  // not raw <img> — without this the Bluesky/X/PyPI rows collapse shorter than
-  // the ion-icon-based rows on Android.
   align-self: center;
   margin-block: 12px;
 }
 
-.social-icon.bluesky {
-  fill: #0085ff;
+ion-icon.social-icon {
+  color: var(--ion-text-color, #000);
+}
+
+ion-icon.social-icon.bluesky {
+  color: #0085ff;
 }
 
 @media (prefers-color-scheme: dark) {
-  .social-icon {
-    filter: invert(1);
-  }
-  .social-icon.bluesky {
+  // PNG/multicolor logos that should NOT be inverted in dark mode
+  // (ion-icon SVGs and the colored Bluesky icon already adapt via currentColor)
+  .social-icon.pypi {
     filter: none;
+  }
+  img.social-icon:not(.pypi) {
+    filter: invert(1);
   }
 }
