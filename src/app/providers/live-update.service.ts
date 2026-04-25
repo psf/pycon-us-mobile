@@ -11,6 +11,10 @@ export class LiveUpdateService {
   needsUpdate: boolean = false;
   build: string = "base";
   appVersion: string = "";
+  // Active live-update snapshot from Appflow. null when running the bundled
+  // native assets (no OTA applied yet, or running via livereload).
+  snapshot: { id: string; buildId: string } | null = null;
+  channel: string = "";
 
   constructor(private loadingCtrl: LoadingController) {
     App.addListener('appStateChange', ({ isActive }) => {
@@ -35,6 +39,8 @@ export class LiveUpdateService {
     await this.updateAppInfo();
     const result = await LiveUpdates.sync();
     this.updateAvailable = result;
+    this.snapshot = result.snapshot;
+    this.channel = result.liveUpdate?.channel || '';
     if (this.updateAvailable.activeApplicationPathChanged) {
         this.needsUpdate = true;
     }
