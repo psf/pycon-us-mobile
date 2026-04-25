@@ -1,0 +1,51 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/app/tabs/rooms"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ room?.name || 'Room' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loaded && !room" class="empty-state">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>Room not found.</p>
+  </div>
+
+  <div *ngIf="room" class="room-hero">
+    <ion-icon name="pin-outline" class="room-hero-icon"></ion-icon>
+    <h1>{{ room.name }}</h1>
+    <p>{{ room.sessions.length }} {{ room.sessions.length === 1 ? 'session' : 'sessions' }} scheduled</p>
+  </div>
+
+  <div *ngFor="let day of days" class="day-section">
+    <div class="day-header">{{ day.day }}</div>
+
+    <ion-list lines="none">
+      <ion-item
+        *ngFor="let session of day.sessions"
+        button
+        detail="true"
+        class="session-item"
+        [class.session-item-highlight]="session.id === highlightSessionId"
+        [attr.id]="'room-session-' + session.id"
+        [routerLink]="sessionRoute(session)"
+        [queryParams]="{ prevUrl: location.path() }">
+        <ion-label class="ion-text-wrap">
+          <h3>{{ session.name }}</h3>
+          <p class="session-time">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ session.timeStart }}<span *ngIf="session.timeStart !== session.timeEnd"> &ndash; {{ session.timeEnd }}</span>
+          </p>
+          <p *ngIf="session.speakerNames?.length" class="session-speakers">
+            <span *ngFor="let name of session.speakerNames; let last = last">{{ name }}<span *ngIf="!last">, </span></span>
+          </p>
+          <span *ngIf="session.track" class="track-badge" [attr.data-track]="session.track | lowercase">{{ session.track }}</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div style="height: 60px"></div>
+</ion-content>

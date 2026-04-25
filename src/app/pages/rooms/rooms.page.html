@@ -1,0 +1,32 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Rooms</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="!rooms.length" class="empty-state">
+    <ion-icon name="pin-outline"></ion-icon>
+    <p>Loading rooms&hellip;</p>
+  </div>
+
+  <ion-list lines="none" *ngIf="rooms.length">
+    <ion-item
+      *ngFor="let room of rooms"
+      button
+      detail="true"
+      class="room-item"
+      [routerLink]="['/app/tabs/rooms/room-detail', room.slug]">
+      <ion-icon slot="start" name="pin-outline" color="medium"></ion-icon>
+      <ion-label>
+        <h2>{{ room.name }}</h2>
+        <p>{{ room.sessions.length }} {{ room.sessions.length === 1 ? 'session' : 'sessions' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div style="height: 60px"></div>
+</ion-content>

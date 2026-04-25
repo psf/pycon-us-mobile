@@ -37,7 +37,17 @@
       </div>
       <div *ngIf="session.location" class="meta-row">
         <ion-icon name="location-outline"></ion-icon>
-        <span>{{session.location}}</span>
+        <ng-container *ngIf="session.roomLinks?.length; else plainLocation">
+          <span class="room-links">
+            <a *ngFor="let link of session.roomLinks; let last = last"
+               class="room-link"
+               [routerLink]="['/app/tabs/rooms/room-detail', link.slug]"
+               [queryParams]="{ prevUrl: location.path(), session: session.id }">{{ link.name }}<span *ngIf="!last">, </span></a>
+          </span>
+        </ng-container>
+        <ng-template #plainLocation>
+          <span>{{session.location}}</span>
+        </ng-template>
       </div>
     </div>
 
