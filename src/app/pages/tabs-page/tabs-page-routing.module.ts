@@ -125,6 +125,23 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'rooms',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../rooms/rooms.module').then(m => m.RoomsPageModule)
+          },
+          {
+            path: 'room-detail/:roomSlug',
+            loadChildren: () => import('../room-detail/room-detail.module').then(m => m.RoomDetailPageModule)
+          },
+          {
+            path: 'session/:sessionId',
+            loadChildren: () => import('../session-detail/session-detail.module').then(m => m.SessionDetailModule)
+          }
+        ]
+      },
+      {
         path: 'venues-hours',
         children: [
           {

@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     { title: 'Schedule',  url: '/app/tabs/schedule',         icon: 'calendar-outline' },
     { title: 'Speakers',  url: '/app/tabs/speakers',         icon: 'people-outline' },
     { title: 'Keynote Speakers', url: '/app/tabs/keynote-speakers', icon: 'star-outline' },
+    { title: 'Rooms',     url: '/app/tabs/rooms',            icon: 'pin-outline' },
   ]
   presentationPages = [
     { title: 'Talks',     group: 'presentations', url: '/app/tabs/tracks/talks',     icon: 'mic-outline'},

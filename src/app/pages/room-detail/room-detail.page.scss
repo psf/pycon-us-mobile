@@ -1,0 +1,129 @@
+.room-hero {
+  text-align: center;
+  padding: 28px 16px 18px;
+  background: linear-gradient(135deg, var(--ion-color-primary, #2c4392) 0%, color-mix(in srgb, var(--ion-color-primary, #2c4392) 60%, #14224d) 100%);
+  color: #fff;
+
+  .room-hero-icon {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 6px;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  color: var(--ion-color-medium, #888);
+
+  ion-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+}
+
+.day-section {
+  margin-top: 24px;
+
+  &:first-of-type {
+    margin-top: 16px;
+  }
+
+  .day-header {
+    --pycon-accent: #680579;
+
+    display: block;
+    margin: 0 16px 12px;
+    padding: 10px 16px;
+    border-radius: 999px;
+
+    background: var(--pycon-accent);
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: center;
+
+    box-shadow: 0 2px 6px rgba(104, 5, 121, 0.25);
+  }
+}
+
+:host-context(.dark-theme) .day-section .day-header {
+  --pycon-accent: #DD04D2;
+  box-shadow: 0 2px 6px rgba(221, 4, 210, 0.30);
+}
+
+.session-item {
+  --padding-start: 16px;
+  --padding-end: 8px;
+  --inner-padding-end: 12px;
+  --min-height: 64px;
+
+  &.session-item-highlight {
+    --background: rgba(104, 5, 121, 0.08);
+    box-shadow: inset 3px 0 0 #680579;
+    animation: room-session-pulse 1.6s ease-in-out 2;
+  }
+
+  ion-label {
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+
+    .session-time {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--ion-color-medium, #888);
+      margin: 0 0 4px;
+
+      ion-icon {
+        font-size: 13px;
+      }
+    }
+
+    .session-speakers {
+      font-size: 12px;
+      color: var(--ion-color-step-500, #666);
+      margin: 0 0 6px;
+    }
+
+    .track-badge {
+      display: inline-block;
+      margin-top: 4px;
+    }
+  }
+}
+
+@keyframes room-session-pulse {
+  0%   { background: rgba(104, 5, 121, 0.05); }
+  50%  { background: rgba(104, 5, 121, 0.18); }
+  100% { background: rgba(104, 5, 121, 0.05); }
+}
+
+:host-context(.dark-theme) .session-item.session-item-highlight {
+  --background: rgba(221, 4, 210, 0.10);
+  box-shadow: inset 3px 0 0 #DD04D2;
+}

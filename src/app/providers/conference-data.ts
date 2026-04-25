@@ -47,6 +47,10 @@ export class ConferenceData {
     return /^https?:\/\//.test(photo) ? photo : `${environment.baseUrl}${photo}`;
   }
 
+  slugifyRoom(name: string): string {
+    return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
   constructor(
     public http: HttpClient,
     public user: UserData,
@@ -218,15 +222,20 @@ export class ConferenceData {
             name = 'Lunch';
           }
         }
-        // Extract room from parentheses in name (e.g., "Lunch (Hall C)" → room="Hall C")
-        // For breaks without parenthesized room, just use first room from comma-separated list
+        // Extract room from parentheses in name (e.g., "Lunch (Hall AB)" → room="Hall AB")
+        // and normalize bare "Hall AB"/"Hall C" to the canonical "Expo Hall …"
+        // venue used by posters, so a breakfast/lunch in the expo hall lines up
+        // with the same room bucket. Generic comma-joined breaks ("Break" with
+        // multiple rooms) are left untouched so the room-derivation pass below
+        // can fan them out across every listed room.
         let room = slot.room;
         const roomMatch = name.match(/\s*\(([^)]+)\)\s*$/);
         if (roomMatch) {
           room = roomMatch[1];
           name = name.replace(roomMatch[0], '').trim();
-        } else if (slot.kind === 'break' && room && room.includes(',')) {
-          room = '';
+        }
+        if (room && /^Hall\s/i.test(room)) {
+          room = `Expo ${room}`;
         }
         collapsedGroups.set(key, { ...slot, name, room, endSlot: slot });
       } else {
@@ -242,7 +251,7 @@ export class ConferenceData {
         if (!group.room || group.room === '') {
           const laterRoom = markdownToTxt(slot.name).match(/\s*\(([^)]+)\)\s*$/);
           if (laterRoom) {
-            group.room = laterRoom[1];
+            group.room = /^Hall\s/i.test(laterRoom[1]) ? `Expo ${laterRoom[1]}` : laterRoom[1];
           }
         }
       }
@@ -565,7 +574,51 @@ export class ConferenceData {
       });
     });
 
+    // Build a per-room index. Plenaries/breaks/lunch carry comma-joined room
+    // strings ("Grand Ballroom A, Grand Ballroom B") — we register the session
+    // under each one so it shows up wherever the audience actually is. Each
+    // session also gets a `roomLinks` array of {name, slug} so session-detail
+    // can render the location as tappable pills.
+    const roomMap = new Map<string, any>();
+    this.data.sessions.forEach((session: any) => {
+      const links: any[] = [];
+      String(session.location || '')
+        .split(',')
+        .map((r: string) => r.trim())
+        .filter(Boolean)
+        .forEach((roomName: string) => {
+          const slug = this.slugifyRoom(roomName);
+          if (!roomMap.has(slug)) {
+            roomMap.set(slug, { name: roomName, slug, sessions: [] });
+          }
+          roomMap.get(slug).sessions.push(session);
+          if (!links.find(l => l.slug === slug)) {
+            links.push({ name: roomName, slug });
+          }
+        });
+      session.roomLinks = links;
+    });
+    roomMap.forEach((room: any) => {
+      room.sessions.sort(
+        (a: any, b: any) =>
+          new Date(a.startUtc || 0).getTime() - new Date(b.startUtc || 0).getTime()
+      );
+    });
+    this.data.rooms = Array.from(roomMap.values()).sort((a: any, b: any) =>
+      a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
+    );
+
     return this.data;
+  }
+
+  getRooms() {
+    return this.load().pipe(map((data: any) => data.rooms || []));
+  }
+
+  getRoom(slug: string) {
+    return this.load().pipe(
+      map((data: any) => (data.rooms || []).find((r: any) => r.slug === slug))
+    );
   }
 
   getDays(

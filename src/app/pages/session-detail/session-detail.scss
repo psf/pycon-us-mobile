@@ -150,6 +150,25 @@ ion-toolbar ion-button {
     color: #3B3EA9;
     flex-shrink: 0;
   }
+
+  .room-links {
+    display: inline;
+  }
+
+  .room-link {
+    color: #3B3EA9;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+
+    &:active {
+      opacity: 0.6;
+    }
+  }
+}
+
+:host-context(.dark-theme) .meta-row .room-link {
+  color: #8b8fd4;
 }
 
 :host-context(.dark-theme) .meta-row ion-icon {

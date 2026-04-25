@@ -103,3 +103,26 @@ ion-content [innerHTML] {
     border: 1px solid var(--ion-color-danger, #eb445a);
   }
 }
+
+/*
+ * Live-update indicator: small primary-color dot on the hamburger menu button
+ * whenever LiveUpdateService.needsUpdate is true. The service toggles the
+ * `has-pending-update` class on <body> so this rule matches every page's
+ * ion-menu-button without per-page wiring.
+ */
+body.has-pending-update ion-menu-button {
+  position: relative;
+}
+
+body.has-pending-update ion-menu-button::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ion-color-primary, #3880ff);
+  box-shadow: 0 0 0 2px var(--ion-background-color, #fff);
+  pointer-events: none;
+}
