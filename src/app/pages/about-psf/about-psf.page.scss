@@ -57,3 +57,13 @@ ion-card {
     color: var(--ion-text-color);
   }
 }
+
+// Sized to match the Ionic icons it sits next to in the resource list.
+.resource-icon {
+  width: 24px;
+  height: 24px;
+  margin-inline-end: 32px;
+  align-self: center;
+  margin-block: 12px;
+  object-fit: contain;
+}

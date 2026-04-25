@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+      <ion-button *ngIf="liveUpdateService.needsUpdate" (click)="liveUpdateService.performAutomaticUpdate()" fill="clear" aria-label="Install latest update">
+        <ion-icon slot="icon-only" name="cloud-download-outline" color="primary"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title [class.title-visible]="showTitle">Venues & Hours</ion-title>
   </ion-toolbar>
@@ -23,7 +25,7 @@
   <ion-list lines="full">
     <ion-item button="true" (click)="openUrl('https://maps.apple.com/?address=300+E+Ocean+Blvd,+Long+Beach,+CA+90802')" detail="true">
       <ion-icon slot="start" name="navigate-outline" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>Get Directions</h2>
         <p>Open in Maps</p>
       </ion-label>
@@ -31,7 +33,7 @@
 
     <ion-item button="true" routerLink="/app/tabs/conference-map" detail="true">
       <ion-icon slot="start" name="map-outline" color="primary"></ion-icon>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>Conference Map</h2>
         <p>Indoor venue layout</p>
       </ion-label>

@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-      <ion-badge *ngIf="liveUpdateService.needsUpdate" size=sm>1</ion-badge>
+      <ion-button *ngIf="liveUpdateService.needsUpdate" (click)="liveUpdateService.performAutomaticUpdate()" fill="clear" aria-label="Install latest update">
+        <ion-icon slot="icon-only" name="cloud-download-outline" color="primary"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title [class.title-visible]="showTitle">About PyCon US</ion-title>
   </ion-toolbar>
@@ -14,11 +16,6 @@
     <h1>PyCon US 2026</h1>
     <p>Long Beach, CA &bull; May 14-18</p>
   </div>
-
-  <ion-button *ngIf="liveUpdateService.needsUpdate" expand="block" class="update-btn" (click)="performAutomaticUpdate()">
-    <ion-icon slot="start" name="download-outline"></ion-icon>
-    Fetch latest update
-  </ion-button>
 
   <ion-card class="about-card">
     <ion-card-content [innerHtml]="content.about">

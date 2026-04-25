@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 import * as LiveUpdates from '@capacitor/live-updates';
 import { App } from '@capacitor/app';
 
@@ -11,7 +12,7 @@ export class LiveUpdateService {
   build: string = "base";
   appVersion: string = "";
 
-  constructor() {
+  constructor(private loadingCtrl: LoadingController) {
     App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         this.checkForUpdate();
@@ -37,5 +38,17 @@ export class LiveUpdateService {
     if (this.updateAvailable.activeApplicationPathChanged) {
         this.needsUpdate = true;
     }
+  }
+
+  async performAutomaticUpdate() {
+    const loader = await this.loadingCtrl.create({
+      message: 'Installing the latest build...',
+      duration: 60000,
+    });
+    await loader.present();
+    if (this.needsUpdate) {
+      this.reload();
+    }
+    setTimeout(() => loader.dismiss(), 1000);
   }
 }

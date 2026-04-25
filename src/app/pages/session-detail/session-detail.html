@@ -82,6 +82,23 @@
            [innerHtml]="session?.description"
            (click)="onDescriptionClick($event)">
       </div>
+
+      <div *ngIf="isPosters && posters.length > 0" class="posters-list">
+        <h2 class="posters-list-heading">Posters ({{posters.length}})</h2>
+        <ion-item *ngFor="let poster of posters" lines="none" class="poster-item" detail="true" button="true"
+          [routerLink]="['/app/tabs/schedule/session', 'poster-detail-' + poster.conf_key]"
+          [queryParams]="{ prevUrl: location.path() }">
+          <ion-avatar *ngIf="poster.speakers?.[0]?.photo" slot="start">
+            <img [src]="poster.speakers[0].photo" [alt]="poster.speakers[0].name">
+          </ion-avatar>
+          <ion-label class="ion-text-wrap">
+            <h3>{{poster.title}}</h3>
+            <p *ngIf="poster.speakers?.length">
+              <span *ngFor="let s of poster.speakers; let last = last">{{s.name}}<span *ngIf="!last">, </span></span>
+            </p>
+          </ion-label>
+        </ion-item>
+      </div>
     </div>
   </div>
 </ion-content>

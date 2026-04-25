@@ -48,6 +48,18 @@ ion-content ion-label {
   -webkit-user-select: text;
 }
 
+/* Wrap long URLs and unbreakable strings (e.g. inside API-supplied HTML for
+   sponsor descriptions, speaker bios, session abstracts) instead of letting
+   them push the layout off-screen. */
+ion-content p,
+ion-content li,
+ion-content ion-card-content,
+ion-content [innerHtml],
+ion-content [innerHTML] {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 /*
  * Track badges — shared across schedule, speaker, and session pages
  */

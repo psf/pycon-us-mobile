@@ -190,6 +190,41 @@ ion-toolbar ion-button {
   }
 }
 
+.posters-list {
+  margin: 24px 0 0;
+
+  .posters-list-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--ion-text-color);
+  }
+
+  .poster-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+
+    ion-avatar {
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+    }
+
+    h3 {
+      font-weight: 600;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: var(--ion-color-step-500, #808080);
+      margin-top: 2px;
+    }
+  }
+}
+
 .session-image-container {
   margin: 16px 0 20px;
   text-align: center;

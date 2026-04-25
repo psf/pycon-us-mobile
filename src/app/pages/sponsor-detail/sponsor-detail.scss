@@ -83,6 +83,14 @@ ion-toolbar ion-back-button {
   line-height: 1.6;
   margin: 12px 0 8px;
   color: var(--ion-text-color);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  // Long URLs and inline code in sponsor-supplied HTML
+  a, code {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }
 
 .jobs-card {
