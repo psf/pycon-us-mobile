@@ -3,81 +3,72 @@
     <ion-buttons slot="start">
       <ion-menu-button color="medium"></ion-menu-button>
     </ion-buttons>
-    <ion-title>T-Shirt Redemption</ion-title>
+    <ion-title>Swag Pickup</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [style.visibility]="content_visibility">
-  <ion-list>
-    <ion-item *ngIf="show_permissions_error">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Uh oh..</ion-card-title>
-          <ion-card-subtitle>Camera Permissions Not Granted</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-text>Looks like you did not grant this application permission to access your camera.</ion-text>
-          <ion-text>
-            You can resolve this by opening<br><br>
-            <code *ngIf="ios">Settings > Privacy & Security > Camera > PyCon US 2026<br><br></code>
-            <code *ngIf="!ios">Settings > Apps > PyCon US 2026 > Permissions > Camera<br><br></code>
-            And enabling camera permssions for this app.
-          </ion-text>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
+<ion-content [style.visibility]="scanning ? 'hidden' : ''">
 
-    <ion-item>
-      <ion-select [(ngModel)]="category" [multiple]="true" interface="popover" [interfaceOptions]="{'cssClass': 'mycomponent-wider-popover'}" aria-label="categories"  label="Category" placeholder="Category">
-        <ion-select-option *ngFor="let category of redeemable_categories" [value]="category.id">{{category.name}}</ion-select-option>
-      </ion-select>
-    </ion-item>
+  <ion-card *ngIf="show_permissions_error" color="warning" class="permission-card">
+    <ion-card-header>
+      <ion-card-title>Camera permission required</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Looks like you didn't grant the app permission to access your camera.</p>
+      <p>Re-enable it under:</p>
+      <p *ngIf="ios"><code>Settings &rsaquo; Privacy &amp; Security &rsaquo; Camera &rsaquo; PyCon US 2026</code></p>
+      <p *ngIf="!ios"><code>Settings &rsaquo; Apps &rsaquo; PyCon US 2026 &rsaquo; Permissions &rsaquo; Camera</code></p>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-item *ngIf="category">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Redeeming for...</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <h1 *ngFor="let category_id of category">{{ getCategoryName(category_id) }}</h1>
-        </ion-card-content>
-      </ion-card>
-    </ion-item>
+  <section class="category-section">
+    <h2 class="section-title">Category</h2>
+    <p class="section-hint" *ngIf="!hasSelectedCategories()">
+      Tap one or more categories below.
+    </p>
+    <div class="category-chips" *ngIf="redeemable_categories?.length">
+      <ion-chip
+        *ngFor="let c of redeemable_categories"
+        [outline]="!isCategorySelected(c.id)"
+        [color]="isCategorySelected(c.id) ? 'primary' : 'medium'"
+        (click)="toggleCategory(c.id)">
+        <ion-icon *ngIf="isCategorySelected(c.id)" name="checkmark-outline"></ion-icon>
+        <ion-label>{{c.name}}</ion-label>
+      </ion-chip>
+    </div>
+  </section>
 
-    <ion-item *ngIf="!category">
-      <ion-text>Select a category to start scanning!</ion-text>
-    </ion-item>
+  <ion-card *ngIf="hasSelectedCategories()" class="redeeming-card">
+    <ion-card-content class="kicker-stack">
+      <span class="kicker">Redeeming for</span>
+      <span class="primary">{{ selectedCategoryNames() }}</span>
+    </ion-card-content>
+  </ion-card>
 
-  </ion-list>
 </ion-content>
 
 <ion-footer>
-  <ion-card class="scanErrorCard">
-    <ion-item [hidden]="scanError === false">
-      <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <h1>
-                <ion-icon
-                  [color]="'danger'"
-                  [name]="'alert-circle-outline'">
-                </ion-icon>&nbsp;<ion-text>Invalid QR Code!</ion-text>
-              </h1>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-    </ion-item>
+  <ion-card *ngIf="scanError" class="last-scan-card" color="danger">
+    <ion-card-content>
+      <div class="last-scan-row">
+        <ion-icon name="alert-circle-outline" aria-hidden="true"></ion-icon>
+        <div class="last-scan-text">
+          <strong>Invalid QR code</strong>
+        </div>
+      </div>
+    </ion-card-content>
   </ion-card>
+
   <ion-toolbar class="footer-toolbar">
-    <ion-buttons class="footer-buttons">
-      <ion-button fill="solid" [disabled]="(category === null)" color="success" class="footer-button" (click)="startScan()" [style.visibility]="scan_start_button_visibility">
-        Start Scanner!
-      </ion-button>
-      <ion-button fill="solid" color="danger" class="footer-button" (click)="stopScan()" [style.visibility]="scan_stop_button_visibility">
-        Stop Scanner
-      </ion-button>
-    </ion-buttons>
+    <ion-button
+      expand="block"
+      size="large"
+      class="scan-toggle-button"
+      [disabled]="!scanning && !hasSelectedCategories()"
+      [color]="scanning ? 'danger' : 'success'"
+      (click)="scanning ? stopScan() : startScan()">
+      <ion-icon slot="start" [name]="scanning ? 'stop-circle-outline' : 'qr-code-outline'"></ion-icon>
+      {{ scanning ? 'Stop Scanner' : 'Start Scanner' }}
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

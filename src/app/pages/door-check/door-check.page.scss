@@ -1,32 +1,122 @@
-.footer-buttons {
+.permission-card {
+  margin: 16px;
+}
+
+.category-section {
+  padding: 16px 16px 0;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ion-color-medium, #666);
+  margin: 0 0 8px;
+}
+
+.section-hint {
+  color: var(--ion-color-medium, #888);
+  font-size: 0.9rem;
+  margin: 0 0 8px;
+}
+
+.category-chips {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  ion-chip {
+    margin: 0;
+    height: 40px;
+    font-size: 0.95rem;
+  }
+}
+
+.search-row {
+  padding: 4px 8px 0;
+}
+
+.scanning-for-card {
+  margin: 16px;
+}
+
+.kicker-stack {
+  display: flex;
   flex-direction: column;
-  height: 100%;
+  gap: 4px;
+
+  .kicker {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ion-color-medium, #666);
+  }
+
+  .primary {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ion-text-color, #111);
+    line-height: 1.25;
+  }
+
+  .secondary {
+    font-size: 0.85rem;
+    color: var(--ion-color-medium, #888);
+  }
 }
 
-.footer-button {
-  position: absolute;
-}
-.footer-toolbar {
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-
-.header-info {
-  font-size: .6em;
-  padding-bottom: .5em;
-}
-
-::ng-deep .mycomponent-wider-popover
-{
-  --width: 95%;
-  --max-width: 400px;
+.empty-hint {
+  color: var(--ion-color-medium, #888);
+  margin: 12px 16px;
 }
 
 .product-list {
-  width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
+  // Flat list scrolls with the page — no nested overflow.
+  background: transparent;
+}
+
+.footer-toolbar {
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.scan-toggle-button {
+  margin: 0;
+  height: 56px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.last-scan-card {
+  margin: 8px 16px 0;
+}
+
+.last-scan-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .last-scan-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong {
+      font-size: 1rem;
+    }
+
+    code {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+  }
 }

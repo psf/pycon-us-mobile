@@ -15,9 +15,7 @@ import { RedemptionModalComponent } from '../../redemption-modal/redemption-moda
   styleUrls: ['./t-shirt-redemption.page.scss'],
 })
 export class TShirtRedemptionPage implements OnInit, OnDestroy {
-  content_visibility = 'show';
-  scan_start_button_visibility = 'show';
-  scan_stop_button_visibility = 'hidden';
+  scanning: boolean = false;
   scan_presentation = [];
   dirty: boolean = false;
 
@@ -50,6 +48,35 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
 
   getCategoryName(categoryId: number) {
     return this.redeemable_categories.find(x => x.id === categoryId)?.name
+  }
+
+  hasSelectedCategories(): boolean {
+    return Array.isArray(this.category) && this.category.length > 0;
+  }
+
+  isCategorySelected(id: number): boolean {
+    return Array.isArray(this.category) && this.category.includes(id);
+  }
+
+  toggleCategory(id: number) {
+    if (!Array.isArray(this.category)) {
+      this.category = [];
+    }
+    const idx = this.category.indexOf(id);
+    if (idx > -1) {
+      this.category.splice(idx, 1);
+    } else {
+      this.category.push(id);
+    }
+    if (this.category.length === 0) {
+      this.category = null;
+    }
+    this.detectorRef.detectChanges();
+  }
+
+  selectedCategoryNames(): string {
+    if (!this.hasSelectedCategories()) return '';
+    return this.category!.map(id => this.getCategoryName(id)).filter(Boolean).join(', ');
   }
 
   updateLastScan = async (accessCode: string) => {
@@ -163,9 +190,7 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
       return;
     }
     this.show_permissions_error = false;
-    this.content_visibility = 'hidden';
-    this.scan_start_button_visibility = 'hidden';
-    this.scan_stop_button_visibility = '';
+    this.scanning = true;
     await this.addListeners();
     BarcodeScanner.startScan({
       formats: [BarcodeFormat.QrCode],
@@ -178,9 +203,7 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
     clearTimeout(this.scan_timeout);
     await this.removeListeners();
     await BarcodeScanner.stopScan()
-    this.scan_stop_button_visibility = 'hidden';
-    this.scan_start_button_visibility = '';
-    this.content_visibility = '';
+    this.scanning = false;
   }
 
   ionViewWillLeave() {

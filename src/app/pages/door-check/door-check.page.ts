@@ -12,9 +12,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
   styleUrls: ['./door-check.page.scss'],
 })
 export class DoorCheckPage implements OnInit, OnDestroy {
-  content_visibility = 'show';
-  scan_start_button_visibility = 'show';
-  scan_stop_button_visibility = 'hidden';
+  scanning: boolean = false;
   scan_presentation = [];
   dirty: boolean = false;
 
@@ -69,6 +67,22 @@ export class DoorCheckPage implements OnInit, OnDestroy {
     this.productSearch = '';
     this.product = null;
     this.detectorRef.detectChanges();
+  }
+
+  selectCategory(categoryId: number) {
+    // Toggle off if the same chip is tapped again so users can clear
+    // their selection without leaving the page.
+    if (this.category === categoryId) {
+      this.category = null;
+      this.display_products = null;
+      this.filtered_products = null;
+      this.product = null;
+      this.productSearch = '';
+      this.detectorRef.detectChanges();
+      return;
+    }
+    this.category = categoryId;
+    this.refreshProducts();
   }
 
   filterProductList() {
@@ -290,9 +304,7 @@ export class DoorCheckPage implements OnInit, OnDestroy {
       return;
     }
     this.show_permissions_error = false;
-    this.content_visibility = 'hidden';
-    this.scan_start_button_visibility = 'hidden';
-    this.scan_stop_button_visibility = '';
+    this.scanning = true;
     await this.addListeners();
     BarcodeScanner.startScan({
       formats: [BarcodeFormat.QrCode],
@@ -307,9 +319,7 @@ export class DoorCheckPage implements OnInit, OnDestroy {
     clearTimeout(this.scan_timeout);
     await BarcodeScanner.removeAllListeners();
     await BarcodeScanner.stopScan()
-    this.scan_stop_button_visibility = 'hidden';
-    this.scan_start_button_visibility = '';
-    this.content_visibility = '';
+    this.scanning = false;
   }
 
   ionViewWillLeave() {
