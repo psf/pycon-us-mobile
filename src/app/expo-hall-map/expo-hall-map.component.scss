@@ -60,8 +60,19 @@
   }
 
   .booth-img {
-    max-width: 85%;
-    max-height: 85%;
+    // Anchored to the upper portion of the booth (top 8%, ~60% height)
+    // because the floor-plan PNG prints the booth number in the lower
+    // third of the box. Centering vertically caused wide logos like
+    // Tetrix and TimeCopilot to bleed over the printed number; pinning
+    // to the top keeps the lower band clean.
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    width: 60%;
+    height: 60%;
+    max-width: 60%;
+    max-height: 60%;
+    transform: translateX(-50%);
     object-fit: contain;
     pointer-events: none;
   }
@@ -136,10 +147,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   background: var(--ion-background-color, #fff);
+  border: 2px solid #DD04D2;
   border-radius: 12px;
   padding: 14px 16px;
-  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
+  // Pink-tinted shadow so the popup also lifts visually off white booth tiles
+  box-shadow: 0 -4px 24px rgba(221, 4, 210, 0.25);
+}
+
+.booth-popup-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 6px;
 }
 
 .booth-popup-content {
