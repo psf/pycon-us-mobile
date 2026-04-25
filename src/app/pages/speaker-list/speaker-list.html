@@ -27,12 +27,12 @@
       <ion-avatar slot="start">
         <img [src]="speaker.profilePic" [alt]="speaker.name">
       </ion-avatar>
-      <ion-label>
+      <ion-label class="ion-text-wrap">
         <h2>{{speaker.name}}</h2>
-        <p *ngIf="speaker.sessions?.length > 0">
-          <span class="track-badge" [attr.data-track]="speaker.sessions[0].track | lowercase">{{speaker.sessions[0].track | trackName}}</span>
-          {{speaker.sessions[0].name}}
+        <p *ngIf="speaker.tracks?.length > 0" class="speaker-tracks">
+          <span *ngFor="let track of speaker.tracks" class="track-badge" [attr.data-track]="track | lowercase">{{track | trackName}}</span>
         </p>
+        <p *ngIf="speaker.sessions?.length === 1">{{speaker.sessions[0].name}}</p>
       </ion-label>
     </ion-item>
   </ion-list>

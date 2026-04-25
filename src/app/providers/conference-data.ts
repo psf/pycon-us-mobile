@@ -140,7 +140,30 @@ export class ConferenceData {
       "open-spaces": [],
       "sprints": data.sprints || [],
       "job-listings": data['job-listings'] || [],
+      "posters": (data.posters || []).map((poster: any) => ({
+        ...poster,
+        speakers: (poster.speakers || []).map((s: any) => ({
+          ...s,
+          photo: this.resolveSpeakerPhoto(s.photo),
+        })),
+      })),
     };
+
+    // Register poster speakers in the global speakers list so tapping a poster
+    // author navigates to a populated speaker detail page (the speaker-detail
+    // route looks up by id from data.speakers).
+    this.data.posters.forEach((poster: any) => {
+      poster.speakers.forEach((speaker: any) => {
+        if (!this.data.speakers.find((s: any) => s.id === speaker.id)) {
+          this.data.speakers.push({
+            id: speaker.id,
+            name: speaker.name,
+            profilePic: speaker.photo,
+            about: speaker.bio || '',
+          });
+        }
+      });
+    });
 
     data['open-spaces'].forEach((openSpace: any) => {
       var start = new Date(openSpace.start);
@@ -479,6 +502,69 @@ export class ConferenceData {
       });
     });
 
+    // (Distinct-tracks pass runs after poster wiring below.)
+
+    // Build a synthetic session entry per poster so users can drill from the
+    // collapsed "Posters" session list into an individual poster's detail
+    // (title, abstract, speakers). They reuse the schedule's session-detail
+    // route via id "poster-detail-<conf_key>".
+    const collapsedPostersSession = this.data.sessions.find((s: any) => s.track === 'Poster' && s.name === 'Posters');
+    this.data.posters.forEach((poster: any) => {
+      const posterSpeakers = poster.speakers.map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        profilePic: s.photo,
+        about: s.bio || '',
+      }));
+      const posterSession: any = {
+        name: poster.title,
+        color: this.slotColors['poster'],
+        preRegistered: false,
+        listRender: false,
+        section: '',
+        location: collapsedPostersSession?.location || 'Expo Hall AB',
+        description: poster.description_html,
+        speakers: posterSpeakers,
+        speakerNames: posterSpeakers.map((s: any) => s.name),
+        timeStart: collapsedPostersSession?.timeStart || '',
+        timeEnd: collapsedPostersSession?.timeEnd || '',
+        startUtc: collapsedPostersSession?.startUtc,
+        endUtc: collapsedPostersSession?.endUtc,
+        track: 'Poster',
+        tracks: ['Poster'],
+        id: `poster-detail-${poster.conf_key}`,
+        day: collapsedPostersSession?.day || 'Sun',
+      };
+      this.data.sessions.push(posterSession);
+      poster.sessionId = posterSession.id;
+
+      // Wire the individual poster session into each poster author's
+      // "Presentations" list. We deliberately skip the collapsed "Posters"
+      // entry here — listing both would show their poster twice on the
+      // speaker detail page (once as "Posters", once with its actual title).
+      posterSpeakers.forEach((posterSpeaker: any) => {
+        const speaker = this.data.speakers.find((s: any) => s.id === posterSpeaker.id);
+        if (!speaker) return;
+        speaker.sessions = speaker.sessions || [];
+        if (!speaker.sessions.find((s: any) => s.id === posterSession.id)) {
+          speaker.sessions.push(posterSession);
+        }
+      });
+    });
+
+    // Compute distinct tracks per speaker so the speaker list can render a
+    // pill row when someone has more than one type of session (e.g. a Talk
+    // and a Poster).
+    this.data.speakers.forEach((speaker: any) => {
+      const seen = new Set<string>();
+      speaker.tracks = [];
+      (speaker.sessions || []).forEach((session: any) => {
+        if (!session.track || seen.has(session.track)) return;
+        seen.add(session.track);
+        speaker.tracks.push(session.track);
+      });
+    });
+
     return this.data;
   }
 
@@ -696,6 +782,14 @@ export class ConferenceData {
     return this.load().pipe(
       map((data: any) => {
         return data.sprints || [];
+      })
+    );
+  }
+
+  getPosters() {
+    return this.load().pipe(
+      map((data: any) => {
+        return data.posters || [];
       })
     );
   }

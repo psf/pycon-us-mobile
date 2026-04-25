@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
 import { ConferenceData } from '../../providers/conference-data';
@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 interface KeynoteAbstract {
@@ -20,14 +21,17 @@ interface KeynoteAbstract {
   styleUrls: ['./session-detail.scss'],
   templateUrl: 'session-detail.html'
 })
-export class SessionDetailPage {
+export class SessionDetailPage implements OnDestroy {
   session: any;
   isFavorite = false;
   isOpenSpace = false;
   isKeynote = false;
+  isPosters = false;
+  posters: any[] = [];
   keynoteData: any[] = [];
   keynoteAbstract: KeynoteAbstract | null = null;
   defaultHref = '';
+  private paramSub?: Subscription;
 
   private keynoteAbstracts: KeynoteAbstract[] = [
     {
@@ -93,32 +97,56 @@ export class SessionDetailPage {
   ) { }
 
   ionViewWillEnter() {
+    // Subscribe to param changes so navigating between sessions on the same
+    // route (e.g. tapping an individual poster from the collapsed Posters list)
+    // re-renders with the new session instead of reusing the stale snapshot.
+    this.paramSub?.unsubscribe();
+    this.paramSub = this.route.paramMap.subscribe((params) => {
+      const sessionId = params.get('sessionId');
+      this.loadSession(sessionId);
+    });
+  }
+
+  ionViewWillLeave() {
+    this.paramSub?.unsubscribe();
+    this.paramSub = undefined;
+  }
+
+  ngOnDestroy() {
+    this.paramSub?.unsubscribe();
+  }
+
+  private loadSession(sessionId: string | null) {
     this.dataProvider.load().subscribe((data: any) => {
-      if (data.sessions) {
-        const sessionId = this.route.snapshot.paramMap.get('sessionId');
-        const foundSession = data.sessions.find(
-          (s: any) => String(s.id) === String(sessionId)
-        )
-        this.session = foundSession;
-        this.isOpenSpace = this.session?.tracks?.includes('open-space');
-        this.isKeynote = this.session?.tracks?.includes('keynote') || this.session?.track === 'Keynote';
+      if (!data?.sessions) return;
+      const foundSession = data.sessions.find(
+        (s: any) => String(s.id) === String(sessionId)
+      );
+      this.session = foundSession;
+      this.isOpenSpace = this.session?.tracks?.includes('open-space');
+      this.isKeynote = this.session?.tracks?.includes('keynote') || this.session?.track === 'Keynote';
+      // Only the *collapsed* "Posters" schedule slot lists every poster;
+      // individual poster session-detail pages show their own description.
+      this.isPosters = this.session?.track === 'Poster' && this.session?.name === 'Posters';
+      this.posters = this.isPosters ? (data.posters || []) : [];
+      this.keynoteData = [];
+      this.keynoteAbstract = null;
 
-        // Enrich keynote sessions with speaker photo/bio. Collect every
-        // matching speaker so co-hosted keynotes (e.g. "Rachell Calhoun &
-        // Tim Schilling") render all speakers, not just the first match.
-        if (this.isKeynote) {
-          const sessionName = (this.session?.name || '').toLowerCase();
-          this.keynoteData = Object.entries(this.keynoteSpeakers)
-            .filter(([name]) => sessionName.includes(name.toLowerCase()))
-            .map(([name, data]) => ({ name, ...data }));
-          this.keynoteAbstract = this.keynoteAbstracts.find(
-            (a) => a.match.some((m) => sessionName.includes(m.toLowerCase()))
-          ) || null;
-        }
+      // Enrich keynote sessions with speaker photo/bio. Collect every
+      // matching speaker so co-hosted keynotes (e.g. "Rachell Calhoun &
+      // Tim Schilling") render all speakers, not just the first match.
+      if (this.isKeynote) {
+        const sessionName = (this.session?.name || '').toLowerCase();
+        this.keynoteData = Object.entries(this.keynoteSpeakers)
+          .filter(([name]) => sessionName.includes(name.toLowerCase()))
+          .map(([name, data]) => ({ name, ...data }));
+        this.keynoteAbstract = this.keynoteAbstracts.find(
+          (a) => a.match.some((m) => sessionName.includes(m.toLowerCase()))
+        ) || null;
+      }
 
-        this.isFavorite = this.userProvider.hasFavorite(
-          String(this.session.id)
-        );
+      if (this.session?.id != null) {
+        this.isFavorite = this.userProvider.hasFavorite(String(this.session.id));
       }
     });
   }
