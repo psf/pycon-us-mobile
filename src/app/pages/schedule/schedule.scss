@@ -14,27 +14,12 @@ ion-fab-button {
   --background-activated: var(--ion-color-step-250, #d9d9d9);
 }
 
-$tracks: (
-  talk: #5833E9,
-  tutorial: #DD04D2,
-  keynote: #680579,
-  plenary: #630675,
-  break: #3A3A3A,
-  lightning-talks: #C05CA0,
-  security: #F19C0B,
-  ai: #10B57F,
-  charla: #527CB2,
-  poster: #D47454,
-  sponsor\ presentation: #FFD779,
-  open\ space: #6FCF97,
-);
-
-@each $track, $color in $tracks {
-  ion-item-sliding[track='#{$track}'] ion-label {
-    border-left: 3px solid $color;
-    padding-left: 10px;
-  }
-}
+// Track membership is communicated by the .track-badge text inside each
+// row (see src/global.scss). The previous side-stripe accent was removed
+// because (a) it violated the side-stripe ban for >1px colored borders,
+// (b) several of its colors fell below 3:1 against the cream HC-Light
+// background, and (c) duplicating track info via a colored border on top
+// of a colored badge was redundant.
 
 :host {
   --pycon-accent: #680579;
@@ -42,6 +27,14 @@ $tracks: (
 
 :host-context(.dark-theme) {
   --pycon-accent: #DD04D2;
+}
+
+:host-context(.high-contrast-light-theme) {
+  --pycon-accent: #4a0072;
+}
+
+:host-context(.high-contrast-dark-theme) {
+  --pycon-accent: #ffd60a;
 }
 
 .schedule-toolbar {

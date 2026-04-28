@@ -7,7 +7,7 @@ import { PushNotifications, PushNotificationSchema } from '@capacitor/push-notif
 
 import { Storage } from '@ionic/storage-angular';
 
-import { UserData } from './providers/user-data';
+import { UserData, ThemeMode } from './providers/user-data';
 import { ConferenceData } from './providers/conference-data';
 import { LiveUpdateService } from './providers/live-update.service';
 import { environment } from '../environments/environment';
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
   ]
   nickname = null;
   loggedIn = false;
-  dark = false;
+  theme: ThemeMode = 'light';
 
   updateAvailable: any = null;
 
@@ -207,13 +207,14 @@ export class AppComponent implements OnInit {
   }
 
   loadTheme() {
-    this.userData.getDarkTheme().then(dark => {
-      this.dark = dark;
+    this.userData.getTheme().then(theme => {
+      this.theme = theme;
     });
   }
 
-  toggleDarkTheme() {
-    this.userData.toggleDarkTheme();
+  setTheme(theme: ThemeMode) {
+    this.theme = theme;
+    this.userData.setTheme(theme);
   }
 
   openUrl(url: string) {

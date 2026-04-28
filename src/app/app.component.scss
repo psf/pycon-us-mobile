@@ -1,3 +1,30 @@
+/*
+ * Skip-to-content link for keyboard and screen-reader users. Hidden off-canvas
+ * until focused, then anchors to top-left as the first interactive control on
+ * every page. Targets the router outlet's id so focus actually transfers.
+ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: top 180ms ease-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 0;
+  outline: 3px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
 ion-menu ion-content {
   --padding-top: 20px;
   --padding-bottom: 20px;
@@ -88,6 +115,14 @@ ion-menu.ios ion-item.selected ion-icon {
 
 ion-item.indent {
   padding-left: 1.25em;
+}
+
+/*
+ * Theme picker — ion-select popover keeps the four theme options compact
+ * in the side menu and leaves room for descriptive labels.
+ */
+ion-menu ion-item.theme-picker-item ion-select {
+  font-weight: 500;
 }
 
 ion-accordion div[slot="content"] ion-item {

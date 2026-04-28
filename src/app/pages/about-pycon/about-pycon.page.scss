@@ -75,6 +75,11 @@ ion-title {
   --background: #1e1e1e;
 }
 
+:host-context(.high-contrast-theme) .about-card {
+  --background: var(--ion-card-background);
+  border: 1px solid var(--ion-border-color);
+}
+
 .dev-accordion {
   margin: 0 16px 16px;
 }
