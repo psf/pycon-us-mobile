@@ -19,11 +19,23 @@
       <ion-label>At the Conference</ion-label>
     </ion-list-header>
 
+    <div class="help-info-desk-map">
+      <app-location-map
+        [label]="infoDesk.label"
+        [sublabel]="infoDesk.sublabel"
+        [floorTitle]="infoDesk.floorTitle"
+        [thumbSrc]="infoDesk.thumbSrc"
+        [fullSrc]="infoDesk.fullSrc"
+        [pinXPct]="infoDesk.pinXPct"
+        [pinYPct]="infoDesk.pinYPct">
+      </app-location-map>
+    </div>
+
     <ion-item button="true" routerLink="/app/tabs/conference-map" detail="true">
       <ion-icon slot="start" name="map-outline" color="primary"></ion-icon>
       <ion-label class="ion-text-wrap">
-        <h2>Info Desk & Conference Map</h2>
-        <p>Find the registration desk, help desk, and venue layout</p>
+        <h2>Full Conference Map</h2>
+        <p>Browse all floor plans and the expo hall</p>
       </ion-label>
     </ion-item>
   </ion-list>

@@ -10,10 +10,17 @@ export class FloorPlanModalComponent {
   @Input() title!: string;
   @Input() imageSrc!: string;
   @Input() altText?: string;
+  @Input() pinXPct?: number;
+  @Input() pinYPct?: number;
+  @Input() pinLabel?: string;
 
   constructor(private modalCtrl: ModalController) {}
 
   close() {
     this.modalCtrl.dismiss();
+  }
+
+  get hasPin(): boolean {
+    return this.pinXPct != null && this.pinYPct != null;
   }
 }

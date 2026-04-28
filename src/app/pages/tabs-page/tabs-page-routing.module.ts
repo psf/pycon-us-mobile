@@ -64,7 +64,8 @@ const routes: Routes = [
       },
       {
         path: 'expo-hall',
-        loadChildren: () => import('../expo-hall/expo-hall.module').then( m => m.ExpoHallPageModule)
+        loadChildren: () => import('../conference-map/conference-map.module').then( m => m.ConferenceMapPageModule),
+        data: { initialView: 'expo-hall', pageTitle: 'Expo Hall' }
       },
       {
         path: 'conference-map',

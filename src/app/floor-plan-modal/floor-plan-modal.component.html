@@ -18,9 +18,19 @@
     [draggableImage]="false"
     [limitZoom]="'original image size'"
     backgroundColor="#ffffff">
-    <img
-      [src]="imageSrc"
-      [alt]="altText || title"
-      decoding="async" />
+    <div class="floor-plan-canvas">
+      <img
+        [src]="imageSrc"
+        [alt]="altText || title"
+        decoding="async" />
+      <div *ngIf="hasPin"
+           class="floor-plan-pin"
+           [style.left.%]="pinXPct"
+           [style.top.%]="pinYPct"
+           [attr.aria-label]="pinLabel || 'Location'">
+        <span class="floor-plan-pin-pulse"></span>
+        <span class="floor-plan-pin-dot"></span>
+      </div>
+    </div>
   </pinch-zoom>
 </ion-content>
