@@ -1,0 +1,24 @@
+<button
+  type="button"
+  class="location-map"
+  (click)="openFull()"
+  [attr.aria-label]="'Show ' + label + ' on the ' + floorTitle + ' floor plan'">
+  <div class="location-map-thumb">
+    <img [src]="thumbSrc" [alt]="floorTitle + ' floor plan'" decoding="async" />
+    <span class="location-map-pin"
+          [style.left.%]="pinXPct"
+          [style.top.%]="pinYPct"
+          aria-hidden="true">
+      <span class="location-map-pin-pulse"></span>
+      <span class="location-map-pin-dot"></span>
+    </span>
+    <div class="location-map-zoom-hint" aria-hidden="true">
+      <ion-icon name="expand-outline"></ion-icon>
+    </div>
+  </div>
+  <div class="location-map-meta">
+    <div class="location-map-label">{{ label }}</div>
+    <div class="location-map-sublabel" *ngIf="sublabel">{{ sublabel }}</div>
+    <div class="location-map-floor">{{ floorTitle }}</div>
+  </div>
+</button>

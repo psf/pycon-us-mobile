@@ -17,7 +17,22 @@
     <p class="venues-address">300 E Ocean Blvd, Long Beach, CA 90802</p>
   </div>
 
-  <div class="venues-content ion-padding" [innerHTML]="content['venues-hours']"></div>
+  <div class="venues-content ion-padding" *ngIf="sections.length">
+    <ng-container *ngFor="let section of sections">
+      <div class="venues-section" [innerHTML]="section.html"></div>
+      <div class="venues-section-map" *ngIf="section.location">
+        <app-location-map
+          [label]="section.location.label"
+          [sublabel]="section.location.sublabel"
+          [floorTitle]="section.location.floorTitle"
+          [thumbSrc]="section.location.thumbSrc"
+          [fullSrc]="section.location.fullSrc"
+          [pinXPct]="section.location.pinXPct"
+          [pinYPct]="section.location.pinYPct">
+        </app-location-map>
+      </div>
+    </ng-container>
+  </div>
 
   <ion-list lines="full">
     <ion-item button="true" (click)="openUrl('https://maps.apple.com/?address=300+E+Ocean+Blvd,+Long+Beach,+CA+90802')" detail="true">

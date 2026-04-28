@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button color="medium"></ion-menu-button>
     </ion-buttons>
-    <ion-title>Conference Center</ion-title>
+    <ion-title>{{ pageTitle }}</ion-title>
     <ion-buttons slot="end" *ngIf="mapView === 'expo-hall'">
       <ion-button (click)="toggleExpoSearch()" aria-label="Search booths">
         <ion-icon slot="icon-only" name="search"></ion-icon>

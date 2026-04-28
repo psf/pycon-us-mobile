@@ -1,4 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import { ExpoHallMapComponent } from '../../expo-hall-map/expo-hall-map.component';
@@ -20,12 +21,20 @@ interface FloorPlan {
   templateUrl: './conference-map.page.html',
   styleUrls: ['./conference-map.page.scss'],
 })
-export class ConferenceMapPage {
+export class ConferenceMapPage implements OnInit {
   @ViewChild('expoMap') expoMap?: ExpoHallMapComponent;
 
   mapView: MapView = 'floor-plans';
+  pageTitle = 'Conference Center';
 
   floorPlans: FloorPlan[] = [
+    {
+      id: 'campus',
+      title: 'Campus Overview',
+      subtitle: 'Convention center, hotels, halls, and entrances',
+      thumb: 'assets/img/floor-plans/campus-map-thumb.jpg',
+      full: 'assets/img/floor-plans/campus-map.jpg',
+    },
     {
       id: 'concourse',
       title: 'Concourse Level',
@@ -59,7 +68,22 @@ export class ConferenceMapPage {
   constructor(
     public liveUpdateService: LiveUpdateService,
     private modalCtrl: ModalController,
+    private route: ActivatedRoute,
   ) { }
+
+  ngOnInit() {
+    let r: ActivatedRoute | null = this.route;
+    while (r) {
+      const data = r.snapshot.data || {};
+      if (data['initialView']) {
+        this.mapView = data['initialView'] as MapView;
+      }
+      if (data['pageTitle']) {
+        this.pageTitle = data['pageTitle'];
+      }
+      r = r.parent;
+    }
+  }
 
   toggleExpoSearch() {
     this.expoMap?.toggleSearch();

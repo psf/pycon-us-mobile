@@ -1,0 +1,123 @@
+.location-map {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: var(--ion-card-background, #ffffff);
+  border: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.08));
+  border-radius: 14px;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.location-map:active {
+  transform: scale(0.985);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.location-map-thumb {
+  position: relative;
+  flex: 0 0 144px;
+  width: 144px;
+  background: #ffffff;
+  border-right: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.08));
+  overflow: hidden;
+  font-size: 0;
+}
+
+.location-map-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.location-map-pin {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.location-map-pin-dot,
+.location-map-pin-pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.location-map-pin-dot {
+  width: 8px;
+  height: 8px;
+  background: #DD04D2;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.location-map-pin-pulse {
+  width: 8px;
+  height: 8px;
+  background: #DD04D2;
+  opacity: 0.55;
+  animation: location-map-pin-pulse 1.8s ease-out infinite;
+}
+
+@keyframes location-map-pin-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+
+.location-map-zoom-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.location-map-meta {
+  flex: 1 1 auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.location-map-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ion-text-color, #1a1a1a);
+  line-height: 1.25;
+}
+
+.location-map-sublabel {
+  font-size: 13px;
+  color: var(--ion-color-step-650, #555);
+  margin-top: 2px;
+}
+
+.location-map-floor {
+  font-size: 12px;
+  color: var(--ion-color-medium, #92949c);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

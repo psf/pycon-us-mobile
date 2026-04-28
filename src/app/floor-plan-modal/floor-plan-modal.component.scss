@@ -8,10 +8,60 @@
   background: #ffffff;
 }
 
-.floor-plan-zoom img {
+.floor-plan-canvas {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.floor-plan-canvas img {
   width: 100%;
   height: auto;
   display: block;
   -webkit-user-drag: none;
   user-select: none;
+}
+
+.floor-plan-pin {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.floor-plan-pin-dot,
+.floor-plan-pin-pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.floor-plan-pin-dot {
+  width: 10px;
+  height: 10px;
+  background: #DD04D2;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.18), 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.floor-plan-pin-pulse {
+  width: 10px;
+  height: 10px;
+  background: #DD04D2;
+  opacity: 0.5;
+  animation: floor-plan-pin-pulse 1.8s ease-out infinite;
+}
+
+@keyframes floor-plan-pin-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
 }
