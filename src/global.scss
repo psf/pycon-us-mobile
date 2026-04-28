@@ -80,6 +80,27 @@ ion-content [innerHTML] {
 }
 
 /*
+ * High Contrast: collapse Ionic's secondary-text hierarchy.
+ *
+ * Ionic styles <p> inside <ion-label> with --ion-color-step-600 (mid-gray)
+ * to create a "primary title / secondary subtitle" visual hierarchy, and
+ * <ion-note> with step-500. In a HC theme, mid-grays defeat the entire
+ * point — every text element should sit at body-text contrast (7:1+),
+ * not at the 4-5:1 muted range. Force secondary text up to full text
+ * color so speaker subtitles, session-time strings, and notes match the
+ * legibility of the title beside them.
+ */
+.high-contrast-theme {
+  ion-label p,
+  ion-label h3 + p,
+  ion-note,
+  ion-item ion-note[slot] {
+    color: var(--ion-text-color);
+    opacity: 1;
+  }
+}
+
+/*
  * Branded-header toolbar buttons.
  *
  * About 20 pages paint a custom gradient on ion-header and leave ion-toolbar
