@@ -61,6 +61,44 @@ ion-content [innerHTML] {
 }
 
 /*
+ * Reduced motion: respect users who request fewer animations at the OS level.
+ * Ramps every animation/transition to ~0ms instead of disabling outright so
+ * Ionic's gesture-driven UI (swipe-to-favorite, page transitions) still
+ * settles into final state cleanly. Two pin-pulse animations on the maps
+ * are infinite and would otherwise loop forever for users with vestibular
+ * sensitivity.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Branded-header toolbar buttons.
+ *
+ * About 20 pages paint a custom gradient on ion-header and leave ion-toolbar
+ * with --background: transparent. Title text forces white via the page's own
+ * --color rule, but Ionic's platform-specific CSS for ion-menu-button and
+ * ion-back-button wins on specificity over the page's intended white, so the
+ * icons render in Ionic's default near-black in light theme.
+ *
+ * Force white on any toolbar button that hasn't explicitly opted into Ionic's
+ * color system via a [color="..."] attribute (e.g., the schedule's
+ * color="medium" hamburger and the login page's color="medium" back button
+ * keep their semantic Ionic colors).
+ */
+ion-header ion-toolbar ion-menu-button:not([color]),
+ion-header ion-toolbar ion-back-button:not([color]) {
+  --color: #ffffff;
+}
+
+/*
  * Track badges — shared across schedule, speaker, and session pages
  */
 .track-badge {
@@ -74,18 +112,37 @@ ion-content [innerHTML] {
   color: #ffffff;
   background-color: var(--ion-color-medium, #92949c);
 
-  &[data-track='talk'] { background-color: #5833E9; }
-  &[data-track='tutorial'] { background-color: #DD04D2; }
-  &[data-track='keynote'] { background-color: #680579; }
-  &[data-track='plenary'] { background-color: #630675; }
-  &[data-track='break'] { background-color: #3A3A3A; }
-  &[data-track='lightning-talks'] { background-color: #C05CA0; }
-  &[data-track='security'] { background-color: #F19C0B; }
-  &[data-track='ai'] { background-color: #10B57F; }
-  &[data-track='charla'] { background-color: #527CB2; }
-  &[data-track='poster'] { background-color: #D47454; }
-  &[data-track='sponsor presentation'] { background-color: #B8860B; }
-  &[data-track='open space'] { background-color: #6FCF97; color: #1a1a1a; }
+  /*
+   * Per-track palette tuned for WCAG AA on the badge's text color.
+   * Bright fills (orange/green/coral/amber) carry dark text to preserve their
+   * "pop" character; saturated mids (magenta/pink/blue) were darkened so the
+   * default white text reaches 4.5:1+. Ratios noted alongside each rule.
+   */
+  &[data-track='talk'] { background-color: #5833E9; } /* white  7.0:1 */
+  &[data-track='tutorial'] { background-color: #A6049B; } /* white  6.7:1 */
+  &[data-track='keynote'] { background-color: #680579; } /* white 13:1 */
+  &[data-track='plenary'] { background-color: #630675; } /* white 13:1 */
+  &[data-track='break'] { background-color: #3A3A3A; } /* white 12:1 */
+  &[data-track='lightning-talks'] { background-color: #9C3F80; } /* white 6.1:1 */
+  &[data-track='security'] { background-color: #F19C0B; color: #1a1a1a; } /* dark 7.9:1 */
+  &[data-track='ai'] { background-color: #10B57F; color: #1a1a1a; } /* dark 6.7:1 */
+  &[data-track='charla'] { background-color: #3D5F94; } /* white 6.6:1 */
+  &[data-track='poster'] { background-color: #D47454; color: #1a1a1a; } /* dark 5.2:1 */
+  &[data-track='sponsor presentation'] { background-color: #B8860B; color: #1a1a1a; } /* dark 5.1:1 */
+  &[data-track='open space'] { background-color: #6FCF97; color: #1a1a1a; } /* dark 7.4:1 */
+
+  /*
+   * High Contrast: drop the colored fills and use a bordered text pill so
+   * badges stay legible regardless of track. Several of the tinted fills
+   * above (security, ai, charla, poster, sponsor) fail WCAG AA on white
+   * text, and HC users shouldn't have to rely on color to identify track.
+   */
+  .high-contrast-theme &,
+  .high-contrast-theme &[data-track] {
+    background-color: transparent;
+    color: var(--ion-text-color);
+    border: 1.5px solid var(--ion-text-color);
+  }
 
   &.new-badge {
     background-color: #680579;

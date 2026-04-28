@@ -140,8 +140,8 @@ ion-toolbar ion-button {
 }
 
 :host-context(.high-contrast-theme) .session-meta-card {
-  background: #000000;
-  border: 2px solid #ffffff;
+  background: var(--ion-card-background);
+  border: 1px solid var(--ion-border-color);
   box-shadow: none;
 }
 
@@ -182,12 +182,12 @@ ion-toolbar ion-button {
 }
 
 :host-context(.high-contrast-theme) .meta-row .room-link {
-  color: #ffff00;
+  color: var(--ion-color-primary);
   text-decoration-thickness: 2px;
 }
 
 :host-context(.high-contrast-theme) .meta-row ion-icon {
-  color: #ffff00;
+  color: var(--ion-color-primary);
 }
 
 /*

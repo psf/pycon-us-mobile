@@ -76,8 +76,8 @@ ion-title {
 }
 
 :host-context(.high-contrast-theme) .about-card {
-  --background: #000000;
-  border: 2px solid #ffffff;
+  --background: var(--ion-card-background);
+  border: 1px solid var(--ion-border-color);
 }
 
 .dev-accordion {

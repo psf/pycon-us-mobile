@@ -99,10 +99,10 @@ ion-title {
 }
 
 :host-context(.high-contrast-theme) .day-section .day-header {
-  --pycon-accent: #ffff00;
-  background: #000000;
-  color: #ffff00;
-  border: 2px solid #ffff00;
+  --pycon-accent: var(--ion-color-primary);
+  background: var(--ion-card-background);
+  color: var(--ion-color-primary);
+  border: 1px solid var(--ion-border-color);
   box-shadow: none;
 }
 
@@ -163,9 +163,9 @@ ion-title {
 }
 
 :host-context(.high-contrast-theme) .session-item.session-item-highlight {
-  --background: #000000;
-  box-shadow: inset 4px 0 0 #ffff00;
-  outline: 2px solid #ffff00;
+  --background: var(--ion-item-background);
+  box-shadow: inset 4px 0 0 var(--ion-color-primary);
+  outline: 2px solid var(--ion-color-primary);
   outline-offset: -2px;
   animation: none;
 }

@@ -1,4 +1,9 @@
-<ion-app [class.dark-theme]="theme === 'dark'" [class.high-contrast-theme]="theme === 'high-contrast'">
+<ion-app
+  [class.dark-theme]="theme === 'dark'"
+  [class.high-contrast-theme]="theme === 'high-contrast-light' || theme === 'high-contrast-dark'"
+  [class.high-contrast-light-theme]="theme === 'high-contrast-light'"
+  [class.high-contrast-dark-theme]="theme === 'high-contrast-dark'">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <ion-split-pane contentId="main-content">
 
     <ion-menu contentId="main-content">
@@ -191,34 +196,25 @@
 
           <ion-item lines="none" class="theme-picker-item">
             <ion-icon slot="start" name="contrast-outline" aria-hidden="true"></ion-icon>
-            <ion-label>Theme</ion-label>
-          </ion-item>
-          <ion-item lines="none" class="theme-picker-segment-item">
-            <ion-segment
-              class="theme-picker-segment"
+            <ion-select
+              label="Theme"
               [value]="theme"
               (ionChange)="setTheme($any($event.detail.value))"
+              interface="action-sheet"
+              [interfaceOptions]="{ header: 'Choose theme' }"
               aria-label="App theme">
-              <ion-segment-button value="light" aria-label="Light theme">
-                <ion-icon name="sunny-outline" aria-hidden="true"></ion-icon>
-                <ion-label>Light</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="dark" aria-label="Dark theme">
-                <ion-icon name="moon-outline" aria-hidden="true"></ion-icon>
-                <ion-label>Dark</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="high-contrast" aria-label="High contrast theme">
-                <ion-icon name="contrast-outline" aria-hidden="true"></ion-icon>
-                <ion-label>HC</ion-label>
-              </ion-segment-button>
-            </ion-segment>
+              <ion-select-option value="light">Light</ion-select-option>
+              <ion-select-option value="dark">Dark</ion-select-option>
+              <ion-select-option value="high-contrast-light">High Contrast (Light)</ion-select-option>
+              <ion-select-option value="high-contrast-dark">High Contrast (Dark)</ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-list>
 
       </ion-content>
     </ion-menu>
 
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+    <ion-router-outlet id="main-content" tabindex="-1"></ion-router-outlet>
 
   </ion-split-pane>
 

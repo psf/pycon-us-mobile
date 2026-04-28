@@ -14,8 +14,17 @@ export function isCustomScheduleFilter(excluded: ReadonlyArray<string>): boolean
   return !excluded.every(track => defaults.has(track));
 }
 
-export type ThemeMode = 'light' | 'dark' | 'high-contrast';
-export const THEME_MODES: ThemeMode[] = ['light', 'dark', 'high-contrast'];
+export type ThemeMode =
+  | 'light'
+  | 'dark'
+  | 'high-contrast-light'
+  | 'high-contrast-dark';
+export const THEME_MODES: ThemeMode[] = [
+  'light',
+  'dark',
+  'high-contrast-light',
+  'high-contrast-dark',
+];
 
 @Injectable({
   providedIn: 'root'
@@ -79,10 +88,15 @@ export class UserData {
     })
   }
 
-  // Resolve the active theme. Migrates legacy `darkTheme` boolean callers
-  // (anything saved before the tri-state picker shipped) to the new key.
+  // Resolve the active theme. Migrates legacy storage shapes:
+  //   darkTheme: true        -> 'dark'           (pre-tri-state picker)
+  //   theme: 'high-contrast' -> 'high-contrast-dark'  (pre-HC-light split)
   async getTheme(): Promise<ThemeMode> {
     const stored = await this.storage.get('theme');
+    if (stored === 'high-contrast') {
+      await this.storage.set('theme', 'high-contrast-dark');
+      return 'high-contrast-dark';
+    }
     if (stored && THEME_MODES.indexOf(stored) !== -1) {
       return stored;
     }

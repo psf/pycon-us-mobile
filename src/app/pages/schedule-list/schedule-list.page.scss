@@ -86,27 +86,9 @@ ion-title {
   margin-right: 12px;
 }
 
-$tracks: (
-  talk: #5833E9,
-  tutorial: #DD04D2,
-  keynote: #680579,
-  plenary: #630675,
-  break: #3A3A3A,
-  lightning-talks: #C05CA0,
-  security: #F19C0B,
-  ai: #10B57F,
-  charla: #527CB2,
-  poster: #D47454,
-  sponsor\ presentation: #FFD779,
-  open\ space: #6FCF97,
-);
-
-@each $track, $color in $tracks {
-  ion-item[track='#{$track}'] ion-label {
-    border-left: 3px solid $color;
-    padding-left: 10px;
-  }
-}
+// Track membership is communicated by the .track-badge text inside each
+// row (see src/global.scss). The side-stripe accent was removed for the
+// same reasons noted in src/app/pages/schedule/schedule.scss.
 
 .session-list-item {
   --padding-top: 10px;

@@ -1,3 +1,30 @@
+/*
+ * Skip-to-content link for keyboard and screen-reader users. Hidden off-canvas
+ * until focused, then anchors to top-left as the first interactive control on
+ * every page. Targets the router outlet's id so focus actually transfers.
+ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 10000;
+  padding: 12px 20px;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+  transition: top 180ms ease-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 0;
+  outline: 3px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
 ion-menu ion-content {
   --padding-top: 20px;
   --padding-bottom: 20px;
@@ -91,39 +118,11 @@ ion-item.indent {
 }
 
 /*
- * Theme picker — segmented control sits flush in the side menu.
- * Container item drops native padding so the segment uses the full menu width.
+ * Theme picker — ion-select popover keeps the four theme options compact
+ * in the side menu and leaves room for descriptive labels.
  */
-ion-menu ion-item.theme-picker-segment-item {
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --inner-padding-end: 0;
-  --min-height: 44px;
-  margin-bottom: 8px;
-}
-
-ion-menu .theme-picker-segment {
-  width: 100%;
-  --background: var(--ion-color-step-100, rgba(0, 0, 0, 0.04));
-
-  ion-segment-button {
-    --indicator-height: 2px;
-    min-height: 40px;
-    min-width: 0;
-    flex: 1 1 0;
-    text-transform: none;
-    font-size: 12px;
-
-    ion-icon {
-      font-size: 18px;
-      margin-bottom: 2px;
-    }
-
-    ion-label {
-      font-size: 11px;
-      letter-spacing: 0.02em;
-    }
-  }
+ion-menu ion-item.theme-picker-item ion-select {
+  font-weight: 500;
 }
 
 ion-accordion div[slot="content"] ion-item {

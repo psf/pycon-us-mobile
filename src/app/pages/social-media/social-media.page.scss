@@ -74,9 +74,12 @@ ion-icon.social-icon.bluesky {
   color: #0085ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  // PNG/multicolor logos that should NOT be inverted in dark mode
-  // (ion-icon SVGs and the colored Bluesky icon already adapt via currentColor)
+// PNG/multicolor logos that should be inverted on dark surfaces. Driven off
+// the in-app theme classes rather than `prefers-color-scheme` so HC Light over
+// an OS-dark preference still shows un-inverted logos on the cream background.
+// (ion-icon SVGs and the colored Bluesky icon already adapt via currentColor.)
+:host-context(.dark-theme),
+:host-context(.high-contrast-dark-theme) {
   .social-icon.pypi {
     filter: none;
   }
