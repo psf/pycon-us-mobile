@@ -214,8 +214,18 @@ export class TShirtRedemptionPage implements OnInit, OnDestroy {
     this.ios = this.config.get('mode') === `ios`;
     this.pycon.fetchCheckInProducts().then((data) => {
       data.subscribe(redeemable => {
-        this.redeemable_products = redeemable?.redeemable_products;
-        this.redeemable_categories = redeemable?.redeemable_categories;
+        // /check_in/redeemable/ returns the union of every redeemable
+        // category (sessions + swag) and CategorySerializer omits
+        // render_type, so we have to discriminate by name. Swag pickup
+        // only redeems merch — keep T-Shirt categories (and any
+        // future "swag-*" naming) and drop the rest. Long-term fix:
+        // expose render_type on the API.
+        const categories = (redeemable?.redeemable_categories ?? [])
+          .filter(c => /shirt|swag/i.test(c?.name ?? ''));
+        const keepIds = new Set(categories.map(c => c.id));
+        this.redeemable_categories = categories;
+        this.redeemable_products = (redeemable?.redeemable_products ?? [])
+          .filter(p => keepIds.has(p.category));
       })
     })
   }
