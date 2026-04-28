@@ -1,4 +1,4 @@
-<ion-app [class.dark-theme]="dark">
+<ion-app [class.dark-theme]="theme === 'dark'" [class.high-contrast-theme]="theme === 'high-contrast'">
   <ion-split-pane contentId="main-content">
 
     <ion-menu contentId="main-content">
@@ -189,10 +189,29 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-item>
-            <ion-icon slot="start" name="moon-outline"></ion-icon>
-            <ion-label>Dark Mode</ion-label>
-            <ion-toggle [(ngModel)]="dark" (ngModelChange)="toggleDarkTheme()"></ion-toggle>
+          <ion-item lines="none" class="theme-picker-item">
+            <ion-icon slot="start" name="contrast-outline" aria-hidden="true"></ion-icon>
+            <ion-label>Theme</ion-label>
+          </ion-item>
+          <ion-item lines="none" class="theme-picker-segment-item">
+            <ion-segment
+              class="theme-picker-segment"
+              [value]="theme"
+              (ionChange)="setTheme($any($event.detail.value))"
+              aria-label="App theme">
+              <ion-segment-button value="light" aria-label="Light theme">
+                <ion-icon name="sunny-outline" aria-hidden="true"></ion-icon>
+                <ion-label>Light</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="dark" aria-label="Dark theme">
+                <ion-icon name="moon-outline" aria-hidden="true"></ion-icon>
+                <ion-label>Dark</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="high-contrast" aria-label="High contrast theme">
+                <ion-icon name="contrast-outline" aria-hidden="true"></ion-icon>
+                <ion-label>HC</ion-label>
+              </ion-segment-button>
+            </ion-segment>
           </ion-item>
         </ion-list>
 

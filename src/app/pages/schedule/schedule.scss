@@ -44,6 +44,10 @@ $tracks: (
   --pycon-accent: #DD04D2;
 }
 
+:host-context(.high-contrast-theme) {
+  --pycon-accent: #ffff00;
+}
+
 .schedule-toolbar {
   --padding-start: 0;
   --padding-end: 0;

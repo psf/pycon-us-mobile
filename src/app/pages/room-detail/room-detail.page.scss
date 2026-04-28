@@ -98,6 +98,14 @@ ion-title {
   box-shadow: 0 2px 6px rgba(221, 4, 210, 0.30);
 }
 
+:host-context(.high-contrast-theme) .day-section .day-header {
+  --pycon-accent: #ffff00;
+  background: #000000;
+  color: #ffff00;
+  border: 2px solid #ffff00;
+  box-shadow: none;
+}
+
 .session-item {
   --padding-start: 16px;
   --padding-end: 8px;
@@ -152,4 +160,12 @@ ion-title {
 :host-context(.dark-theme) .session-item.session-item-highlight {
   --background: rgba(221, 4, 210, 0.10);
   box-shadow: inset 3px 0 0 #DD04D2;
+}
+
+:host-context(.high-contrast-theme) .session-item.session-item-highlight {
+  --background: #000000;
+  box-shadow: inset 4px 0 0 #ffff00;
+  outline: 2px solid #ffff00;
+  outline-offset: -2px;
+  animation: none;
 }

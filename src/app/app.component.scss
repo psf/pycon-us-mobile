@@ -90,6 +90,42 @@ ion-item.indent {
   padding-left: 1.25em;
 }
 
+/*
+ * Theme picker — segmented control sits flush in the side menu.
+ * Container item drops native padding so the segment uses the full menu width.
+ */
+ion-menu ion-item.theme-picker-segment-item {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-end: 0;
+  --min-height: 44px;
+  margin-bottom: 8px;
+}
+
+ion-menu .theme-picker-segment {
+  width: 100%;
+  --background: var(--ion-color-step-100, rgba(0, 0, 0, 0.04));
+
+  ion-segment-button {
+    --indicator-height: 2px;
+    min-height: 40px;
+    min-width: 0;
+    flex: 1 1 0;
+    text-transform: none;
+    font-size: 12px;
+
+    ion-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    ion-label {
+      font-size: 11px;
+      letter-spacing: 0.02em;
+    }
+  }
+}
+
 ion-accordion div[slot="content"] ion-item {
   --padding-start: 40px;
 }

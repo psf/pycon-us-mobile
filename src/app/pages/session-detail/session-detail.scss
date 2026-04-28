@@ -139,6 +139,12 @@ ion-toolbar ion-button {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
+:host-context(.high-contrast-theme) .session-meta-card {
+  background: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: none;
+}
+
 .meta-row {
   display: flex;
   align-items: center;
@@ -173,6 +179,15 @@ ion-toolbar ion-button {
 
 :host-context(.dark-theme) .meta-row ion-icon {
   color: #8b8fd4;
+}
+
+:host-context(.high-contrast-theme) .meta-row .room-link {
+  color: #ffff00;
+  text-decoration-thickness: 2px;
+}
+
+:host-context(.high-contrast-theme) .meta-row ion-icon {
+  color: #ffff00;
 }
 
 /*

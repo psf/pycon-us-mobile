@@ -14,6 +14,8 @@ export function isCustomScheduleFilter(excluded: ReadonlyArray<string>): boolean
   return !excluded.every(track => defaults.has(track));
 }
 
+export type ThemeMode = 'light' | 'dark' | 'high-contrast';
+export const THEME_MODES: ThemeMode[] = ['light', 'dark', 'high-contrast'];
 
 @Injectable({
   providedIn: 'root'
@@ -77,16 +79,27 @@ export class UserData {
     })
   }
 
-  // Get current theme from storage
-  getDarkTheme() {
-    return this.storage.get('darkTheme');
+  // Resolve the active theme. Migrates legacy `darkTheme` boolean callers
+  // (anything saved before the tri-state picker shipped) to the new key.
+  async getTheme(): Promise<ThemeMode> {
+    const stored = await this.storage.get('theme');
+    if (stored && THEME_MODES.indexOf(stored) !== -1) {
+      return stored;
+    }
+    const legacyDark = await this.storage.get('darkTheme');
+    if (legacyDark === true) {
+      await this.storage.set('theme', 'dark');
+      await this.storage.remove('darkTheme');
+      return 'dark';
+    }
+    if (legacyDark === false) {
+      await this.storage.remove('darkTheme');
+    }
+    return 'light';
   }
 
-  // Toggle Dark Theme. Sets inverted value to storage
-  toggleDarkTheme() {
-    this.getDarkTheme().then((darkTheme) => {
-      this.storage.set('darkTheme', !darkTheme);
-    });
+  setTheme(theme: ThemeMode): Promise<any> {
+    return this.storage.set('theme', theme);
   }
 
   hasFavorite(sessionId: string): boolean {
