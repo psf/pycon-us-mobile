@@ -29,6 +29,13 @@ export class ConferenceMapPage implements OnInit {
 
   floorPlans: FloorPlan[] = [
     {
+      id: 'campus',
+      title: 'Campus Overview',
+      subtitle: 'Convention center, hotels, halls, and entrances',
+      thumb: 'assets/img/floor-plans/campus-map-thumb.jpg',
+      full: 'assets/img/floor-plans/campus-map.jpg',
+    },
+    {
       id: 'concourse',
       title: 'Concourse Level',
       subtitle: 'Tutorials, Talk Track, Registration, Expo entry',
