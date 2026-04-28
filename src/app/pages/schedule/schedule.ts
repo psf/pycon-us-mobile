@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
-import { UserData } from '../../providers/user-data';
+import { UserData, isCustomScheduleFilter } from '../../providers/user-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { environment } from '../../../environments/environment';
 
@@ -90,6 +90,12 @@ export class SchedulePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.updateSchedule();
+  }
+
+  // True when the user has changed filters from the app default
+  // (default = ['Open Space']). Drives the brighter "customized" dot tier.
+  get hasCustomFilters(): boolean {
+    return isCustomScheduleFilter(this.excludeTracks || []);
   }
 
   ionViewDidEnter() {
@@ -243,12 +249,6 @@ export class SchedulePage implements OnInit, OnDestroy {
     setTimeout(() => {
       this.search.setFocus();
     }, 500); // ms delay
-  }
-
-  clearFilters() {
-    this.excludeTracks = [];
-    this.user.setScheduleFilters([]);
-    this.updateSchedule();
   }
 
   async presentFilter() {

@@ -3,7 +3,7 @@ import { Config, ModalController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
-import { UserData } from '../../providers/user-data';
+import { DEFAULT_EXCLUDED_TRACKS, UserData } from '../../providers/user-data';
 
 
 @Component({
@@ -45,6 +45,13 @@ export class ScheduleFilterPage {
     // set all to checked or unchecked
     this.tracks.forEach(track => {
       track.isChecked = check;
+    });
+  }
+
+  resetToDefault() {
+    const defaults = new Set(DEFAULT_EXCLUDED_TRACKS);
+    this.tracks.forEach(track => {
+      track.isChecked = !defaults.has(track.name);
     });
   }
 

@@ -1,8 +1,7 @@
 <ion-header translucent="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button *ngIf="ios" (click)="dismiss()">Cancel</ion-button>
-      <ion-button *ngIf="!ios" (click)="selectAll(true)">Reset</ion-button>
+      <ion-button (click)="resetToDefault()">Reset</ion-button>
     </ion-buttons>
 
     <ion-title>
