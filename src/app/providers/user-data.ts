@@ -4,6 +4,16 @@ import { Subject } from 'rxjs';
 
 import { PyConAPI } from '../providers/pycon-api';
 
+// Default schedule filter: Open Spaces are conference-day-only and clutter
+// the timeline before then, so first-time users see them excluded.
+export const DEFAULT_EXCLUDED_TRACKS: ReadonlyArray<string> = ['Open Space'];
+
+export function isCustomScheduleFilter(excluded: ReadonlyArray<string>): boolean {
+  if (excluded.length !== DEFAULT_EXCLUDED_TRACKS.length) return true;
+  const defaults = new Set(DEFAULT_EXCLUDED_TRACKS);
+  return !excluded.every(track => defaults.has(track));
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -279,12 +289,11 @@ export class UserData {
 
   getScheduleFilters(): Promise<Array<string>> {
     return this.storage.get('scheduleFilters').then((value) => {
-      // First-time users default to hiding Open Spaces from the schedule
-      // (they're conference-day-only and clutter the timeline before then).
-      // Anyone who has explicitly toggled the filter — even to clear all
-      // exclusions, which is stored as `[]` — keeps their preference.
+      // First-time users get the app default. Anyone who has explicitly
+      // toggled the filter — even to clear all exclusions, stored as `[]` —
+      // keeps their preference.
       if (value === null || value === undefined) {
-        return ['Open Space'];
+        return [...DEFAULT_EXCLUDED_TRACKS];
       }
       return value;
     });

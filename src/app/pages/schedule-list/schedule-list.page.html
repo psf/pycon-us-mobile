@@ -29,32 +29,40 @@
     </ion-button>
   </div>
 
-  <!-- Regular sessions display -->
-  <ion-list *ngIf="!isOpenSpaceView">
-    <ion-item *ngFor="let session of displaySessions" [hidden]="session.hide" detail="true" routerLink="/app/tabs/schedule/session/{{session.id}}" [attr.track]="session.track | lowercase" class="session-list-item">
-      <ion-label>
-        <h2 class="session-name">
-          <ion-icon *ngIf="session.favorite" name="star" color="warning" style="font-size: 0.85em; margin-right: 4px;"></ion-icon>
-          {{session.name}}
-        </h2>
-        <div class="session-badges">
-          <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
-          <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
-          <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
-        </div>
-        <p class="session-meta">
-          <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.day}} {{session.timeStart}} – {{session.timeEnd}}</span>
-          <span *ngIf="session.displayLocation || session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.displayLocation || session.location}}</span>
-        </p>
-        <div *ngIf="session.speakers?.length" class="speaker-avatars">
-          <ion-avatar *ngFor="let speaker of session.speakers" class="speaker-avatar-small">
-            <img [src]="speaker.profilePic" [alt]="speaker.name">
-          </ion-avatar>
-          <span class="speaker-names">{{session.speakerNames.join(', ')}}</span>
-        </div>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <!-- Regular sessions display, grouped by conference day -->
+  <div *ngIf="!isOpenSpaceView">
+    <div *ngFor="let day of visibleDays">
+      <ion-item-divider *ngIf="sessionsByDay[day]?.length > 0" class="day-header">
+        <ion-label>{{ dayLabel(day) }}</ion-label>
+      </ion-item-divider>
+
+      <ion-list *ngIf="sessionsByDay[day]?.length > 0" lines="full">
+        <ion-item *ngFor="let session of sessionsByDay[day]" [hidden]="session.hide" detail="true" routerLink="/app/tabs/schedule/session/{{session.id}}" [attr.track]="session.track | lowercase" class="session-list-item">
+          <ion-label>
+            <h2 class="session-name">
+              <ion-icon *ngIf="session.favorite" name="star" color="warning" style="font-size: 0.85em; margin-right: 4px;"></ion-icon>
+              {{session.name}}
+            </h2>
+            <div class="session-badges">
+              <span class="track-badge" [attr.data-track]="session.track | lowercase">{{session.track | trackName}}</span>
+              <span *ngIf="session?.isSpanish" class="track-badge spanish-badge">En Español</span>
+              <span *ngIf="session?.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
+            </div>
+            <p class="session-meta">
+              <span class="meta-item"><ion-icon name="time-outline"></ion-icon> {{session.timeStart}} – {{session.timeEnd}}</span>
+              <span *ngIf="session.displayLocation || session.location" class="meta-item"><ion-icon name="location-outline"></ion-icon> {{session.displayLocation || session.location}}</span>
+            </p>
+            <div *ngIf="session.speakers?.length" class="speaker-avatars">
+              <ion-avatar *ngFor="let speaker of session.speakers" class="speaker-avatar-small">
+                <img [src]="speaker.profilePic" [alt]="speaker.name">
+              </ion-avatar>
+              <span class="speaker-names">{{session.speakerNames.join(', ')}}</span>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
 
   <div *ngIf="isOpenSpaceView" class="ion-padding-horizontal">
     <p>

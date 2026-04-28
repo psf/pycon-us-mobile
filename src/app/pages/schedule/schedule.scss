@@ -77,9 +77,30 @@ $tracks: (
   &:active {
     --color: #680579;
   }
+}
 
-  &.filters-active {
-    --color: #DD04D2;
+.filter-button {
+  position: relative;
+
+  &.filters-active::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--pycon-accent, #680579) 55%, transparent);
+    box-shadow: 0 0 0 2px var(--ion-toolbar-background, var(--ion-background-color, #fff));
+    pointer-events: none;
+  }
+
+  &.filters-custom {
+    --color: var(--pycon-accent, #680579);
+  }
+
+  &.filters-custom::after {
+    background: var(--pycon-accent, #680579);
   }
 }
 

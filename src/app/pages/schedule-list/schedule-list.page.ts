@@ -32,9 +32,21 @@ export class ScheduleListPage implements OnInit {
   sessions: any[] = [];
   displaySessions: any[] = [];
   sessionsByDay: any = {};
-  dayOrder = ['Fri', 'Sat', 'Sun'];
+  dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  // Days that actually have sessions in the current view, in canonical order.
+  // Drives the day-separator headers on the track list.
+  visibleDays: string[] = [];
   sessionQueryText = '';
   isOpenSpaceView = false;
+
+  private readonly dayLongLabels: Record<string, string> = {
+    Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday',
+    Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday',
+  };
+
+  dayLabel(day: string): string {
+    return this.dayLongLabels[day] || day;
+  }
 
   loggedIn: boolean = false;
   ios: boolean;
@@ -91,15 +103,29 @@ export class ScheduleListPage implements OnInit {
   }
 
   organizeSessionsByDay() {
-    if (!this.isOpenSpaceView) return;
-
     this.sessionsByDay = {};
     this.dayOrder.forEach(day => this.sessionsByDay[day] = []);
 
     this.displaySessions.forEach(session => {
-      if (this.sessionsByDay[session.day]) {
-        this.sessionsByDay[session.day].push(session);
+      const bucket = this.sessionsByDay[session.day];
+      if (bucket) {
+        bucket.push(session);
+      } else {
+        // Unknown day code — keep the session findable rather than silently dropping it.
+        this.sessionsByDay[session.day] = [session];
       }
+    });
+
+    this.visibleDays = Object.keys(this.sessionsByDay).filter(
+      day => this.sessionsByDay[day]?.length > 0,
+    );
+    this.visibleDays.sort((a, b) => {
+      const ai = this.dayOrder.indexOf(a);
+      const bi = this.dayOrder.indexOf(b);
+      if (ai === -1 && bi === -1) return a.localeCompare(b);
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
     });
   }
 

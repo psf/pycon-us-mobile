@@ -787,13 +787,14 @@ export class ConferenceData {
           }
         });
 
-        if (sessions.length > 0 && sessions[0].track === "Open Space") {
-          const dayPriority = { "Fri": 0, "Sat": 1, "Sun": 2 };
-          sessions.sort((a, b) => {
-            const dayDiff = (dayPriority[a.day] || 0) - (dayPriority[b.day] || 0);
-            return dayDiff || this.parseTime(a.timeStart) - this.parseTime(b.timeStart);
-          });
-        }
+        sessions.sort((a, b) => {
+          const aTime = a.startUtc ? new Date(a.startUtc).getTime() : 0;
+          const bTime = b.startUtc ? new Date(b.startUtc).getTime() : 0;
+          if (aTime && bTime && aTime !== bTime) return aTime - bTime;
+          // Fallback for sessions missing startUtc (defensive — shouldn't happen
+          // for normal track sessions, but keep behavior stable).
+          return this.parseTime(a.timeStart || '') - this.parseTime(b.timeStart || '');
+        });
 
         return sessions;
       })
