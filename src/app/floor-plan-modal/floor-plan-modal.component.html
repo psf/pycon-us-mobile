@@ -1,0 +1,26 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" aria-label="Close floor plan">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="floor-plan-modal-content">
+  <pinch-zoom
+    class="floor-plan-zoom"
+    [autoZoomOut]="false"
+    [doubleTap]="true"
+    [wheel]="true"
+    [draggableImage]="false"
+    [limitZoom]="'original image size'"
+    backgroundColor="#ffffff">
+    <img
+      [src]="imageSrc"
+      [alt]="altText || title"
+      decoding="async" />
+  </pinch-zoom>
+</ion-content>
