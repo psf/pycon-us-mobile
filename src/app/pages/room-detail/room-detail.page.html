@@ -19,6 +19,18 @@
     <p>{{ room.sessions.length }} {{ room.sessions.length === 1 ? 'session' : 'sessions' }} scheduled</p>
   </div>
 
+  <div *ngIf="roomLocation" class="room-location-map">
+    <app-location-map
+      [label]="roomLocation.label"
+      [sublabel]="roomLocation.sublabel"
+      [floorTitle]="roomLocation.floorTitle"
+      [thumbSrc]="roomLocation.thumbSrc"
+      [fullSrc]="roomLocation.fullSrc"
+      [pinXPct]="roomLocation.pinXPct"
+      [pinYPct]="roomLocation.pinYPct">
+    </app-location-map>
+  </div>
+
   <div *ngFor="let day of days" class="day-section">
     <div class="day-header">{{ day.day }}</div>
 

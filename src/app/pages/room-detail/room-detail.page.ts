@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subscription, combineLatest } from 'rxjs';
 import { ConferenceData } from '../../providers/conference-data';
+import { getRoomLocation } from '../../location-map/room-locations';
+import { VenueLocation } from '../../location-map/venue-locations';
 
 interface RoomDay {
   day: string;
@@ -20,6 +22,7 @@ export class RoomDetailPage implements OnInit, OnDestroy {
   loaded = false;
   highlightSessionId: any = null;
   showTitle = false;
+  roomLocation: VenueLocation | null = null;
 
   private paramSub?: Subscription;
   private dayOrder = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -55,6 +58,7 @@ export class RoomDetailPage implements OnInit, OnDestroy {
       this.loaded = true;
       this.room = room || null;
       this.days = room ? this.groupByDay(room.sessions) : [];
+      this.roomLocation = room ? getRoomLocation(room.name) : null;
       if (this.highlightSessionId) {
         this.scrollToSession(this.highlightSessionId);
       }
