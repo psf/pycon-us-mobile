@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PinchZoomModule } from '@ciag/ngx-pinch-zoom';
 
 import { ExpoHallMapModule } from '../../expo-hall-map/expo-hall-map.module';
+import { FloorPlanModalComponent } from '../../floor-plan-modal/floor-plan-modal.component';
 
 import { ConferenceMapPageRoutingModule } from './conference-map-routing.module';
 
@@ -21,6 +22,6 @@ import { ConferenceMapPage } from './conference-map.page';
     ExpoHallMapModule,
     ConferenceMapPageRoutingModule
   ],
-  declarations: [ConferenceMapPage]
+  declarations: [ConferenceMapPage, FloorPlanModalComponent]
 })
 export class ConferenceMapPageModule {}

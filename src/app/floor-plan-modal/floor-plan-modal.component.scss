@@ -1,0 +1,17 @@
+.floor-plan-modal-content {
+  --background: #ffffff;
+}
+
+.floor-plan-zoom {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+}
+
+.floor-plan-zoom img {
+  width: 100%;
+  height: auto;
+  display: block;
+  -webkit-user-drag: none;
+  user-select: none;
+}

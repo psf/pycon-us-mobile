@@ -25,16 +25,28 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" [scrollX]="mapView === 'floor-plans'" [scrollY]="mapView === 'floor-plans'" scrollEvents="true">
+<ion-content fullscreen="true" [scrollY]="mapView === 'floor-plans'" scrollEvents="true">
 
   <ng-container *ngIf="mapView === 'floor-plans'">
-    <pinch-zoom>
-      <div>
-        <ion-img class="floor-img" src="assets/img/floor-two.png"></ion-img>
-        <ion-img class="floor-img" src="assets/img/floor-three.png"></ion-img>
-        <ion-img class="floor-img" src="assets/img/floor-four.png"></ion-img>
-      </div>
-    </pinch-zoom>
+    <div class="floor-plan-list">
+      <button
+        type="button"
+        class="floor-plan-card"
+        *ngFor="let plan of floorPlans"
+        (click)="openFloorPlan(plan)"
+        [attr.aria-label]="'Open ' + plan.title + ' floor plan'">
+        <div class="floor-plan-thumb-wrap">
+          <ion-img class="floor-plan-thumb" [src]="plan.thumb" [alt]="plan.title + ' thumbnail'"></ion-img>
+          <div class="floor-plan-zoom-hint" aria-hidden="true">
+            <ion-icon name="expand-outline"></ion-icon>
+          </div>
+        </div>
+        <div class="floor-plan-meta">
+          <div class="floor-plan-title">{{ plan.title }}</div>
+          <div class="floor-plan-subtitle" *ngIf="plan.subtitle">{{ plan.subtitle }}</div>
+        </div>
+      </button>
+    </div>
   </ng-container>
 
   <iframe
