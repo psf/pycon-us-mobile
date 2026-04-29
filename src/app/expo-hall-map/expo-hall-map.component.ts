@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { IonSearchbar, LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { ConferenceData } from '../providers/conference-data';
 
@@ -22,9 +24,22 @@ export interface BoothData {
   templateUrl: './expo-hall-map.component.html',
   styleUrls: ['./expo-hall-map.component.scss'],
 })
-export class ExpoHallMapComponent implements OnInit, AfterViewInit {
+export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('searchBar') searchBar!: IonSearchbar;
-  @ViewChild('pinchZoom') pinchZoomCmp?: { pinchZoom?: { maxScale: number } };
+  @ViewChild('pinchZoom', { read: ElementRef }) pinchZoomEl?: ElementRef<HTMLElement>;
+  @ViewChild('pinchZoom') pinchZoomCmp?: {
+    pinchZoom?: {
+      maxScale: number;
+      scale: number;
+      moveX: number;
+      moveY: number;
+      element: HTMLElement;
+      properties: { transitionDuration: number };
+      setZoom: (p: { scale: number; center?: number[] }) => void;
+      transformElement: (duration: number) => void;
+      updateInitialValues: () => void;
+    };
+  };
 
   showSearchbar = false;
   searchQuery = '';
@@ -110,11 +125,24 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit {
   constructor(
     private confData: ConferenceData,
     private loadingCtrl: LoadingController,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.loadSponsors();
   }
+
+  // Zoom factor used when arriving via "?booth=<id>" (e.g. from a sponsor
+  // detail page). Tuned to fill ~1/4 of the viewport with the booth and its
+  // immediate neighbours so attendees can orient quickly.
+  private static readonly DEEPLINK_ZOOM_SCALE = 6;
+
+  // The bottom popup covers ~110px on a 390×844 viewport. Shift the booth's
+  // zoom target up by half that so the highlighted booth lands above the
+  // popup instead of underneath it.
+  private static readonly DEEPLINK_POPUP_OFFSET_PX = 60;
+
+  private querySub?: Subscription;
 
   ngAfterViewInit() {
     // @ciag/ngx-pinch-zoom hardcodes defaultMaxScale=3 and only auto-derives
@@ -129,6 +157,17 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit {
       const inner = this.pinchZoomCmp?.pinchZoom;
       if (inner) {
         inner.maxScale = 25;
+        // React to the current ?booth=<id>, and to any future change while
+        // the component stays mounted (e.g. user pops back to a different
+        // sponsor and taps that booth's pill — Angular reuses this instance
+        // and only the query param changes).
+        this.querySub = this.route.queryParamMap.subscribe(params => {
+          const wantId = params.get('booth');
+          if (!wantId) return;
+          const booth = this.booths.find(b => b.id === String(wantId));
+          if (!booth) return;
+          requestAnimationFrame(() => this.zoomToBooth(booth));
+        });
         return;
       }
       if (Date.now() - start < 2000) {
@@ -136,6 +175,80 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit {
       }
     };
     tick();
+  }
+
+  ngOnDestroy() {
+    this.querySub?.unsubscribe();
+  }
+
+  private async zoomToBooth(booth: BoothData) {
+    const inner = this.pinchZoomCmp?.pinchZoom;
+    const host = this.pinchZoomEl?.nativeElement;
+    if (!inner || !host || !host.offsetWidth) return;
+
+    // The floor plan PNG is large (~10K wide) and may still be loading. If we
+    // call setZoom while img.offsetHeight is 0, pinch-zoom's internal
+    // limitPanY treats the image as empty and re-centers, clobbering our
+    // moveY. Wait for the image to actually have layout dimensions first.
+    const imgEl = host.querySelector('img') as HTMLImageElement | null;
+    if (imgEl && (!imgEl.complete || imgEl.naturalWidth === 0 || imgEl.offsetHeight === 0)) {
+      await new Promise<void>(resolve => {
+        const done = () => { imgEl.removeEventListener('load', done); resolve(); };
+        imgEl.addEventListener('load', done);
+        // Safety net: stop waiting after 5s so we still attempt the zoom.
+        setTimeout(done, 5000);
+      });
+    }
+
+    // We bypass IvyPinch.setZoom() because it always runs centeringImage() →
+    // limitPanY() afterwards, and that clamp assumes the image fills the
+    // host. Our floor plan PNG is wider than tall (W:H ≈ 1.41:1) inside a
+    // tall mobile viewport, so it only occupies the top ~275px of a ~655px
+    // tall host. limitPanY then refuses to let the booth land anywhere
+    // except near the top of the viewport, no matter what we pass for
+    // `center`. Setting scale + moveX/moveY on the IvyPinch instance
+    // ourselves and calling transformElement directly skips the clamp.
+    //
+    // Math: a point at inner-element pixel (px, py) ends up displayed at
+    // (moveX + S·px, moveY + S·py). To park the booth's center at screen
+    // (W/2, H/2 − popupOffset):
+    //   moveX = W/2 − S·boothPx
+    //   moveY = (H/2 − popupOffset) − S·boothPy
+    // The popup offset lifts the booth above the fixed bottom popup card so
+    // it isn't hidden behind it.
+    // .map-inner is `display: inline-block` so baseline alignment within
+    // .pinch-zoom-content offsets it down by some amount we have to find at
+    // runtime — otherwise the booth lands hundreds of pixels too low after
+    // the scale-by-six. Read mapInner's actual offsetTop within its parent
+    // and fold it into the booth's pre-transform Y.
+    const mapInner = host.querySelector('.map-inner') as HTMLElement | null;
+    const mapInnerTop = mapInner?.offsetTop ?? 0;
+    const mapInnerLeft = mapInner?.offsetLeft ?? 0;
+
+    const S = ExpoHallMapComponent.DEEPLINK_ZOOM_SCALE;
+    const W = host.offsetWidth;
+    const H = host.offsetHeight;
+    const popupOffset = ExpoHallMapComponent.DEEPLINK_POPUP_OFFSET_PX;
+    const imgDisplayH = W * (booth.imgH / booth.imgW);
+    const fracX = (booth.left + booth.width / 2) / booth.imgW;
+    const fracY = (booth.top + booth.height / 2) / booth.imgH;
+    const boothPx = mapInnerLeft + fracX * W;
+    const boothPy = mapInnerTop  + fracY * imgDisplayH;
+    const newMoveX = W / 2 - S * boothPx;
+    const newMoveY = (H / 2 - popupOffset) - S * boothPy;
+
+    inner.scale = S;
+    inner.moveX = newMoveX;
+    inner.moveY = newMoveY;
+    inner.transformElement(inner.properties?.transitionDuration ?? 200);
+    inner.updateInitialValues();
+
+    // Also surface the popup + ring around the booth. Defer past the zoom
+    // animation so the booth is already in frame when the popup appears.
+    setTimeout(() => {
+      this.selectedBooth = booth;
+      this.highlightedBoothId = booth.id;
+    }, 250);
   }
 
   loadSponsors(showLoader = false) {

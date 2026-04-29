@@ -19,7 +19,12 @@
       <span *ngIf="sponsor?.level" class="level-badge">{{ sponsor?.level }}</span>
 
       <div *ngIf="sponsor?.booth_number || sponsor?.job_fair_table_number" class="sponsor-locations">
-        <ion-chip *ngIf="sponsor?.booth_number" outline="true" color="primary">
+        <ion-chip *ngIf="sponsor?.booth_number"
+                  outline="true"
+                  color="primary"
+                  routerLink="/app/tabs/expo-hall"
+                  [queryParams]="{ booth: sponsor.booth_number }"
+                  [attr.aria-label]="'Show booth ' + sponsor?.booth_number + ' on the Expo Hall map'">
           <ion-icon name="storefront-outline"></ion-icon>
           <ion-label>Expo Booth {{ sponsor?.booth_number }}</ion-label>
         </ion-chip>
