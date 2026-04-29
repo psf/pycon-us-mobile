@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
@@ -16,8 +17,22 @@ export class SponsorDetailPage {
   constructor(
     private dataProvider: ConferenceData,
     private route: ActivatedRoute,
+    private navCtrl: NavController,
     public liveUpdateService: LiveUpdateService,
   ) {}
+
+  // Imperative navigation to /app/tabs/expo-hall?booth=<id>. We don't use
+  // routerLink here because the booth pill targets a different Ionic tab
+  // (sponsors → expo-hall), and Ionic's tab outlet keys its cache on the
+  // path segment alone — so jumping from ?booth=613 to ?booth=127 looks
+  // like "same tab, restore cached page" and the new query param never
+  // reaches the map. NavController.navigateRoot forces a fresh activation.
+  goToBooth(boothNumber: string | number | null | undefined) {
+    if (boothNumber == null || boothNumber === '') return;
+    this.navCtrl.navigateRoot(['/app/tabs/expo-hall'], {
+      queryParams: { booth: String(boothNumber) },
+    });
+  }
 
   ionViewDidEnter() {
     this.backHref = this.route.snapshot.queryParamMap.get('prevUrl') || '/app/tabs/sponsors';
