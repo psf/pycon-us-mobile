@@ -52,7 +52,7 @@
 </div>
 
 <!-- Tap popup -->
-<div class="booth-popup" *ngIf="selectedBooth" (click)="selectedBooth = null">
+<div class="booth-popup" *ngIf="selectedBooth" (click)="closePopup()">
   <div class="booth-popup-inner" (click)="$event.stopPropagation()">
     <img
       *ngIf="selectedBooth.logoUrl"
@@ -70,7 +70,7 @@
       <span class="booth-popup-name">{{ selectedBooth.name }}</span>
       <span class="booth-popup-number">Booth {{ selectedBooth.id }}</span>
     </div>
-    <ion-button fill="clear" size="small" class="close-btn" (click)="selectedBooth = null" aria-label="Close booth details">
+    <ion-button fill="clear" size="small" class="close-btn" (click)="closePopup()" aria-label="Close booth details">
       <ion-icon slot="icon-only" name="close-outline"></ion-icon>
     </ion-button>
   </div>

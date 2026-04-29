@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { IonSearchbar, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { ConferenceData } from '../providers/conference-data';
 
@@ -126,6 +127,7 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
     private confData: ConferenceData,
     private loadingCtrl: LoadingController,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -143,6 +145,8 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
   private static readonly DEEPLINK_POPUP_OFFSET_PX = 60;
 
   private querySub?: Subscription;
+  private routerSub?: Subscription;
+  private lastZoomedBoothId: string | null = null;
 
   ngAfterViewInit() {
     // @ciag/ngx-pinch-zoom hardcodes defaultMaxScale=3 and only auto-derives
@@ -162,12 +166,26 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
         // sponsor and taps that booth's pill — Angular reuses this instance
         // and only the query param changes).
         this.querySub = this.route.queryParamMap.subscribe(params => {
-          const wantId = params.get('booth');
-          if (!wantId) return;
-          const booth = this.booths.find(b => b.id === String(wantId));
-          if (!booth) return;
-          requestAnimationFrame(() => this.zoomToBooth(booth));
+          this.maybeZoomToQueryBooth(params.get('booth'));
         });
+        // Belt-and-braces: Ionic page caching keeps this component alive
+        // across nav, and ActivatedRoute.queryParamMap doesn't always
+        // re-emit when the cached page is re-entered with a new query
+        // string (sponsor → booth → back to sponsors → other sponsor →
+        // booth would otherwise leave us pinned to the first booth). On
+        // every navigation that lands on /expo-hall, parse the live URL
+        // (NOT route.snapshot, which is set on route activation and stays
+        // stale when Ionic just shows a cached page) and zoom if the
+        // booth id changed.
+        this.routerSub = this.router.events
+          .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+          .subscribe(e => {
+            const url = e.urlAfterRedirects || this.router.url;
+            if (!url.includes('/expo-hall')) return;
+            const tree = this.router.parseUrl(url);
+            const wantId = tree.queryParamMap.get('booth');
+            this.maybeZoomToQueryBooth(wantId);
+          });
         return;
       }
       if (Date.now() - start < 2000) {
@@ -179,6 +197,16 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.querySub?.unsubscribe();
+    this.routerSub?.unsubscribe();
+  }
+
+  private maybeZoomToQueryBooth(wantId: string | null) {
+    if (!wantId) return;
+    if (wantId === this.lastZoomedBoothId) return; // already there
+    const booth = this.booths.find(b => b.id === String(wantId));
+    if (!booth) return;
+    this.lastZoomedBoothId = wantId;
+    requestAnimationFrame(() => this.zoomToBooth(booth));
   }
 
   private async zoomToBooth(booth: BoothData) {
@@ -336,6 +364,14 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
   onBoothTap(booth: BoothData) {
     this.selectedBooth = booth;
     this.highlightedBoothId = booth.id;
+  }
+
+  // Close the popup AND drop the yellow ring around the booth. The X button
+  // and the outside-tap dismiss should both fully reset selection so we're
+  // not left with a stale highlight after the user moves on.
+  closePopup() {
+    this.selectedBooth = null;
+    this.highlightedBoothId = null;
   }
 
   // Mirror sponsors page slug logic so the popup can deep-link into the
