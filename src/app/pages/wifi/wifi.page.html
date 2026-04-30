@@ -39,6 +39,21 @@
     </ion-button>
   </div>
 
+  <ion-card *ngIf="wifiSponsor"
+            class="wifi-sponsor-card"
+            button="true"
+            [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + getSponsorSlug(wifiSponsor.name)">
+    <ion-card-content class="wifi-sponsor-content">
+      <div class="wifi-sponsor-logo">
+        <img [src]="wifiSponsor.logo_url" [alt]="wifiSponsor.name + ' logo'" />
+      </div>
+      <div class="wifi-sponsor-text">
+        <span class="wifi-sponsor-label">Wi-Fi sponsored by</span>
+        <span class="wifi-sponsor-name">{{ wifiSponsor.name }}</span>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
   <div class="ion-padding ion-text-center wifi-note">
     <ion-icon name="location-outline"></ion-icon>
     <ion-text color="medium">
