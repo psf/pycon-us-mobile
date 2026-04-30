@@ -368,6 +368,33 @@ export class ConferenceData {
 
       var start = new Date(slot.start);
       var end = new Date(slot.end);
+
+      // Display-only start-time overrides. Some slots have a backend start
+      // that's been bumped for web-grid rendering reasons (the symposion
+      // timetable snaps to :00/:15/:30/:45 boundaries, so a 9:30 session
+      // bleeds visually if neighbouring slots anchor :45/:00). The mobile
+      // app has no grid constraint, so we surface the real attendee-facing
+      // time. Match by name pattern; offset is in minutes (negative = earlier).
+      // Underlying startUtc/endUtc are NOT touched so sorting, grouping,
+      // and add-to-calendar continue to use the canonical timestamps.
+      let displayStart = start;
+      const DISPLAY_TIME_OVERRIDES: Array<{ match: RegExp; startOffsetMinutes: number }> = [
+        // Talks/plenary per-room Job Fair entry: backend stores 10:00 so
+        // the symposion web grid renders cleanly (9:30 would orphan the
+        // row), but the real attendee start is 9:30. After markdownToTxt
+        // and the (Hall AB) stripping, slot.name is exactly "Job Fair &
+        // Community Showcase" — anchor with $ so we don't also match the
+        // events-track row "Job Fair & Community Showcase & Poster
+        // Sessions" (which is already at 9:30 and shouldn't shift).
+        { match: /^\s*job\s*fair\s*&\s*community\s*showcase\s*$/i, startOffsetMinutes: -30 },
+      ];
+      for (const ov of DISPLAY_TIME_OVERRIDES) {
+        if (ov.match.test(slot.name)) {
+          displayStart = new Date(start.getTime() + ov.startOffsetMinutes * 60_000);
+          break;
+        }
+      }
+
       var session = {
           "name": slot.name,
           "color": this.slotColors[slot.kind],
@@ -379,7 +406,7 @@ export class ConferenceData {
           "description": slot.description,
           "speakers": [],
           "speakerNames": slot.authors,
-          "timeStart": start.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
+          "timeStart": displayStart.toLocaleTimeString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
           "timeEnd": end.toLocaleString([], {timeZone: environment.timezone, hour: 'numeric', minute:'2-digit'}).toLowerCase(),
           "startUtc": slot.start,
           "endUtc": slot.end,
