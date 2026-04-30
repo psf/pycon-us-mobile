@@ -18,6 +18,18 @@
     <p>Contribute to open source after the conference</p>
   </div>
 
+  <div class="ion-padding-horizontal">
+    <p>
+      Development Sprints are dedicated days for collaborative coding on open
+      source projects. Join existing teams, work on your own project, or just
+      hang out — everyone is welcome regardless of experience level.
+    </p>
+    <ion-button fill="outline" expand="block" (click)="openSprintsPage()">
+      <ion-icon slot="start" name="open-outline"></ion-icon>
+      Visit Sprints Page
+    </ion-button>
+  </div>
+
   <ion-toolbar *ngIf="allSprints.length > 0" class="search-toolbar">
     <ion-searchbar [(ngModel)]="searchText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="filterSprints()" placeholder="Search"></ion-searchbar>
   </ion-toolbar>

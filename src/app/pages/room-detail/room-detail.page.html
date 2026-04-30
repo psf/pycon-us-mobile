@@ -54,6 +54,7 @@
             <span *ngFor="let name of session.speakerNames; let last = last">{{ name }}<span *ngIf="!last">, </span></span>
           </p>
           <span *ngIf="session.track" class="track-badge" [attr.data-track]="session.track | lowercase">{{ session.track }}</span>
+          <span *ngIf="session.preRegistered" class="track-badge prereg-badge">Pre-registration required</span>
         </ion-label>
       </ion-item>
     </ion-list>

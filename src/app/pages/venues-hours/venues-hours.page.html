@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title [class.title-visible]="showTitle">Venues & Hours</ion-title>
+    <ion-title [class.title-visible]="showTitle">Venue & Hours</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,9 +11,9 @@
   <div class="venues-hero">
     <div class="venues-hero-title">
       <ion-icon name="location" class="venues-hero-icon"></ion-icon>
-      <h1>Venues & Hours</h1>
+      <h1>Venue & Hours</h1>
     </div>
-    <p>Long Beach Convention Center</p>
+    <p>Long Beach Convention &amp; Entertainment Center</p>
     <p class="venues-address">300 E Ocean Blvd, Long Beach, CA 90802</p>
   </div>
 
@@ -31,6 +31,18 @@
           [pinYPct]="section.location.pinYPct">
         </app-location-map>
       </div>
+      <a class="venues-section-sponsor"
+         *ngIf="section.sponsor"
+         [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + section.sponsor.slug">
+        <img class="venues-section-sponsor-logo"
+             [src]="section.sponsor.logo_url"
+             [alt]="section.sponsor.name + ' logo'" />
+        <span class="venues-section-sponsor-text">
+          <span class="venues-section-sponsor-eyebrow">Sponsored by</span>
+          <span class="venues-section-sponsor-name">{{ section.sponsor.name }}</span>
+        </span>
+        <ion-icon name="chevron-forward" class="venues-section-sponsor-chevron"></ion-icon>
+      </a>
     </ng-container>
   </div>
 
@@ -46,7 +58,7 @@
     <ion-item button="true" routerLink="/app/tabs/conference-map" detail="true">
       <ion-icon slot="start" name="map-outline" color="primary"></ion-icon>
       <ion-label class="ion-text-wrap">
-        <h2>Conference Map</h2>
+        <h2>Conference Maps</h2>
         <p>Indoor venue layout</p>
       </ion-label>
     </ion-item>

@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
+import { ModalController, Platform, ToastController } from '@ionic/angular';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
@@ -8,6 +9,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { FloorPlanModalComponent } from '../../floor-plan-modal/floor-plan-modal.component';
 
 interface KeynoteAbstract {
   match: string[];
@@ -27,6 +29,7 @@ export class SessionDetailPage implements OnDestroy {
   isOpenSpace = false;
   isKeynote = false;
   isPosters = false;
+  isJobFair = false;
   posters: any[] = [];
   keynoteData: any[] = [];
   keynoteAbstract: KeynoteAbstract | null = null;
@@ -94,6 +97,9 @@ export class SessionDetailPage implements OnDestroy {
     private route: ActivatedRoute,
     public liveUpdateService: LiveUpdateService,
     private location: Location,
+    private platform: Platform,
+    private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
   ) { }
 
   ionViewWillEnter() {
@@ -129,6 +135,14 @@ export class SessionDetailPage implements OnDestroy {
       // individual poster session-detail pages show their own description.
       this.isPosters = this.session?.track === 'Poster' && this.session?.name === 'Posters';
       this.posters = this.isPosters ? (data.posters || []) : [];
+      const jobFairHaystack = [
+        this.session?.name,
+        this.session?.content_override,
+      ]
+        .filter((v): v is string => typeof v === 'string')
+        .join(' ')
+        .toLowerCase();
+      this.isJobFair = jobFairHaystack.includes('job fair');
       this.keynoteData = [];
       this.keynoteAbstract = null;
 
@@ -172,20 +186,85 @@ export class SessionDetailPage implements OnDestroy {
   async addToCalendar() {
     if (!this.session) return;
 
-    await CapacitorCalendar.requestWriteOnlyCalendarAccess();
+    // Validate session timestamps up front; the native plugin and the Google
+    // Calendar URL fallback both produce broken results if these are NaN.
+    const startMs = new Date(this.session.startUtc).getTime();
+    const endMs = new Date(this.session.endUtc).getTime();
+    if (
+      !this.session.startUtc ||
+      !this.session.endUtc ||
+      Number.isNaN(startMs) ||
+      Number.isNaN(endMs)
+    ) {
+      await this.presentToast('Couldn’t read this session’s time');
+      return;
+    }
 
     const speakers = this.session.speakers?.map((s: any) => s.name).join(', ') || '';
-    const description = speakers ? `Speakers: ${speakers}` : '';
+    const sessionUrl = environment.baseUrl + '/2026/schedule/presentation/' + this.session.id + '/';
+    const descriptionParts: string[] = [];
+    if (speakers) descriptionParts.push(`Speakers: ${speakers}`);
+    descriptionParts.push(sessionUrl);
+    const description = descriptionParts.join('\n\n');
 
-    await CapacitorCalendar.createEventWithPrompt({
-      title: this.session.name,
-      location: this.session.location || '',
-      description,
-      startDate: new Date(this.session.startUtc).getTime(),
-      endDate: new Date(this.session.endUtc).getTime(),
-      isAllDay: false,
-      url: environment.baseUrl + '/2026/schedule/presentation/' + this.session.id + '/',
+    // On web/PWA the @ebarooni/capacitor-calendar plugin is a no-op and
+    // silently resolves, so jump straight to the Google Calendar fallback.
+    if (!this.platform.is('hybrid')) {
+      this.openGoogleCalendarFallback(startMs, endMs, description, sessionUrl);
+      return;
+    }
+
+    try {
+      await CapacitorCalendar.requestWriteOnlyCalendarAccess();
+      await CapacitorCalendar.createEventWithPrompt({
+        title: this.session.name,
+        location: this.session.location || '',
+        description,
+        startDate: startMs,
+        endDate: endMs,
+        isAllDay: false,
+        url: sessionUrl,
+      });
+    } catch (err) {
+      console.error('Native calendar prompt failed, falling back to web', err);
+      await this.presentToast('Opening Google Calendar instead…');
+      this.openGoogleCalendarFallback(startMs, endMs, description, sessionUrl);
+    }
+  }
+
+  private openGoogleCalendarFallback(
+    startMs: number,
+    endMs: number,
+    description: string,
+    _sessionUrl: string,
+  ) {
+    const dates = `${this.formatGoogleCalendarDate(new Date(startMs))}/${this.formatGoogleCalendarDate(new Date(endMs))}`;
+    const params = [
+      'action=TEMPLATE',
+      `text=${encodeURIComponent(this.session.name || '')}`,
+      `dates=${dates}`,
+      `details=${encodeURIComponent(description)}`,
+      `location=${encodeURIComponent(this.session.location || '')}`,
+    ].join('&');
+    const url = `https://calendar.google.com/calendar/render?${params}`;
+    window.open(url, '_system');
+  }
+
+  private formatGoogleCalendarDate(date: Date): string {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return (
+      `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}` +
+      `T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}${pad(date.getUTCSeconds())}Z`
+    );
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2500,
+      position: 'bottom',
     });
+    await toast.present();
   }
 
   onDescriptionClick(event: Event) {
@@ -206,5 +285,17 @@ export class SessionDetailPage implements OnDestroy {
 
   shareSession() {
     console.log('Clicked share session');
+  }
+
+  async openJobFairFloorPlan() {
+    const modal = await this.modalCtrl.create({
+      component: FloorPlanModalComponent,
+      componentProps: {
+        title: 'Job Fair & Community Showcase',
+        imageSrc: 'assets/img/floor-plans/job-fair.jpg',
+        altText: 'Job Fair & Community Showcase floor plan',
+      },
+    });
+    await modal.present();
   }
 }

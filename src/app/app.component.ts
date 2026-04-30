@@ -50,13 +50,13 @@ export class AppComponent implements OnInit {
     { title: 'Conference Info', url: '/app/tabs/about-pycon', icon: 'information-circle-outline' },
     { title: 'Code of Conduct', url: '/app/tabs/coc', icon: 'shield-checkmark-outline' },
     { title: 'Wi-Fi', url: '/app/tabs/wifi', icon: 'wifi-outline' },
-    { title: 'Venues & Hours', url: '/app/tabs/venues-hours', icon: 'location-outline' },
+    { title: 'Venue & Hours', url: '/app/tabs/venues-hours', icon: 'location-outline' },
     { title: 'Session Types', url: '/app/tabs/session-types', icon: 'pricetags-outline' },
   ]
   infoPages = [
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
-    { title: 'Conference Map', url: '/app/tabs/conference-map', icon: 'map-outline' },
+    { title: 'Conference Maps', url: '/app/tabs/conference-map', icon: 'map-outline' },
     { title: 'Help & Safety', url: '/app/tabs/help', icon: 'help-circle-outline' },
   ]
   nickname = null;

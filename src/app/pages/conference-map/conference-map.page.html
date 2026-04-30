@@ -21,6 +21,9 @@
       <ion-segment-button value="expo-hall">
         <ion-label>Expo Hall</ion-label>
       </ion-segment-button>
+      <ion-segment-button value="job-fair">
+        <ion-label>Job Fair</ion-label>
+      </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 </ion-header>
@@ -63,5 +66,23 @@
   </iframe>
 
   <app-expo-hall-map *ngIf="mapView === 'expo-hall'" #expoMap></app-expo-hall-map>
+
+  <ng-container *ngIf="mapView === 'job-fair'">
+    <pinch-zoom
+      class="job-fair-zoom"
+      [autoZoomOut]="false"
+      [doubleTap]="true"
+      [wheel]="true"
+      [draggableImage]="false"
+      [limitZoom]="'original image size'"
+      backgroundColor="#ffffff">
+      <div class="job-fair-canvas">
+        <img
+          src="assets/img/floor-plans/job-fair.jpg"
+          alt="Job Fair & Community Showcase floor plan"
+          decoding="async" />
+      </div>
+    </pinch-zoom>
+  </ng-container>
 
 </ion-content>
