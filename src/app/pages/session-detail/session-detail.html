@@ -52,6 +52,12 @@
     </div>
 
     <div class="session-body">
+      <button *ngIf="isJobFair" type="button" class="job-fair-floor-plan-card" (click)="openJobFairFloorPlan()">
+        <img src="assets/img/floor-plans/job-fair-thumb.jpg" alt="" class="job-fair-floor-plan-thumb">
+        <span class="job-fair-floor-plan-label">View Job Fair Floor Plan</span>
+        <ion-icon name="chevron-forward" class="job-fair-floor-plan-chevron"></ion-icon>
+      </button>
+
       <div *ngFor="let keynote of keynoteData; let i = index"
            class="keynote-speaker-card"
            [class.keynote-speaker-card-flipped]="i % 2 === 1">

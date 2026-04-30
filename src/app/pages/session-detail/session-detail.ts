@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { InAppBrowser, DefaultWebViewOptions } from '@capacitor/inappbrowser';
 import { CapacitorCalendar } from '@ebarooni/capacitor-calendar';
-import { Platform, ToastController } from '@ionic/angular';
+import { ModalController, Platform, ToastController } from '@ionic/angular';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
@@ -9,6 +9,7 @@ import { LiveUpdateService } from '../../providers/live-update.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { FloorPlanModalComponent } from '../../floor-plan-modal/floor-plan-modal.component';
 
 interface KeynoteAbstract {
   match: string[];
@@ -28,6 +29,7 @@ export class SessionDetailPage implements OnDestroy {
   isOpenSpace = false;
   isKeynote = false;
   isPosters = false;
+  isJobFair = false;
   posters: any[] = [];
   keynoteData: any[] = [];
   keynoteAbstract: KeynoteAbstract | null = null;
@@ -97,6 +99,7 @@ export class SessionDetailPage implements OnDestroy {
     private location: Location,
     private platform: Platform,
     private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
   ) { }
 
   ionViewWillEnter() {
@@ -132,6 +135,14 @@ export class SessionDetailPage implements OnDestroy {
       // individual poster session-detail pages show their own description.
       this.isPosters = this.session?.track === 'Poster' && this.session?.name === 'Posters';
       this.posters = this.isPosters ? (data.posters || []) : [];
+      const jobFairHaystack = [
+        this.session?.name,
+        this.session?.content_override,
+      ]
+        .filter((v): v is string => typeof v === 'string')
+        .join(' ')
+        .toLowerCase();
+      this.isJobFair = jobFairHaystack.includes('job fair');
       this.keynoteData = [];
       this.keynoteAbstract = null;
 
@@ -274,5 +285,17 @@ export class SessionDetailPage implements OnDestroy {
 
   shareSession() {
     console.log('Clicked share session');
+  }
+
+  async openJobFairFloorPlan() {
+    const modal = await this.modalCtrl.create({
+      component: FloorPlanModalComponent,
+      componentProps: {
+        title: 'Job Fair & Community Showcase',
+        imageSrc: 'assets/img/floor-plans/job-fair.jpg',
+        altText: 'Job Fair & Community Showcase floor plan',
+      },
+    });
+    await modal.present();
   }
 }
