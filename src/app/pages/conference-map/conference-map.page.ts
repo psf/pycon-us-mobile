@@ -6,7 +6,7 @@ import { ExpoHallMapComponent } from '../../expo-hall-map/expo-hall-map.componen
 import { FloorPlanModalComponent } from '../../floor-plan-modal/floor-plan-modal.component';
 import { LiveUpdateService } from '../../providers/live-update.service';
 
-type MapView = 'floor-plans' | '3d-tour' | 'expo-hall';
+type MapView = 'floor-plans' | '3d-tour' | 'expo-hall' | 'job-fair';
 
 interface FloorPlan {
   id: string;
