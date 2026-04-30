@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
   infoPages = [
     { title: 'About The PSF', url: '/app/tabs/about-psf', icon: 'logo-python' },
     { title: 'Social', url: '/app/tabs/social-media', icon: 'chatbubbles-outline' },
-    { title: 'Conference Map', url: '/app/tabs/conference-map', icon: 'map-outline' },
+    { title: 'Conference Maps', url: '/app/tabs/conference-map', icon: 'map-outline' },
     { title: 'Help & Safety', url: '/app/tabs/help', icon: 'help-circle-outline' },
   ]
   nickname = null;
