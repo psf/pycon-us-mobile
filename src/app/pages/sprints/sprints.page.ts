@@ -75,6 +75,10 @@ export class SprintsPage implements OnInit {
     window.open(`${environment.baseUrl}/2026/sprints/project/submit/`, '_system', 'location=yes');
   }
 
+  openSprintsPage() {
+    window.open('https://us.pycon.org/2026/sprints/', '_system', 'location=yes');
+  }
+
   ngOnInit() {
     this.loadSprints();
     this.userData.isLoggedIn().then((resp) => {
