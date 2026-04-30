@@ -1,8 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IonSearchbar, LoadingController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 import { ConferenceData } from '../providers/conference-data';
 
@@ -25,7 +22,7 @@ export interface BoothData {
   templateUrl: './expo-hall-map.component.html',
   styleUrls: ['./expo-hall-map.component.scss'],
 })
-export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ExpoHallMapComponent implements OnInit, AfterViewInit {
   @ViewChild('searchBar') searchBar!: IonSearchbar;
   @ViewChild('pinchZoom', { read: ElementRef }) pinchZoomEl?: ElementRef<HTMLElement>;
   @ViewChild('pinchZoom') pinchZoomCmp?: {
@@ -126,8 +123,6 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private confData: ConferenceData,
     private loadingCtrl: LoadingController,
-    private route: ActivatedRoute,
-    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -144,9 +139,19 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
   // popup instead of underneath it.
   private static readonly DEEPLINK_POPUP_OFFSET_PX = 60;
 
-  private querySub?: Subscription;
-  private routerSub?: Subscription;
-  private lastZoomedBoothId: string | null = null;
+  // Booth id queued before pinch-zoom finishes initializing. ngAfterViewInit
+  // polls for the IvyPinch instance, and the parent ConferenceMapPage may
+  // call zoomToBoothId() before that polling completes (especially on cold
+  // entry to the tab when image + pinch-zoom are still hydrating). We hold
+  // the id here and apply it the moment pinch-zoom is ready.
+  private pendingBoothId: string | null = null;
+  private pinchReady = false;
+  // Token incremented per zoom request so async work (image-load wait)
+  // belonging to a superseded request can short-circuit instead of
+  // clobbering the latest zoom — protects against the rare race where the
+  // user taps two booth pills in fast succession before the floor-plan
+  // image has finished loading.
+  private zoomToken = 0;
 
   ngAfterViewInit() {
     // @ciag/ngx-pinch-zoom hardcodes defaultMaxScale=3 and only auto-derives
@@ -161,31 +166,12 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
       const inner = this.pinchZoomCmp?.pinchZoom;
       if (inner) {
         inner.maxScale = 25;
-        // React to the current ?booth=<id>, and to any future change while
-        // the component stays mounted (e.g. user pops back to a different
-        // sponsor and taps that booth's pill — Angular reuses this instance
-        // and only the query param changes).
-        this.querySub = this.route.queryParamMap.subscribe(params => {
-          this.maybeZoomToQueryBooth(params.get('booth'));
-        });
-        // Belt-and-braces: Ionic page caching keeps this component alive
-        // across nav, and ActivatedRoute.queryParamMap doesn't always
-        // re-emit when the cached page is re-entered with a new query
-        // string (sponsor → booth → back to sponsors → other sponsor →
-        // booth would otherwise leave us pinned to the first booth). On
-        // every navigation that lands on /expo-hall, parse the live URL
-        // (NOT route.snapshot, which is set on route activation and stays
-        // stale when Ionic just shows a cached page) and zoom if the
-        // booth id changed.
-        this.routerSub = this.router.events
-          .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-          .subscribe(e => {
-            const url = e.urlAfterRedirects || this.router.url;
-            if (!url.includes('/expo-hall')) return;
-            const tree = this.router.parseUrl(url);
-            const wantId = tree.queryParamMap.get('booth');
-            this.maybeZoomToQueryBooth(wantId);
-          });
+        this.pinchReady = true;
+        if (this.pendingBoothId) {
+          const id = this.pendingBoothId;
+          this.pendingBoothId = null;
+          this.zoomToBoothId(id);
+        }
         return;
       }
       if (Date.now() - start < 2000) {
@@ -195,21 +181,36 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
     tick();
   }
 
-  ngOnDestroy() {
-    this.querySub?.unsubscribe();
-    this.routerSub?.unsubscribe();
-  }
-
-  private maybeZoomToQueryBooth(wantId: string | null) {
-    if (!wantId) return;
-    if (wantId === this.lastZoomedBoothId) return; // already there
-    const booth = this.booths.find(b => b.id === String(wantId));
+  /**
+   * Public entry point used by ConferenceMapPage to request a zoom-to-booth.
+   * Driven by Ionic's ionViewWillEnter on the parent page so it fires
+   * reliably on first nav, cached re-entry with a different ?booth=, the
+   * same ?booth= twice in a row (re-centers if the user has panned away),
+   * tab-switch return, and cold-start deeplinks.
+   *
+   * No `lastZoomedBoothId` guard: if the parent calls us, it's because the
+   * user explicitly asked to see this booth — we should always re-center,
+   * even if the id matches the previous zoom (the user may have panned).
+   */
+  zoomToBoothId(boothId: string | null | undefined) {
+    if (!boothId) return;
+    const id = String(boothId);
+    if (!this.pinchReady) {
+      this.pendingBoothId = id;
+      return;
+    }
+    const booth = this.booths.find(b => b.id === id);
     if (!booth) return;
-    this.lastZoomedBoothId = wantId;
-    requestAnimationFrame(() => this.zoomToBooth(booth));
+    const token = ++this.zoomToken;
+    requestAnimationFrame(() => {
+      // Bail if a newer request superseded us between the rAF schedule
+      // and its callback (extremely unlikely but cheap to guard).
+      if (token !== this.zoomToken) return;
+      this.zoomToBooth(booth, token);
+    });
   }
 
-  private async zoomToBooth(booth: BoothData) {
+  private async zoomToBooth(booth: BoothData, token?: number) {
     const inner = this.pinchZoomCmp?.pinchZoom;
     const host = this.pinchZoomEl?.nativeElement;
     if (!inner || !host || !host.offsetWidth) return;
@@ -227,6 +228,10 @@ export class ExpoHallMapComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(done, 5000);
       });
     }
+
+    // If a newer zoomToBoothId() arrived while we were waiting on the image,
+    // abandon this stale request so it doesn't clobber the latest target.
+    if (token !== undefined && token !== this.zoomToken) return;
 
     // We bypass IvyPinch.setZoom() because it always runs centeringImage() →
     // limitPanY() afterwards, and that clamp assumes the image fills the

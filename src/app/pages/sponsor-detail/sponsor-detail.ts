@@ -41,18 +41,31 @@ export class SponsorDetailPage {
   ionViewWillEnter() {
     const sponsorId = this.route.snapshot.paramMap.get('sponsorId');
 
+    // CRITICAL: reset sponsor + jobListings on every entry. Ionic + Angular's
+    // IonicRouteStrategy reuses this component instance across different
+    // :sponsorId values (the routeConfig is identical), so class fields
+    // persist from the previous sponsor. The old `if (this.sponsor) break`
+    // outer-loop guard would short-circuit on a stale match from the prior
+    // sponsor — if the new sponsor's level was iterated AFTER the previous
+    // sponsor's level, we'd never reach it and the page would render the
+    // OLD sponsor's data (logo, name, AND booth number). Tapping the booth
+    // pill then navigates to the wrong booth.
+    this.sponsor = undefined;
+    this.jobListings = [];
+
     this.dataProvider.load().subscribe((data: any) => {
+      let found: any = null;
       if (data && data.conference && data.conference.sponsors) {
-        for (const [level, sponsors] of Object.entries(data.conference.sponsors)) {
-          for (const [index, sponsor] of Object.entries(sponsors as any[])) {
-            if (sponsor && String(sponsor.name).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === sponsorId) {
-              this.sponsor = sponsor;
-              break;
+        outer: for (const sponsors of Object.values(data.conference.sponsors)) {
+          for (const sponsor of sponsors as any[]) {
+            if (sponsor && this.getSponsorSlug(String(sponsor.name)) === sponsorId) {
+              found = sponsor;
+              break outer;
             }
           }
-          if (this.sponsor) break;
         }
       }
+      this.sponsor = found;
 
       // Find job listings associated with this sponsor
       const listings = data['job-listings'] || [];
