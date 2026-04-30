@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
+import { IonContent, ModalController } from '@ionic/angular';
 
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
+import { FloorPlanModalComponent } from '../../floor-plan-modal/floor-plan-modal.component';
 
 @Component({
   selector: 'app-job-listings',
@@ -20,7 +21,20 @@ export class JobListingsPage implements OnInit {
     private confData: ConferenceData,
     private changeDetection: ChangeDetectorRef,
     public liveUpdateService: LiveUpdateService,
+    private modalCtrl: ModalController,
   ) {}
+
+  async openJobFairFloorPlan() {
+    const modal = await this.modalCtrl.create({
+      component: FloorPlanModalComponent,
+      componentProps: {
+        title: 'Job Fair & Community Showcase',
+        imageSrc: 'assets/img/floor-plans/job-fair.jpg',
+        altText: 'Job Fair & Community Showcase floor plan',
+      },
+    });
+    await modal.present();
+  }
 
   onScroll(event: any) {
     this.showTitle = event.detail.scrollTop > 100;

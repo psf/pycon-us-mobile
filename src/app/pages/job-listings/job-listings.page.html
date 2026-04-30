@@ -22,6 +22,14 @@
     <ion-searchbar [(ngModel)]="searchText" [debounce]="250" showCancelButton="focus" inputmode="search" (ionClear)="resetSearch()" (ionCancel)="resetSearch()" (ionChange)="filterListings()" placeholder="Search sponsors"></ion-searchbar>
   </ion-toolbar>
 
+  <div class="job-fair-floor-plan-wrapper">
+    <button type="button" class="job-fair-floor-plan-card" (click)="openJobFairFloorPlan()">
+      <img src="assets/img/floor-plans/job-fair-thumb.jpg" alt="" class="job-fair-floor-plan-thumb">
+      <span class="job-fair-floor-plan-label">View Job Fair Floor Plan</span>
+      <ion-icon name="chevron-forward" class="job-fair-floor-plan-chevron"></ion-icon>
+    </button>
+  </div>
+
   <div *ngIf="allListings.length === 0" class="ion-padding-horizontal">
     <p>No job listings have been posted yet. Check back closer to the conference!</p>
   </div>
