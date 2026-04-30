@@ -31,6 +31,18 @@
           [pinYPct]="section.location.pinYPct">
         </app-location-map>
       </div>
+      <a class="venues-section-sponsor"
+         *ngIf="section.sponsor"
+         [routerLink]="'/app/tabs/sponsors/sponsor-detail/' + section.sponsor.slug">
+        <img class="venues-section-sponsor-logo"
+             [src]="section.sponsor.logo_url"
+             [alt]="section.sponsor.name + ' logo'" />
+        <span class="venues-section-sponsor-text">
+          <span class="venues-section-sponsor-eyebrow">Sponsored by</span>
+          <span class="venues-section-sponsor-name">{{ section.sponsor.name }}</span>
+        </span>
+        <ion-icon name="chevron-forward" class="venues-section-sponsor-chevron"></ion-icon>
+      </a>
     </ng-container>
   </div>
 

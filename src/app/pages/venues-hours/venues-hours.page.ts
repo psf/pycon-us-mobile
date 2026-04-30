@@ -1,13 +1,21 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { forkJoin } from 'rxjs';
 import { ConferenceData } from '../../providers/conference-data';
 import { LiveUpdateService } from '../../providers/live-update.service';
 import { VENUE_LOCATIONS, VenueLocation } from '../../location-map/venue-locations';
 
+interface VenueSectionSponsor {
+  name: string;
+  logo_url: string;
+  slug: string;
+}
+
 interface VenueSection {
   html: SafeHtml;
   location?: VenueLocation;
+  sponsor?: VenueSectionSponsor;
 }
 
 @Component({
@@ -37,14 +45,43 @@ export class VenuesHoursPage implements OnInit {
   }
 
   ngOnInit() {
-    this.confData.getContent().subscribe((content: any) => {
+    forkJoin({
+      content: this.confData.getContent(),
+      sponsors: this.confData.getSponsors(),
+    }).subscribe(({ content, sponsors }: { content: any; sponsors: any }) => {
       this.content = content;
-      this.sections = this.buildSections(content?.['venues-hours'] || '');
+      const flatSponsors = this.flattenSponsors(sponsors);
+      this.sections = this.buildSections(content?.['venues-hours'] || '', flatSponsors);
       this.changeDetection.detectChanges();
     });
   }
 
-  private buildSections(html: string): VenueSection[] {
+  private flattenSponsors(sponsors: any): any[] {
+    if (!sponsors) return [];
+    const flat: any[] = [];
+    Object.values(sponsors).forEach((level: any) => {
+      if (Array.isArray(level)) {
+        flat.push(...level);
+      }
+    });
+    return flat;
+  }
+
+  private getSponsorSlug(name: string): string {
+    return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  }
+
+  private findSponsorByName(sponsors: any[], needle: string): VenueSectionSponsor | undefined {
+    const match = sponsors.find((s) => (s?.name || '').toLowerCase().includes(needle));
+    if (!match) return undefined;
+    return {
+      name: match.name,
+      logo_url: match.logo_url,
+      slug: this.getSponsorSlug(match.name),
+    };
+  }
+
+  private buildSections(html: string, sponsors: any[] = []): VenueSection[] {
     if (!html) return [];
 
     const parser = new DOMParser();
@@ -61,10 +98,17 @@ export class VenuesHoursPage implements OnInit {
       if (current.innerHTML.trim()) {
         const heading = current.querySelector('h1, h2, h3, h4, h5, h6');
         const text = (heading?.textContent || '').toLowerCase();
-        sections.push({
+        const section: VenueSection = {
           html: this.sanitizer.bypassSecurityTrustHtml(current.innerHTML),
           location: this.matchLocation(text),
-        });
+        };
+        if (text.includes('quiet room')) {
+          const sponsor = this.findSponsorByName(sponsors, 'google');
+          if (sponsor) {
+            section.sponsor = sponsor;
+          }
+        }
+        sections.push(section);
       }
     };
 
