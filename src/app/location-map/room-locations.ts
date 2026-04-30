@@ -92,7 +92,6 @@ const ROOM_LOCATIONS_RAW: Record<string, RoomLocation> = {
   '103a': concourse('Room 103A', 39, 50, 'Talk Track / Security Track'),
   '103b': concourse('Room 103B', 43, 50, 'Talk Track / Security Track'),
   '103c': concourse('Room 103C', 46, 50, 'Talk Track / Security Track'),
-  '103ab': concourse('Room 103AB', 41, 50, 'PyLadies Lunch'),
   '103abc': concourse('Room 103', 43, 50, 'Talk Track / Security Track'),
   '104a': concourse('Room 104A', 72, 38, 'Talk Track'),
   '104b': concourse('Room 104B', 80, 35, 'Talk Track'),
