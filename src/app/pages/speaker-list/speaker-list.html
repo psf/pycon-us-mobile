@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent fullscreen="true" scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="page-hero">
     <ion-icon name="people" class="page-hero-icon"></ion-icon>
     <h1>Speakers</h1>
@@ -37,4 +37,6 @@
   <ion-infinite-scroll [disabled]="!scrolling" (ionInfinite)="onIonInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

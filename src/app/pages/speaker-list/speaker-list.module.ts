@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { SpeakerListPage } from './speaker-list';
 import { SpeakerListPageRoutingModule } from './speaker-list-routing.module';
 import { PipesModule } from '../../pipes/pipes.module';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     FormsModule,
     IonicModule,
     SpeakerListPageRoutingModule,
-    PipesModule
+    PipesModule,
+    ScrollToTopModule
   ],
   declarations: [SpeakerListPage],
 })

@@ -8,6 +8,7 @@ import { ScheduleListPageRoutingModule } from './schedule-list-routing.module';
 
 import { ScheduleListPage } from './schedule-list.page';
 import { PipesModule } from '../../pipes/pipes.module';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { PipesModule } from '../../pipes/pipes.module';
     FormsModule,
     IonicModule,
     ScheduleListPageRoutingModule,
-    PipesModule
+    PipesModule,
+    ScrollToTopModule
   ],
   declarations: [ScheduleListPage]
 })

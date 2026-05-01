@@ -4,12 +4,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { AccountPage } from './account';
 import { AccountPageRoutingModule } from './account-routing.module';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    AccountPageRoutingModule
+    AccountPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [
     AccountPage,

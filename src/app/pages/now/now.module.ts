@@ -8,6 +8,7 @@ import { NowPageRoutingModule } from './now-routing.module';
 import { PipesModule } from '../../pipes/pipes.module';
 
 import { NowPage } from './now.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NowPage } from './now.page';
     FormsModule,
     IonicModule,
     NowPageRoutingModule,
-    PipesModule
+    PipesModule,
+    ScrollToTopModule
   ],
   declarations: [NowPage]
 })

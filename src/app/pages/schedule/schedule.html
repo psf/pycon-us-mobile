@@ -22,7 +22,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
+<ion-content fullscreen="true" #pageContent scrollEvents="true">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -144,5 +144,7 @@
       <span class="jump-now-label">Jump to Now</span>
     </button>
   </div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 
 </ion-content>

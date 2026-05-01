@@ -1,0 +1,17 @@
+:host {
+  pointer-events: none;
+}
+
+.scroll-to-top-fab {
+  pointer-events: auto;
+  // Bump up so it doesn't sit under the bottom 80px spacer used by long pages.
+  margin-bottom: 80px;
+
+  ion-fab-button {
+    // PyCon pink — same as the location-pin hero icon on Venue & Hours.
+    --background: #DD04D2;
+    --background-activated: #B8038F;
+    --color: #ffffff;
+    --box-shadow: 0 4px 12px rgba(221, 4, 210, 0.35);
+  }
+}

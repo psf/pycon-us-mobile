@@ -6,13 +6,15 @@ import { LocationMapModule } from '../../location-map/location-map.module';
 
 import { VenuesHoursPageRoutingModule } from './venues-hours-routing.module';
 import { VenuesHoursPage } from './venues-hours.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
     LocationMapModule,
-    VenuesHoursPageRoutingModule
+    VenuesHoursPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [VenuesHoursPage]
 })

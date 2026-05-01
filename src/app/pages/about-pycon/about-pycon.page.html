@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="about-hero">
     <ion-icon name="information-circle" class="about-hero-icon"></ion-icon>
     <h1>PyCon US 2026</h1>
@@ -55,4 +55,6 @@
   </ion-accordion-group>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

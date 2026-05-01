@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AboutPsfPageRoutingModule } from './about-psf-routing.module';
 
 import { AboutPsfPage } from './about-psf.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AboutPsfPageRoutingModule
+    AboutPsfPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [AboutPsfPage]
 })

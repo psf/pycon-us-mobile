@@ -6,13 +6,15 @@ import { LocationMapModule } from '../../location-map/location-map.module';
 
 import { HelpPageRoutingModule } from './help-routing.module';
 import { HelpPage } from './help.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
     LocationMapModule,
-    HelpPageRoutingModule
+    HelpPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [HelpPage]
 })

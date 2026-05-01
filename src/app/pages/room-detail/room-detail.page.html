@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div *ngIf="loaded && !room" class="empty-state">
     <ion-icon name="alert-circle-outline"></ion-icon>
     <p>Room not found.</p>
@@ -61,4 +61,6 @@
   </div>
 
   <div style="height: 60px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <ion-refresher slot="fixed" (ionRefresh)="refresh(); $event.target.complete()">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -77,4 +77,6 @@
       </ion-list>
     </div>
   </div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

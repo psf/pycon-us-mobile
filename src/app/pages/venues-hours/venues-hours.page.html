@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="venues-hero">
     <div class="venues-hero-title">
       <ion-icon name="location" class="venues-hero-icon"></ion-icon>
@@ -65,4 +65,6 @@
   </ion-list>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

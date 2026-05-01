@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="lt-hero">
     <ion-icon name="flash" class="lt-hero-icon"></ion-icon>
     <h1>Lightning Talks</h1>
@@ -92,4 +92,6 @@
   </ion-list>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

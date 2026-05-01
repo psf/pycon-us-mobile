@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content #pageContent scrollEvents="true">
   <div *ngIf="session" class="session-detail-content">
     <div class="session-hero">
       <h1 class="session-title">{{session.name}}</h1>
@@ -117,4 +117,6 @@
       </div>
     </div>
   </div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

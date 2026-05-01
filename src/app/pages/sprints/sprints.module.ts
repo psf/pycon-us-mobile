@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SprintsPageRoutingModule } from './sprints-routing.module';
 
 import { SprintsPage } from './sprints.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SprintsPageRoutingModule
+    SprintsPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [SprintsPage]
 })

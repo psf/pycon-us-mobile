@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="coc-hero">
     <div class="coc-hero-title">
       <ion-icon name="shield-checkmark" class="coc-hero-icon"></ion-icon>
@@ -74,4 +74,6 @@
   </div>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

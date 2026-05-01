@@ -4,12 +4,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { WifiPageRoutingModule } from './wifi-routing.module';
 import { WifiPage } from './wifi.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    WifiPageRoutingModule
+    WifiPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [WifiPage]
 })

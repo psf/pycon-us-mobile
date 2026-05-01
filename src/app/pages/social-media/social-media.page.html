@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="page-hero">
     <ion-icon name="share-social" class="page-hero-icon"></ion-icon>
     <h1>Social Media</h1>
@@ -140,4 +140,6 @@
   </ion-list>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

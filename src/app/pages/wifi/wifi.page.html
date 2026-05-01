@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="wifi-hero">
     <ion-icon name="wifi" class="wifi-hero-icon"></ion-icon>
     <h1>Connect to Wi-Fi</h1>
@@ -62,4 +62,6 @@
   </div>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

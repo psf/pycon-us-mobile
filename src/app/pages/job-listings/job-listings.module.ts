@@ -8,6 +8,7 @@ import { JobListingsPageRoutingModule } from './job-listings-routing.module';
 
 import { JobListingsPage } from './job-listings.page';
 import { FloorPlanModalModule } from '../../floor-plan-modal/floor-plan-modal.module';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { FloorPlanModalModule } from '../../floor-plan-modal/floor-plan-modal.mo
     FormsModule,
     IonicModule,
     JobListingsPageRoutingModule,
-    FloorPlanModalModule
+    FloorPlanModalModule,
+    ScrollToTopModule
   ],
   declarations: [JobListingsPage]
 })

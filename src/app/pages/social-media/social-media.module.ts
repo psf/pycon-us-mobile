@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SocialMediaPageRoutingModule } from './social-media-routing.module';
 
 import { SocialMediaPage } from './social-media.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SocialMediaPageRoutingModule
+    SocialMediaPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [SocialMediaPage]
 })

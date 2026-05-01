@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content scrollEvents="true" (ionScroll)="onScroll($event)">
+<ion-content #pageContent scrollEvents="true" (ionScroll)="onScroll($event)">
   <div class="page-hero">
     <ion-icon name="logo-python" class="page-hero-icon"></ion-icon>
     <h1>Python Software Foundation</h1>
@@ -212,4 +212,6 @@
   </ion-row>
 
   <div style="height: 80px"></div>
+
+  <app-scroll-to-top [content]="pageContent"></app-scroll-to-top>
 </ion-content>

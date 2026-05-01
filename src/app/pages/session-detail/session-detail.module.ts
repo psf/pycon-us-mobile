@@ -6,6 +6,7 @@ import { SessionDetailPageRoutingModule } from './session-detail-routing.module'
 import { IonicModule } from '@ionic/angular';
 import { PipesModule } from '../../pipes/pipes.module';
 import { FloorPlanModalModule } from '../../floor-plan-modal/floor-plan-modal.module';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { FloorPlanModalModule } from '../../floor-plan-modal/floor-plan-modal.mo
     IonicModule,
     SessionDetailPageRoutingModule,
     PipesModule,
-    FloorPlanModalModule
+    FloorPlanModalModule,
+    ScrollToTopModule
   ],
   declarations: [
     SessionDetailPage,

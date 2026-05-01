@@ -4,12 +4,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { CocPageRoutingModule } from './coc-routing.module';
 import { CocPage } from './coc.page';
+import { ScrollToTopModule } from '../../scroll-to-top/scroll-to-top.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-    CocPageRoutingModule
+    CocPageRoutingModule,
+    ScrollToTopModule
   ],
   declarations: [CocPage]
 })
