@@ -261,12 +261,19 @@ export class ConferenceData {
     data.schedule.filter((s: any) => collapseKinds.includes(s.kind)).forEach((slot: any) => {
       const day = new Date(slot.start).toLocaleDateString('en-us', {timeZone: environment.timezone, weekday: 'short'});
       const slotName = markdownToTxt(slot.name);
-      // Include start time in the key so morning and afternoon "Break"
-      // entries don't collapse into a single 10:30-4:30 row that spans
-      // the lunches and afternoon talks. Per-room same-start slots
-      // (e.g. all the 13:00 Lunch (Hall AB) entries across talk rooms)
-      // still share a key and merge correctly.
-      const key = `${slot.kind}-${day}-${slotName}-${slot.start}`;
+      // Include start time in the key for break slots so morning and
+      // afternoon "Break" entries don't collapse into a single 10:30-4:30
+      // row spanning lunches and afternoon talks. Per-room same-start
+      // breaks/lunches still merge correctly because they share start.
+      //
+      // POSTERS are different — every individual poster slot in the API
+      // is a 5-minute kind="poster" entry with name="Posters", and we
+      // intentionally fold the entire daily poster session into ONE row.
+      // Adding start to the key here would split them back into 50+
+      // 5-minute rows, which is the regression PR #289 introduced.
+      // So: only add start for breaks.
+      const startKey = slot.kind === 'break' ? `-${slot.start}` : '';
+      const key = `${slot.kind}-${day}-${slotName}${startKey}`;
       if (!collapsedGroups.has(key)) {
         // Rename lunchtime breaks
         let name = slot.kind === 'poster' ? 'Posters' : markdownToTxt(slot.name);
