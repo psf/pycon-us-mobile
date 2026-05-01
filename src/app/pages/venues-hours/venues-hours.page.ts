@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular';
+import { IonContent, Platform } from '@ionic/angular';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
 import { ConferenceData } from '../../providers/conference-data';
@@ -33,6 +33,7 @@ export class VenuesHoursPage implements OnInit {
     private confData: ConferenceData,
     private changeDetection: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
+    private platform: Platform,
     public liveUpdateService: LiveUpdateService,
   ) {}
 
@@ -41,6 +42,34 @@ export class VenuesHoursPage implements OnInit {
   }
 
   openUrl(url: string) {
+    window.open(url, '_system', 'location=yes');
+  }
+
+  // Pine Ave entrance to the Long Beach Convention Center. Organizers asked
+  // to route attendees here rather than the generic 300 E Ocean Blvd lobby
+  // since Pine Ave is the closer pedestrian approach from the hotels.
+  // Coordinates: 33°45'52.0"N 118°11'30.2"W
+  private static readonly PINE_AVE_LAT = 33.764444;
+  private static readonly PINE_AVE_LNG = -118.191722;
+  private static readonly PINE_AVE_LABEL = 'Long Beach Convention Center (Pine Ave Entrance)';
+
+  openDirections() {
+    const lat = VenuesHoursPage.PINE_AVE_LAT;
+    const lng = VenuesHoursPage.PINE_AVE_LNG;
+    const label = VenuesHoursPage.PINE_AVE_LABEL;
+
+    let url: string;
+    if (this.platform.is('ios')) {
+      // Apple Maps: q= sets the pin label, ll= sets coords. dirflg=w means
+      // walking directions (Pine Ave is a pedestrian approach).
+      url = `https://maps.apple.com/?q=${encodeURIComponent(label)}&ll=${lat},${lng}&dirflg=w`;
+    } else if (this.platform.is('android')) {
+      // Android geo: URI opens the user's default maps app directly.
+      url = `geo:${lat},${lng}?q=${lat},${lng}(${encodeURIComponent(label)})`;
+    } else {
+      // PWA / web: Google Maps universal link.
+      url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    }
     window.open(url, '_system', 'location=yes');
   }
 
