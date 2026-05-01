@@ -353,6 +353,7 @@ export class ConferenceData {
       // For plenary-like slots, extract room from parentheses in the title
       // and strip redundant track prefix (e.g., "Keynote — " since the badge shows it)
       var sessionLocation = slot.room;
+      var displayLocationOverride: string | null = null;
       const plenaryKinds = ['plenary', 'keynote', 'lightning-talks', 'event'];
       if (plenaryKinds.includes(slot.kind)) {
         const roomMatch = slot.name.match(/\s*\(([^)]+)\)\s*$/);
@@ -373,6 +374,26 @@ export class ConferenceData {
         // Strip track prefix like "Keynote — ", "Keynote: " from name since badge shows it
         const trackPrefix = new RegExp('^' + slot.kind.replace(/-/g, '[- ]') + '\\s*[—:\\-–]\\s*', 'i');
         slot.name = slot.name.replace(trackPrefix, '').trim();
+      } else if (slot.kind === 'break') {
+        // Break slots fan out to every audience room (Grand Ballrooms, 103ABC,
+        // 104AB, etc. — attendees in each room see "break time"). But the
+        // headline location displayed in the schedule timeline should be the
+        // single venue where the break service actually happens, e.g.
+        // "Expo Hall AB" (coffee/snacks). Pull that out of the parenthesized
+        // suffix in the slot name when present, so a slot with content
+        // "Break (Expo Hall AB)" / "Coffee (Hall AB)" displays the right
+        // place — but leave session.location (the comma-joined room list)
+        // untouched so the per-room fanout still registers the slot in
+        // every room's room-detail view.
+        const roomMatch = slot.name.match(/\s*\(([^)]+)\)\s*$/);
+        if (roomMatch) {
+          let displayRoom = roomMatch[1].trim();
+          if (/^Hall\s/i.test(displayRoom)) {
+            displayRoom = `Expo ${displayRoom}`;
+          }
+          displayLocationOverride = displayRoom;
+          slot.name = slot.name.replace(roomMatch[0], '').trim();
+        }
       }
 
       // Flag Spanish-language sessions and strip "En Español" from title
@@ -410,7 +431,7 @@ export class ConferenceData {
         }
       }
 
-      var session = {
+      var session: any = {
           "name": slot.name,
           "color": this.slotColors[slot.kind],
           "preRegistered": slot.preRegistered,
@@ -418,6 +439,7 @@ export class ConferenceData {
           "listRender": slot.list_render,
           "section": slot.section,
           "location": sessionLocation,
+          "displayLocationOverride": displayLocationOverride,
           "description": slot.description,
           "speakers": [],
           "speakerNames": slot.authors,
@@ -692,7 +714,12 @@ export class ConferenceData {
       // fanout above relies on it). For the schedule timeline we show
       // only the first room — wide multi-room labels for breaks/lunch
       // wrapped onto multiple lines and looked terrible.
-      session.displayLocation = links.length > 0 ? links[0].name : (session.location || '');
+      // displayLocationOverride wins when set (break slots use it to
+      // surface the venue where service actually happens — e.g. coffee
+      // is in Expo Hall AB even though the break is registered against
+      // every audience room).
+      session.displayLocation = session.displayLocationOverride
+        || (links.length > 0 ? links[0].name : (session.location || ''));
     });
     roomMap.forEach((room: any) => {
       room.sessions.sort(
