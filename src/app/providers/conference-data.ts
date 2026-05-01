@@ -355,6 +355,16 @@ export class ConferenceData {
           sessionLocation = roomMatch[1];
           slot.name = slot.name.replace(roomMatch[0], '').trim();
         }
+        // Normalize bare "Hall AB"/"Hall C" to canonical "Expo Hall …" so
+        // plenaries that name the venue as "Hall AB" (Opening Reception,
+        // Posters, etc.) land in the same room bucket as sponsor booths /
+        // posters / lunches that all live under the "Expo Hall AB" name.
+        // Without this, Opening Reception ends up in a separate "Hall AB"
+        // room with no other context, and the Expo Hall AB room view looks
+        // like the reception isn't scheduled at all.
+        if (sessionLocation && /^Hall\s/i.test(sessionLocation)) {
+          sessionLocation = `Expo ${sessionLocation}`;
+        }
         // Strip track prefix like "Keynote — ", "Keynote: " from name since badge shows it
         const trackPrefix = new RegExp('^' + slot.kind.replace(/-/g, '[- ]') + '\\s*[—:\\-–]\\s*', 'i');
         slot.name = slot.name.replace(trackPrefix, '').trim();
